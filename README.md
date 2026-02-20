@@ -1,53 +1,57 @@
-# LLM Phase Transitions
+# LLM Phase Transitions & Emergent Reasoning
 
-This project investigates the concept of "phase transitions" in Large Language Models (LLMs), exploring how their behavior changes in response to varying parameters, particularly "temperature."
+This project investigates **phase transitions** in Large Language Model (LLM) behavior, specifically focusing on how reasoning, symbolic manipulation, and physical intuition emerge as a function of **model scale** and **sampling temperature**.
 
-## Methodology
+## Project Overview
+We use a multi-modal experimental framework (Python, Node.js, and Mathematica) to systematically probe LLMs. By sweeping across model sizes (from 1B to 1T+ parameters) and temperatures (0.0 to 2.0), we identify the "critical points" where models transition from deterministic failure to emergent success, and eventually to creative hallucination.
 
-The experiments are conducted using Mathematica to systematically query various LLMs. We utilize both local models via the **Ollama** library and remote models via the **OpenRouter** API. The core idea is to test the models' reasoning, decoding, and creative capabilities under different conditions.
+### [View Interactive Dashboard](https://brettonliam-byte.github.io/LLM_Phase_Transitions/)
 
-### Core Tasks
-1.  **Caesar Cipher Decoding:** Models are prompted to decode the message `'N ymnsp ymjwjktwj N fr'` (which decodes to "I think therefore I am") across a range of temperatures.
-2.  **Creative Generation:** Models are asked to generate items (e.g., tool names) based on specific personas and historical contexts.
+## Core Research Areas
 
-## Experiments
+### 1. Linguistic Phase Transitions (Caesar & Substitution Ciphers)
+Testing at what point a model can "internally" decode symbolic shifts without external scratchpads.
+- **Zero-Shot vs. Chain-of-Thought**: Comparing "System 1" (fast) vs "System 2" (slow) decryption.
+- **Scale Impact**: Identifying the parameter threshold (e.g., 12B vs 27B) for stable decryption.
 
-The experiments are documented in the following Mathematica notebooks:
+### 2. Physical Intuition (The Helicopter Cable Problem)
+A benchmark designed to distinguish between **reasoning** (derivation from first principles) and **retrieval** (pattern matching from training data).
+- **The Challenge**: Can the model correctly identify that a cable under constant drag forms a straight line, resisting the linguistic pull of the common "catenary curve"?
 
-### Cipher Decoding Experiments
-*   **`Gemma3_Temp_Caesar.nb`**: A comprehensive test of the **Gemma 3** family (`1b`, `4b`, `12b`, `27b`) on the Caesar cipher task.
-    *   **Variables:** Temperature (0 to 2, step 0.2), Repetitions (25).
-    *   **Output:** `OL4file.xlsx`
-*   **`17.11.25.nb`**: Tests the **Qwen 3** (`4b`) model on the Caesar cipher task.
-    *   **Variables:** Temperature (0 to 2, step 0.1), Repetitions (50).
-    *   **Output:** `OLQWEN34B.xlsx`
-*   **`25.11.25.nb`**: Tests the **GLM-4.5-Air** model (`z-ai/glm-4.5-air:free`) via the OpenRouter API.
-    *   **Variables:** Temperature (0 to 2, step 0.2), Repetitions (25).
-    *   **Output:** `OR5.xlsx`
+### 3. Mathematical Stability (Calculus Integrals)
+Benchmarking the ability of models to solve complex integrals like $\int \frac{(\tan(\ln(x)))^3}{x} \, dx$.
+- **Temperature Sensitivity**: Observing how symbolic coherence breaks down as sampling noise increases.
 
-### Creative Generation Experiments
-*   **`20.10.25.nb`**: Tests **Gemma 3** (`12b`) on a creative generation task at high temperature (Temp 2).
-    *   **Prompts:**
-        1.  "You are a villager living in rural England in 1066. Can you give me the name of a tool?"
-        2.  "You are a wealthy noble living in London, England in 1066. Can you give me the name of a tool?"
-    *   **Variables:** Temperature (2), Repetitions (50).
-    *   **Output:** `OL2file.xlsx`
+## Repository Structure
 
-### Legacy Experiments
-*   `7.11.25.nb`: Early tests with `gemma3` models.
-*   `10.11.25.nb`: Tests using a numerical substitution cipher.
-*   `13.10.25.nb` & `13.10.25 Chat.nb`: Exploratory work with creative generation tasks (e.g., generating names for cats and tools).
+- **`/experiments`**: Detailed logs, data, and analysis for each benchmark (Caesar, Physics, Integrals).
+- **`/llm_experiment_framework`**: A Python framework for batch querying models via OpenRouter, Ollama, and more.
+- **`/LogprobAPICollector`**: Specialized tools for capturing token-level logprobabilities to analyze model confidence.
+- **`/results_viz`**: Interactive HTML dashboards and visualizations.
+- **`/scripts`**: Utility scripts for data processing, analysis, and dashboard generation.
+- **`/notebooks`**: Wolfram Mathematica notebooks used for exploratory research.
+- **`/analysis_tool`**: Python scripts for extracting and scoring model answers.
 
-## Results
+## Getting Started
 
-The raw results of the experiments are exported to `.xlsx` files. These files contain the responses of the LLMs for each model and temperature setting, allowing for analysis of the "phase transition" from deterministic accuracy to creative hallucination or failure.
+### Requirements
+- **Python 3.x**: `pip install -r llm_experiment_framework/requirements.txt`
+- **Node.js**: v18+ (for API collectors)
+- **Ollama**: For local model execution.
 
-## How to Run the Code
+### Configuration
+1. Create a `.env` file in the root based on `llm_experiment_framework/.env.example`.
+2. Add your `OPENROUTER_API_KEY` or other provider keys.
 
-The experiments are defined in the Mathematica notebooks (`.nb` files).
+### Running an Experiment
+```bash
+# Using the Python Framework
+python llm_experiment_framework/main.py
 
-To run the experiments yourself, you will need:
-1.  **Mathematica**: A working installation.
-2.  **Ollama**: For running local models (Gemma, Qwen). Ensure the specific models used in the notebooks are pulled (e.g., `ollama pull gemma3:12b`).
-3.  **OpenRouter API Key**: Required for `25.11.25.nb` to access remote models.
-4.  **Custom Functions**: Some notebooks rely on `LLMSynthesize` (built-in) or custom wrappers like `LLMRequest` defined within the notebook itself.
+# Using the Node.js Collector (for logprobs)
+cd LogprobAPICollector
+node query_llm.js
+```
+
+## Authors
+- **Bretton Liam** (@brettonliam-byte)
