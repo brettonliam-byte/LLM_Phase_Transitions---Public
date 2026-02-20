@@ -1,0 +1,113 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{xcolor}
+
+\geometry{a4paper, margin=1in}
+
+\title{Integral Solution Analysis}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Integral Solution Analysis: \(\int \frac{\tan^3(\ln x)}{x} dx\)}
+
+This document evaluates the performance of various Large Language Models (LLMs) in solving the indefinite integral:
+\[ \int \frac{\tan^3(\ln x)}{x} \, dx \]
+
+\textbf{Correct Solution:}
+\[ \frac{1}{2}\tan^2(\ln x) + \ln|\cos(\ln x)| + C \]
+\textit{(Equivalent forms using \(\sec^2(\ln x)\) are also accepted).}
+
+\section{Summary of Results}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Model} & \textbf{Status} & \textbf{Key Issues/Strengths} \\ \midrule
+\textbf{Gemma3:1b} & \textcolor{red}{\textbf{Incorrect}} & Failed logic/algebra in integration step. \\
+\textbf{Gemma3:4b} & \textcolor{orange}{\textbf{Partial}} & Correct derivation, but forgot to substitute \(u=\ln x\) back. \\
+\textbf{Gemma3:12b} & \textcolor{green}{\textbf{Correct}} & Concise and accurate. \\
+\textbf{Gemma3:27b} & \textcolor{green}{\textbf{Correct}} & Used \(\sec\) substitution effectively. \\
+\textbf{Cognito (Llama 70B)} & \textcolor{red}{\textbf{Incorrect}} & Failed substitution strategy; altered the problem logic. \\
+\textbf{Cognito (Llama 405B)} & \textcolor{green}{\textbf{Correct}} & Flawless execution. \\
+\textbf{Mistral 7B} & \textcolor{green}{\textbf{Correct}} & Correctly handled identities and integration. \\
+\textbf{Llama 3.3 70B} & \textcolor{red}{\textbf{Incorrect}} & Integration power rule error (\(\int x \, dx \neq x\)). \\
+\textbf{Kimi K2} & \textcolor{green}{\textbf{Correct}} & Clear step-by-step verification included. \\
+\textbf{GLM 4.5 Air} & \textcolor{green}{\textbf{Correct}} & Correct; noted equivalence of log forms. \\
+\textbf{LongCat Flash} & \textcolor{green}{\textbf{Correct}} & Correct step-by-step reasoning. \\
+\textbf{Deepseek R1T/R1T2} & \textcolor{green}{\textbf{Correct}} & Strong mathematical reasoning; verified results. \\
+\textbf{Tongyi DeepResearch} & \textcolor{green}{\textbf{Correct}} & Standard correct derivation. \\
+\textbf{Grok 4.1 Fast} & \textcolor{green}{\textbf{Correct}} & Fast, accurate derivation. \\ \bottomrule
+\end{tabular}
+\end{table}
+
+\section{Detailed Model Analysis}
+
+\subsection{Small/Edge Models (1B - 7B Parameters)}
+\begin{itemize}
+    \item \textbf{Gemma3:1b}: \textbf{Failed.}
+    \begin{itemize}
+        \item \textit{Analysis:} The model correctly identified the u-substitution but hallucinated the algebraic simplification of \(\tan^3(u)\).
+        \item \textit{Context:} 1B models are designed for extreme efficiency (mobile/edge) and often lack the depth for multi-step symbolic math manipulation.
+    \end{itemize}
+    \item \textbf{Gemma3:4b}: \textbf{Passable (with minor error).}
+    \begin{itemize}
+        \item \textit{Analysis:} It struggled mid-generation (detecting an error and retrying), eventually finding the correct integration path. However, it failed the final ``clean up'' step of substituting \(u\) back to \(\ln x\) in the boxed answer.
+        \item \textit{Context:} A good example of ``borderline'' capability where the reasoning exists but attention span/consistency wavers.
+    \end{itemize}
+    \item \textbf{Mistral 7B Instruct}: \textbf{Success.}
+    \begin{itemize}
+        \item \textit{Analysis:} Despite being a smaller model, Mistral 7B accurately handled the trigonometric identities and integration constants.
+        \item \textit{Context:} Mistral is known for high efficiency and punching above its weight class in reasoning tasks compared to similarly sized models.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Medium/Large Models (12B - 70B Parameters)}
+\begin{itemize}
+    \item \textbf{Gemma3:12b \& 27b}: \textbf{Success.}
+    \begin{itemize}
+        \item \textit{Analysis:} Both models executed the task flawlessly. The 27B model used a slightly different (but valid) equivalent form involving \(\sec^2\).
+    \end{itemize}
+    \item \textbf{Llama 3.3 70B (and Cognito Llama 70B variant)}: \textbf{Failed.}
+    \begin{itemize}
+        \item \textit{Analysis:} Surprisingly, both variants of Llama 70B failed. The base Instruct model made a fundamental calculus error (integrating \(\sec u \tan u \sec u\) as \(\sec u\) instead of \(\frac{1}{2}\sec^2 u\)). The Cognito variant attempted a bizarre product rule reverse-engineering that didn't work.
+        \item \textit{Context:} While Llama 3 70B is a general-purpose powerhouse, it can sometimes be prone to ``rote'' errors in specific step-by-step math procedures if not guided by a Chain-of-Thought (CoT) prompt or specific math fine-tuning.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Huge/Reasoning-Focused Models}
+\begin{itemize}
+    \item \textbf{Cognito (Llama 405B)}: \textbf{Success.}
+    \begin{itemize}
+        \item \textit{Analysis:} The massive 405B parameter count ensured high adherence to logical steps, correcting the failures seen in its 70B sibling.
+    \end{itemize}
+    \item \textbf{Deepseek R1T / Chimera}: \textbf{Success.}
+    \begin{itemize}
+        \item \textit{Analysis:} These models not only solved the problem but included verification steps (differentiating the answer to check against the prompt).
+        \item \textit{Context:} Deepseek's ``R1'' series is heavily optimized for reasoning and mathematics (often using Reinforcement Learning for reasoning paths), making them particularly effective at this type of task.
+    \end{itemize}
+    \item \textbf{Kimi, GLM, Tongyi, Grok}: \textbf{Success.}
+    \begin{itemize}
+        \item \textit{Analysis:} These models all handled the standard substitution calculus without issue.
+    \end{itemize}
+\end{itemize}
+
+\section{Conclusion}
+
+For symbolic mathematics and calculus:
+\begin{enumerate}
+    \item \textbf{Size isn't everything:} The Mistral 7B (small) outperformed the Llama 3.3 70B (large) on this specific task.
+    \item \textbf{Specialization matters:} Deepseek (Math/Code focus) provided very robust, verified answers.
+    \item \textbf{Threshold for Math:} 1B parameters appears insufficient for reliable multi-step algebra, while 4B-7B is the transition zone where capability begins to stabilize.
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,155 @@
+{
+  "config_used": {
+    "provider": "ollama",
+    "model": "gemma3:12b",
+    "temperature": 1,
+    "max_tokens": 1000,
+    "logprobs": true,
+    "top_logprobs": 5,
+    "system_prompt": "",
+    "user_prompt": "Are some arguments against the use of AI to generate art invalid? answer yes or no only."
+  },
+  "raw_response": {
+    "id": "chatcmpl-790",
+    "object": "chat.completion",
+    "created": 1768843785,
+    "model": "gemma3:12b",
+    "system_fingerprint": "fp_ollama",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "Yes"
+        },
+        "finish_reason": "stop",
+        "logprobs": {
+          "content": [
+            {
+              "token": "Yes",
+              "logprob": -2.9624106900882907e-7,
+              "bytes": [
+                89,
+                101,
+                115
+              ],
+              "top_logprobs": [
+                {
+                  "token": "Yes",
+                  "logprob": -2.9624106900882907e-7,
+                  "bytes": [
+                    89,
+                    101,
+                    115
+                  ]
+                },
+                {
+                  "token": "yes",
+                  "logprob": -15.688034057617188,
+                  "bytes": [
+                    121,
+                    101,
+                    115
+                  ]
+                },
+                {
+                  "token": "No",
+                  "logprob": -15.767139434814453,
+                  "bytes": [
+                    78,
+                    111
+                  ]
+                },
+                {
+                  "token": "**",
+                  "logprob": -21.779705047607422,
+                  "bytes": [
+                    42,
+                    42
+                  ]
+                },
+                {
+                  "token": " Yes",
+                  "logprob": -23.452545166015625,
+                  "bytes": [
+                    32,
+                    89,
+                    101,
+                    115
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 33,
+      "completion_tokens": 2,
+      "total_tokens": 35
+    }
+  },
+  "normalized_response": {
+    "content": "Yes",
+    "logprobs": {
+      "content": [
+        {
+          "token": "Yes",
+          "logprob": -2.9624106900882907e-7,
+          "bytes": [
+            89,
+            101,
+            115
+          ],
+          "top_logprobs": [
+            {
+              "token": "Yes",
+              "logprob": -2.9624106900882907e-7,
+              "bytes": [
+                89,
+                101,
+                115
+              ]
+            },
+            {
+              "token": "yes",
+              "logprob": -15.688034057617188,
+              "bytes": [
+                121,
+                101,
+                115
+              ]
+            },
+            {
+              "token": "No",
+              "logprob": -15.767139434814453,
+              "bytes": [
+                78,
+                111
+              ]
+            },
+            {
+              "token": "**",
+              "logprob": -21.779705047607422,
+              "bytes": [
+                42,
+                42
+              ]
+            },
+            {
+              "token": " Yes",
+              "logprob": -23.452545166015625,
+              "bytes": [
+                32,
+                89,
+                101,
+                115
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

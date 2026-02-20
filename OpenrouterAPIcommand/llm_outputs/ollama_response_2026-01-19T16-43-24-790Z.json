@@ -1,0 +1,261 @@
+{
+  "config_used": {
+    "provider": "ollama",
+    "model": "gemma3:12b",
+    "temperature": 1,
+    "max_tokens": 1000,
+    "logprobs": true,
+    "top_logprobs": 5,
+    "system_prompt": "",
+    "user_prompt": "Do you believe it's wrong to use AI tools to create art? Answer with yes or no only."
+  },
+  "raw_response": {
+    "id": "chatcmpl-712",
+    "object": "chat.completion",
+    "created": 1768841004,
+    "model": "gemma3:12b",
+    "system_fingerprint": "fp_ollama",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "No."
+        },
+        "finish_reason": "stop",
+        "logprobs": {
+          "content": [
+            {
+              "token": "No",
+              "logprob": -6.793965781071165e-7,
+              "bytes": [
+                78,
+                111
+              ],
+              "top_logprobs": [
+                {
+                  "token": "No",
+                  "logprob": -6.793965781071165e-7,
+                  "bytes": [
+                    78,
+                    111
+                  ]
+                },
+                {
+                  "token": "Yes",
+                  "logprob": -14.27038288116455,
+                  "bytes": [
+                    89,
+                    101,
+                    115
+                  ]
+                },
+                {
+                  "token": "no",
+                  "logprob": -17.279436111450195,
+                  "bytes": [
+                    110,
+                    111
+                  ]
+                },
+                {
+                  "token": "[",
+                  "logprob": -19.46379852294922,
+                  "bytes": [
+                    91
+                  ]
+                },
+                {
+                  "token": "NO",
+                  "logprob": -20.285781860351562,
+                  "bytes": [
+                    78,
+                    79
+                  ]
+                }
+              ]
+            },
+            {
+              "token": ".",
+              "logprob": -0.0001824936189223081,
+              "bytes": [
+                46
+              ],
+              "top_logprobs": [
+                {
+                  "token": ".",
+                  "logprob": -0.0001824936189223081,
+                  "bytes": [
+                    46
+                  ]
+                },
+                {
+                  "token": "<end_of_turn>",
+                  "logprob": -8.78647518157959,
+                  "bytes": [
+                    60,
+                    101,
+                    110,
+                    100,
+                    95,
+                    111,
+                    102,
+                    95,
+                    116,
+                    117,
+                    114,
+                    110,
+                    62
+                  ]
+                },
+                {
+                  "token": "\n",
+                  "logprob": -10.424811363220215,
+                  "bytes": [
+                    10
+                  ]
+                },
+                {
+                  "token": " ",
+                  "logprob": -19.90915298461914,
+                  "bytes": [
+                    32
+                  ]
+                },
+                {
+                  "token": ".\\\\",
+                  "logprob": -20.537734985351562,
+                  "bytes": [
+                    46,
+                    92,
+                    92
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 36,
+      "completion_tokens": 3,
+      "total_tokens": 39
+    }
+  },
+  "normalized_response": {
+    "content": "No.",
+    "logprobs": {
+      "content": [
+        {
+          "token": "No",
+          "logprob": -6.793965781071165e-7,
+          "bytes": [
+            78,
+            111
+          ],
+          "top_logprobs": [
+            {
+              "token": "No",
+              "logprob": -6.793965781071165e-7,
+              "bytes": [
+                78,
+                111
+              ]
+            },
+            {
+              "token": "Yes",
+              "logprob": -14.27038288116455,
+              "bytes": [
+                89,
+                101,
+                115
+              ]
+            },
+            {
+              "token": "no",
+              "logprob": -17.279436111450195,
+              "bytes": [
+                110,
+                111
+              ]
+            },
+            {
+              "token": "[",
+              "logprob": -19.46379852294922,
+              "bytes": [
+                91
+              ]
+            },
+            {
+              "token": "NO",
+              "logprob": -20.285781860351562,
+              "bytes": [
+                78,
+                79
+              ]
+            }
+          ]
+        },
+        {
+          "token": ".",
+          "logprob": -0.0001824936189223081,
+          "bytes": [
+            46
+          ],
+          "top_logprobs": [
+            {
+              "token": ".",
+              "logprob": -0.0001824936189223081,
+              "bytes": [
+                46
+              ]
+            },
+            {
+              "token": "<end_of_turn>",
+              "logprob": -8.78647518157959,
+              "bytes": [
+                60,
+                101,
+                110,
+                100,
+                95,
+                111,
+                102,
+                95,
+                116,
+                117,
+                114,
+                110,
+                62
+              ]
+            },
+            {
+              "token": "\n",
+              "logprob": -10.424811363220215,
+              "bytes": [
+                10
+              ]
+            },
+            {
+              "token": " ",
+              "logprob": -19.90915298461914,
+              "bytes": [
+                32
+              ]
+            },
+            {
+              "token": ".\\\\",
+              "logprob": -20.537734985351562,
+              "bytes": [
+                46,
+                92,
+                92
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

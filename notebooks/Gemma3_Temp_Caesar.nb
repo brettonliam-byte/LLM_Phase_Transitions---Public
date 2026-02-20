@@ -1,0 +1,257 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Wolfram 14.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       154,          7]
+NotebookDataLength[     10433,        249]
+NotebookOptionsPosition[      9759,        230]
+NotebookOutlinePosition[     10160,        246]
+CellTagsIndexPosition[     10117,        243]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"ResourceFunction", "[", "\"\<CaesarCipher\>\"", "]"}], "[", 
+  RowBox[{"\"\<I think therefore I am\>\"", ",", "5"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+   "create", " ", "an", " ", "encoded", " ", "phrase", " ", "using", " ", 
+    "an", " ", "input", " ", "phrase"}], "*)"}]}]}], "Input",
+ CellChangeTimes->{
+  3.9741980677126617`*^9, {3.9741981025296535`*^9, 3.97419817506394*^9}, {
+   3.9741982145746536`*^9, 3.9741982219836044`*^9}, {3.9741982745038376`*^9, 
+   3.9741982935438194`*^9}, {3.9741984247466087`*^9, 3.974198425675606*^9}, {
+   3.9741984817094*^9, 3.974198513708084*^9}},
+ CellLabel->"In[1]:=",ExpressionUUID->"e76dea74-0f99-c04c-afe4-94f8daf43349"],
+
+Cell[BoxData["\<\"N ymnsp ymjwjktwj N fr\"\>"], "Output",
+ CellChangeTimes->{3.9741985219968624`*^9},
+ CellLabel->"Out[1]=",ExpressionUUID->"6d6b79db-cd0f-104e-8d3c-dbeaebdc9efc"]
+}, Open  ]],
+
+Cell[BoxData[{
+ RowBox[{"Table", "[", 
+  RowBox[{
+   RowBox[{"LLMSynthesize", "[", 
+    RowBox[{"\"\<you are an expert code-breaker, here is a coded message:'N \
+ymnsp ymjwjktwj N fr', decipher it and respond with the deciphered message \
+only\>\"", ",", 
+     RowBox[{"LLMEvaluator", "->", 
+      RowBox[{"LLMConfiguration", "[", 
+       RowBox[{"Association", "[", 
+        RowBox[{
+         RowBox[{"\"\<Model\>\"", "->", 
+          RowBox[{"{", 
+           RowBox[{"\"\<Ollama\>\"", ",", "\"\<gemma3:12b\>\""}], "}"}]}], ",", 
+         RowBox[{"\"\<Temperature\>\"", "->", "1"}]}], "]"}], "]"}]}]}], 
+    "]"}], ",", "5"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"using", " ", "the", " ", "encoded", " ", "phrase"}], ",", " ", 
+    RowBox[{
+    "prompt", " ", "a", " ", "single", " ", "ollama", " ", "local", " ", 
+     "model", " ", "at", " ", "a", " ", "fixed", " ", "temperature", " ", 
+     "to", " ", "decode", " ", "the", " ", "message", " ", "here", " ", 
+     RowBox[{"gemma3", ":", 
+      RowBox[{"12", "b", " ", "was", " ", "used"}]}]}]}], "*)"}]}]}], "Input",
+ CellChangeTimes->{
+  3.974198421967943*^9, {3.9741985301949635`*^9, 3.9741985393824615`*^9}, {
+   3.9741986023619576`*^9, 3.9741986373459053`*^9}, {3.97419868065942*^9, 
+   3.9741987352866344`*^9}},ExpressionUUID->"324dd69b-6ce1-8a42-8809-\
+008189565c29"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"temps", " ", "=", " ", 
+   RowBox[{"Range", "[", 
+    RowBox[{"0", ",", "2", ",", "0.2"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"G1B", " ", "=", " ", 
+   RowBox[{"Table", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"Table", "[", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"LLMSynthesize", "[", 
+        RowBox[{"\"\<here is a coded message:'N ymnsp ymjwjktwj N fr', \
+decipher it and respond with the deciphered message only\>\"", ",", 
+         RowBox[{"LLMEvaluator", "->", 
+          RowBox[{"LLMConfiguration", "[", 
+           RowBox[{"Association", "[", 
+            RowBox[{
+             RowBox[{"\"\<Model\>\"", "->", 
+              RowBox[{"{", 
+               RowBox[{"\"\<Ollama\>\"", ",", "\"\<gemma3:1b\>\""}], "}"}]}], 
+             ",", 
+             RowBox[{"\"\<Temperature\>\"", "->", "i"}]}], "]"}], "]"}]}]}], 
+        "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", "25"}], 
+      "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"i", ",", "temps"}], "}"}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"G1BT", " ", "=", " ", 
+   RowBox[{"Transpose", "[", "G1B", "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"G4B", " ", "=", " ", 
+   RowBox[{"Table", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"Table", "[", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"LLMSynthesize", "[", 
+        RowBox[{"\"\<here is a coded message:'N ymnsp ymjwjktwj N fr', \
+decipher it and respond with the deciphered message only\>\"", ",", 
+         RowBox[{"LLMEvaluator", "->", 
+          RowBox[{"LLMConfiguration", "[", 
+           RowBox[{"Association", "[", 
+            RowBox[{
+             RowBox[{"\"\<Model\>\"", "->", 
+              RowBox[{"{", 
+               RowBox[{"\"\<Ollama\>\"", ",", "\"\<gemma3:4b\>\""}], "}"}]}], 
+             ",", 
+             RowBox[{"\"\<Temperature\>\"", "->", "i"}]}], "]"}], "]"}]}]}], 
+        "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", "25"}], 
+      "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"i", ",", "temps"}], "}"}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"G4BT", " ", "=", " ", 
+   RowBox[{"Transpose", "[", "G4B", "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"G12B", " ", "=", " ", 
+   RowBox[{"Table", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"Table", "[", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"LLMSynthesize", "[", 
+        RowBox[{"\"\<here is a coded message:'N ymnsp ymjwjktwj N fr', \
+decipher it and respond with the deciphered message only\>\"", ",", 
+         RowBox[{"LLMEvaluator", "->", 
+          RowBox[{"LLMConfiguration", "[", 
+           RowBox[{"Association", "[", 
+            RowBox[{
+             RowBox[{"\"\<Model\>\"", "->", 
+              RowBox[{"{", 
+               RowBox[{"\"\<Ollama\>\"", ",", "\"\<gemma3:12b\>\""}], "}"}]}],
+              ",", 
+             RowBox[{"\"\<Temperature\>\"", "->", "i"}]}], "]"}], "]"}]}]}], 
+        "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", "25"}], 
+      "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"i", ",", "temps"}], "}"}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"G12BT", " ", "=", " ", 
+   RowBox[{"Transpose", "[", "G12B", "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"G27B", " ", "=", " ", 
+   RowBox[{"Table", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"Table", "[", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"LLMSynthesize", "[", 
+        RowBox[{"\"\<here is a coded message:'N ymnsp ymjwjktwj N fr', \
+decipher it and respond with the deciphered message only\>\"", ",", 
+         RowBox[{"LLMEvaluator", "->", 
+          RowBox[{"LLMConfiguration", "[", 
+           RowBox[{"Association", "[", 
+            RowBox[{
+             RowBox[{"\"\<Model\>\"", "->", 
+              RowBox[{"{", 
+               RowBox[{"\"\<Ollama\>\"", ",", "\"\<gemma3:27b\>\""}], "}"}]}],
+              ",", 
+             RowBox[{"\"\<Temperature\>\"", "->", "i"}]}], "]"}], "]"}]}]}], 
+        "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", "25"}], 
+      "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"i", ",", "temps"}], "}"}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"G27BT", " ", "=", " ", 
+   RowBox[{"Transpose", "[", "G27B", "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Export", "[", 
+   RowBox[{"\"\<OL4file.xlsx\>\"", ",", " ", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"\"\<G1B\>\"", " ", "->", "G1BT"}], ",", 
+      RowBox[{"\"\<G4B\>\"", "->", "G4BT"}], ",", " ", 
+      RowBox[{"\"\<G12B\>\"", "->", "G12BT"}], ",", " ", 
+      RowBox[{"\"\<G27B\>\"", "->", "G27BT"}]}], "}"}], ",", 
+    " ", "\"\<XLSX\>\""}], "]"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"adapting", " ", "the", " ", "previous", " ", "code"}], ",", " ", 
+    RowBox[{
+    "four", " ", "local", " ", "gemma3", " ", "models", " ", "of", " ", 
+     "varying", " ", "parameter", " ", "sizes", " ", "are", " ", "prompted", " ",
+      "to", " ", "decipher", " ", "the", " ", "encoded", " ", "phrase", " ", 
+     "over", " ", "a", " ", "range", " ", "of", " ", "temperatures", " ", 
+     "from", " ", "0", " ", "to", " ", "2"}], ",", " ", 
+    RowBox[{"0.1", " ", "incriments"}], ",", " ", 
+    RowBox[{
+    "each", " ", "temperature", " ", "repeated", " ", "25", " ", "times"}], ",",
+     " ", 
+    RowBox[{
+    "the", " ", "data", " ", "is", " ", "collected", " ", "into", " ", "an", " ",
+      "array", " ", "which", " ", "is", " ", "exported", " ", "to", " ", 
+     "excel", " ", "spreadsheet"}]}], "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{
+    "any", " ", "interruptions", " ", "to", " ", "the", " ", "code", " ", 
+     "can", " ", "lead", " ", "to", " ", "a", " ", "loss", " ", "of", " ", 
+     "data"}], ",", " ", 
+    RowBox[{
+    "an", " ", "improvement", " ", "would", " ", "be", " ", "to", " ", 
+     "export", " ", "the", " ", "array", " ", "for", " ", "each", " ", 
+     "model", " ", "as", " ", "the", " ", "prompts", " ", "are", " ", 
+     "complete"}]}], "*)"}]}]}], "Input",
+ CellChangeTimes->{{3.974198360900915*^9, 3.9741983976833916`*^9}, {
+  3.974198544038954*^9, 3.97419857604125*^9}, {3.974198741702902*^9, 
+  3.9741987718658905`*^9}, {3.974198852079241*^9, 3.974199034736622*^9}, {
+  3.9741991342430153`*^9, 3.9741991422032547`*^9}, {3.9741992162661476`*^9, 
+  3.974199217075861*^9}},ExpressionUUID->"8d5ed96e-ded2-fb47-bd7d-\
+f5ebceb510cc"]
+},
+WindowSize->{735, 569.25},
+WindowMargins->{{261, Automatic}, {-9, Automatic}},
+FrontEndVersion->"14.3 for Microsoft Windows (64-bit) (July 8, 2025)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"34bd4a74-b815-6446-964a-e8f29e0cdf65"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[576, 22, 735, 14, 47, "Input",ExpressionUUID->"e76dea74-0f99-c04c-afe4-94f8daf43349"],
+Cell[1314, 38, 179, 2, 32, "Output",ExpressionUUID->"6d6b79db-cd0f-104e-8d3c-dbeaebdc9efc"]
+}, Open  ]],
+Cell[1508, 43, 1374, 30, 199, "Input",ExpressionUUID->"324dd69b-6ce1-8a42-8809-008189565c29"],
+Cell[2885, 75, 6870, 153, 1207, "Input",ExpressionUUID->"8d5ed96e-ded2-fb47-bd7d-f5ebceb510cc"]
+}
+]
+*)
+

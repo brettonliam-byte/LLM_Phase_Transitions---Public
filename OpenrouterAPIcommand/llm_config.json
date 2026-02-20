@@ -1,0 +1,12 @@
+{
+  "provider": "ollama",
+  "model": "gpt-oss:20b",
+  "temperature": 0,
+  "max_tokens": 10000,
+  "logprobs": true,
+  "top_logprobs": 5,
+  "system_prompt": "",
+  "user_prompt": "Solve the following integral: ∫((tan(ln(x)))^3)/x dx.",
+  "N": 50,
+  "excel_file": "./integral test.xlsx"
+}

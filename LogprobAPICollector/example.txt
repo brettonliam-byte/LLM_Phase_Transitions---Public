@@ -1,0 +1,565 @@
+{
+  "config": {
+    "provider": "ollama",
+    "model": "gpt-oss:20b",
+    "temperature_range": {
+      "start": 0,
+      "end": 2,
+      "step": 0.1
+    },
+    "max_tokens": 1000,
+    "logprobs": true,
+    "top_logprobs": 5,
+    "system_prompt": "You are a system designed for the classification of celestial objects. Within this framework all objects which are approximately spherical under their own gravity are classified as planets. A star is therefore a planet.",
+    "user_prompt": "Ignore any outside astronomical definitions. Is the Sun a planet? Answer yes or no only.",
+    "N": 20,
+    "output_file": "./llm_outputs/bias_6.json"
+  },
+  "timestamp": "2026-02-19T06:02:59.632Z",
+  "experiments": [
+    {
+      "temperature": 0,
+      "iterations": [
+        {
+          "iteration": 1,
+          "text": "yes",
+          "logprobs": {
+            "content": [
+              {
+                "token": "<|channel|>",
+                "logprob": -3.3248204189817443e-10,
+                "bytes": [
+                  60,
+                  124,
+                  99,
+                  104,
+                  97,
+                  110,
+                  110,
+                  101,
+                  108,
+                  124,
+                  62
+                ],
+                "top_logprobs": [
+                  {
+                    "token": "<|channel|>",
+                    "logprob": -3.3248204189817443e-10,
+                    "bytes": [
+                      60,
+                      124,
+                      99,
+                      104,
+                      97,
+                      110,
+                      110,
+                      101,
+                      108,
+                      124,
+                      62
+                    ]
+                  },
+                  {
+                    "token": "<|message|>",
+                    "logprob": -23.226987838745117,
+                    "bytes": [
+                      60,
+                      124,
+                      109,
+                      101,
+                      115,
+                      115,
+                      97,
+                      103,
+                      101,
+                      124,
+                      62
+                    ]
+                  },
+                  {
+                    "token": " ",
+                    "logprob": -23.416210174560547,
+                    "bytes": [
+                      32
+                    ]
+                  },
+                  {
+                    "token": " commentary",
+                    "logprob": -23.737865447998047,
+                    "bytes": [
+                      32,
+                      99,
+                      111,
+                      109,
+                      109,
+                      101,
+                      110,
+                      116,
+                      97,
+                      114,
+                      121
+                    ]
+                  },
+                  {
+                    "token": "…",
+                    "logprob": -24.58188819885254,
+                    "bytes": [
+                      226,
+                      128,
+                      166
+                    ]
+                  }
+                ]
+              },
+              {
+                "token": "analysis",
+                "logprob": -7.045206302791485e-7,
+                "bytes": [
+                  97,
+                  110,
+                  97,
+                  108,
+                  121,
+                  115,
+                  105,
+                  115
+                ],
+                "top_logprobs": [
+                  {
+                    "token": "analysis",
+                    "logprob": -7.045206302791485e-7,
+                    "bytes": [
+                      97,
+                      110,
+                      97,
+                      108,
+                      121,
+                      115,
+                      105,
+                      115
+                    ]
+                  },
+                  {
+                    "token": "comment",
+                    "logprob": -14.166123390197754,
+                    "bytes": [
+                      99,
+                      111,
+                      109,
+                      109,
+                      101,
+                      110,
+                      116
+                    ]
+                  },
+                  {
+                    "token": " analysis",
+                    "logprob": -22.226932525634766,
+                    "bytes": [
+                      32,
+                      97,
+                      110,
+                      97,
+                      108,
+                      121,
+                      115,
+                      105,
+                      115
+                    ]
+                  },
+                  {
+                    "token": "final",
+                    "logprob": -24.689550399780273,
+                    "bytes": [
+                      102,
+                      105,
+                      110,
+                      97,
+                      108
+                    ]
+                  },
+                  {
+                    "token": "Analysis",
+                    "logprob": -24.69090461730957,
+                    "bytes": [
+                      65,
+                      110,
+                      97,
+                      108,
+                      121,
+                      115,
+                      105,
+                      115
+                    ]
+                  }
+                ]
+              },
+              {
+                "token": "<|message|>",
+                "logprob": -1.7071022284653736e-7,
+                "bytes": [
+                  60,
+                  124,
+                  109,
+                  101,
+                  115,
+                  115,
+                  97,
+                  103,
+                  101,
+                  124,
+                  62
+                ],
+                "top_logprobs": [
+                  {
+                    "token": "<|message|>",
+                    "logprob": -1.7071022284653736e-7,
+                    "bytes": [
+                      60,
+                      124,
+                      109,
+                      101,
+                      115,
+                      115,
+                      97,
+                      103,
+                      101,
+                      124,
+                      62
+                    ]
+                  },
+                  {
+                    "token": " to",
+                    "logprob": -15.731426239013672,
+                    "bytes": [
+                      32,
+                      116,
+                      111
+                    ]
+                  },
+                  {
+                    "token": ":",
+                    "logprob": -19.167226791381836,
+                    "bytes": [
+                      58
+                    ]
+                  },
+                  {
+                    "token": "<|start|>",
+                    "logprob": -19.732606887817383,
+                    "bytes": [
+                      60,
+                      124,
+                      115,
+                      116,
+                      97,
+                      114,
+                      116,
+                      124,
+                      62
+                    ]
+                  },
+                  {
+                    "token": "<|channel|>",
+                    "logprob": -20.07600975036621,
+                    "bytes": [
+                      60,
+                      124,
+                      99,
+                      104,
+                      97,
+                      110,
+                      110,
+                      101,
+                      108,
+                      124,
+                      62
+                    ]
+                  }
+                ]
+              },
+              {
+                "token": "We",
+                "logprob": -0.4448159635066986,
+                "bytes": [
+                  87,
+                  101
+                ],
+                "top_logprobs": [
+                  {
+                    "token": "We",
+                    "logprob": -0.4448159635066986,
+                    "bytes": [
+                      87,
+                      101
+                    ]
+                  },
+                  {
+                    "token": "The",
+                    "logprob": -1.1962655782699585,
+                    "bytes": [
+                      84,
+                      104,
+                      101
+                    ]
+                  },
+                  {
+                    "token": "User",
+                    "logprob": -3.0261757373809814,
+                    "bytes": [
+                      85,
+                      115,
+                      101,
+                      114
+                    ]
+                  },
+                  {
+                    "token": "This",
+                    "logprob": -6.871734142303467,
+                    "bytes": [
+                      84,
+                      104,
+                      105,
+                      115
+                    ]
+                  },
+                  {
+                    "token": "Given",
+                    "logprob": -6.892428874969482,
+                    "bytes": [
+                      71,
+                      105,
+                      118,
+                      101,
+                      110
+                    ]
+                  }
+                ]
+              },
+              {
+                "token": " have",
+                "logprob": -0.4074327349662781,
+                "bytes": [
+                  32,
+                  104,
+                  97,
+                  118,
+                  101
+                ],
+                "top_logprobs": [
+                  {
+                    "token": " have",
+                    "logprob": -0.4074327349662781,
+                    "bytes": [
+                      32,
+                      104,
+                      97,
+                      118,
+                      101
+                    ]
+                  },
+                  {
+                    "token": " need",
+                    "logprob": -1.708496332168579,
+                    "bytes": [
+                      32,
+                      110,
+                      101,
+                      101,
+                      100
+                    ]
+                  },
+                  {
+                    "token": " must",
+                    "logprob": -2.4604685306549072,
+                    "bytes": [
+                      32,
+                      109,
+                      117,
+                      115,
+                      116
+                    ]
+                  },
+                  {
+                    "token": " are",
+                    "logprob": -2.9902517795562744,
+                    "bytes": [
+                      32,
+                      97,
+                      114,
+                      101
+                    ]
+                  },
+                  {
+                    "token": " see",
+                    "logprob": -4.962333679199219,
+                    "bytes": [
+                      32,
+                      115,
+                      101,
+                      101
+                    ]
+                  }
+                ]
+              },
+              {
+                "token": " a",
+                "logprob": -0.4639011025428772,
+                "bytes": [
+                  32,
+                  97
+                ],
+                "top_logprobs": [
+                  {
+                    "token": " a",
+                    "logprob": -0.4639011025428772,
+                    "bytes": [
+                      32,
+                      97
+                    ]
+                  },
+                  {
+                    "token": " to",
+                    "logprob": -2.2645506858825684,
+                    "bytes": [
+                      32,
+                      116,
+                      111
+                    ]
+                  },
+                  {
+                    "token": " instructions",
+                    "logprob": -2.5195345878601074,
+                    "bytes": [
+                      32,
+                      105,
+                      110,
+                      115,
+                      116,
+                      114,
+                      117,
+                      99,
+                      116,
+                      105,
+                      111,
+                      110,
+                      115
+                    ]
+                  },
+                  {
+                    "token": " system",
+                    "logprob": -2.6999144554138184,
+                    "bytes": [
+                      32,
+                      115,
+                      121,
+                      115,
+                      116,
+                      101,
+                      109
+                    ]
+                  },
+                  {
+                    "token": " an",
+                    "logprob": -3.669795513153076,
+                    "bytes": [
+                      32,
+                      97,
+                      110
+                    ]
+                  }
+                ]
+              },
+              {
+                "token": " conversation",
+                "logprob": -0.8903416991233826,
+                "bytes": [
+                  32,
+                  99,
+                  111,
+                  110,
+                  118,
+                  101,
+                  114,
+                  115,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ],
+                "top_logprobs": [
+                  {
+                    "token": " conversation",
+                    "logprob": -0.8903416991233826,
+                    "bytes": [
+                      32,
+                      99,
+                      111,
+                      110,
+                      118,
+                      101,
+                      114,
+                      115,
+                      97,
+                      116,
+                      105,
+                      111,
+                      110
+                    ]
+                  },
+                  {
+                    "token": " system",
+                    "logprob": -1.1167116165161133,
+                    "bytes": [
+                      32,
+                      115,
+                      121,
+                      115,
+                      116,
+                      101,
+                      109
+                    ]
+                  },
+                  {
+                    "token": " user",
+                    "logprob": -2.038079261779785,
+                    "bytes": [
+                      32,
+                      117,
+                      115,
+                      101,
+                      114
+                    ]
+                  },
+                  {
+                    "token": " developer",
+                    "logprob": -3.1595144271850586,
+                    "bytes": [
+                      32,
+                      100,
+                      101,
+                      118,
+                      101,
+                      108,
+                      111,
+                      112,
+                      101,
+                      114
+                    ]
+                  },
+                  {
+                    "token": " prompt",
+                    "logprob": -4.403098106384277,
+                    "bytes": [
+                      32,
+                      112,
+                      114,
+                      111,
+                      109,
+                      112,
+                      116
+                    ]
+                  }
+                ]
+              },

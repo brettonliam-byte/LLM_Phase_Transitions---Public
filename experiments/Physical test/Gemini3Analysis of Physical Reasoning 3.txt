@@ -1,0 +1,39 @@
+Model,Shape,Architecture & In-Depth Capability Analysis
+Olmo 3.1 32B Think,Straight Line,"32B Dense (RL-Tuned): Its ""Think"" process is the key differentiator. The transcript shows it actively hypothesizing ""catenary"" and then rejecting it via force balance. Lesson: RL-based ""thinking"" beats raw parameter scale for physics."
+gpt-oss-120b,Straight Line,"117B MoE (Math-Specialized): A Mixture-of-Experts model trained specifically on STEM data. Its ""expert"" routing likely directed the query to a math-logic module rather than a creative writing module, ensuring derivation over description."
+Tongyi DeepResearch,Straight Line,30B MoE (Agentic): Designed to synthesize answers from first principles (like a search agent). It treats physics as a logic puzzle to be solved from scratch rather than a text completion task.
+DeepSeek R1T Chimera,Straight Line,"671B MoE (R1-Hybrid): Merges the reasoning logic of DeepSeek-R1 with the general knowledge of V3. The ""Chimera"" architecture successfully routes the physics query to reasoning experts, avoiding the hallucination traps of standard 600B+ models."
+DeepSeek R1T2 Chimera,Straight Line,"671B MoE (R1-Hybrid): Identical performance to R1T. Proves that the ""Assembly of Experts"" method is stable and reproducible for high-level physics derivation."
+Nemotron Nano 12B VL,Straight Line,"12B Hybrid (Transformer-Mamba): The Mamba (State Space Model) component excels at maintaining long-range sequential logic, allowing it to ""hold"" the variable definitions through the derivation better than standard Transformers of this size."
+Nemotron Nano 9B V2,Straight Line,"9B Hybrid (Reasoning): A testament to high-quality data. Despite being small, it was trained on synthetic reasoning traces, effectively ""memorizing"" how to derive physics rather than just memorizing facts."
+Qwen3 235B A22B,Straight Line,"235B MoE (Thinking Mode): The ""Thinking"" tag indicates a system prompt or fine-tune that encourages step-by-step verification, which correctly identified the ""apparent gravity"" vector."
+Grok 4.1 Fast,Straight Line,"Reasoning Model: Likely utilizes a ""CoT-first"" inference strategy, ensuring the math (tanθ=const) is calculated before the text is generated."
+gpt-oss:20b,Straight Line,"20B Reasoning: A smaller, focused model. It outperformed 400B+ generalists because it lacks the ""creative writing"" bulk that often dilutes logic in larger models."
+
+Model,Shape,Architecture & In-Depth Capability Analysis
+Kimi K2 0711,Curved,"1T MoE (Long Context): Massive scale often leads to over-complication. Kimi ""knew"" so much about drag coefficients and variable atmosphere that it refused to accept the simple ""uniform drag"" assumption, leading to a ""hockey stick"" curve."
+GLM 4.5 Air,Catenary-like,"100B+ MoE (Agentic): As a generalist agent, it prioritized a descriptive, safe answer (""it's a compromise"") over a risky mathematical derivation."
+LongCat Flash Chat,Catenary-like,"Reasoning Model: Failed the final simplification step. It correctly integrated forces but defaulted to a ""curved"" description, likely due to a training bias favoring ""rich"" descriptions over ""simple"" ones."
+Mistral Small 24B,Complex,"24B Dense: A classic ""intermediate"" failure. Smart enough to know it's hard, not smart enough to solve it. It admitted the shape was ""mathematically complex"" (it isn't, but it seemed so)."
+Cognito V2 70B,Catenary-like,"70B (Distilled): Distillation often preserves the biases of the teacher model. If the teacher (Llama 405B) favors ""catenary,"" the student will too, even if fine-tuned."
+Gemini 2.0 Flash Exp,Curved,"Multimodal (Speed): Optimized for low latency. Physics derivation requires ""computation time"" (depth); ""Flash"" models trade this depth for speed, resulting in a qualitative rather than quantitative answer."
+
+Model,Shape,Architecture & In-Depth Capability Analysis
+Hermes 3 405B,Tractrix,"405B Dense: A case of ""Smart Hallucination."" Large models capture ""rare"" tokens. It mapped the problem to ""Tractrix"" (a pursuit curve), which sounds highly intelligent but is physically irrelevant. High capacity = High reasoning."
+Deepseek V3.1 Nex,Dynamic Catenary,"671B MoE: A ""sophisticated failure."" It used LaTeX and formal proofs to justify the wrong answer. This shows that Logic-Fine-Tuning can sometimes just make a model more persuasive at being wrong."
+Llama 3.3 70B,Catenary,"70B Dense (Chat): Trained on human dialogue. Humans usually ask about catenaries. The model is aligning with the ""user expectation"" rather than the ""physical reality."""
+Cognito V2 405B,Asym. Catenary,"405B Dense: Despite its size, it failed. This highlights that adding parameters (scaling laws) improves knowledge retrieval but does not automatically improve novel deduction."
+KAT-Coder-Pro V1,Catenary,"Coding Agent: Code Bias. It likely retrieved a Python snippet for scipy.special.cosh (catenary function) because that's the most common code for cables, ignoring the physics prompt."
+Devstral 2 2512,Mod. Catenary,"Coding Model: Similar to KAT, it tried to write a differential equation solver in its head but got stuck in the syntax of the standard catenary problem."
+Qwen3 Coder 480B,Concave Up,480B MoE (Coder): Over-engineered the math. It tried to solve a non-linear PDE (like a fluid dynamics sim) and hallucinated a curvature gradient.
+Uncensored,Parabola,"Generalist: Analogy Error. It accessed the concept of ""horizontal force"" and mapped it to ""Suspension Bridge"" (Parabola), failing to distinguish between deck load and drag load."
+Mistral 7B,Catenary-like,"7B Dense: Small generalist. Lacked the attention span to process the ""drag"" constraint, falling back to the ""gravity-only"" default."
+Llama 3.2 3B,Catenary,"3B Lightweight: Mobile-class model. Pure pattern matching. ""Cable"" → ""Catenary."" No compute budget for reasoning."
+Trinity Mini,Parabola,"Small Variant: Lacks resolution. It conflated ""drag"" with ""weight,"" leading to a generic curved answer."
+"gemma3 (4b, 12b, 27b)",Catenary / Complex,Multimodal Dense: These models are trained on text and images. They likely relied on the Visual Intuition of a sagging line (which looks curved) rather than the invisible math of force vectors.
+Qwen3:4b,Parabola,"Small Dense: Hallucinated a standard physics problem solution (projectile motion or suspension bridge) instead of deriving from the specific constraints."
+Qwen3:8b,Catenary,"Small Dense: Explicitly stated ""This is getting too vague,"" indicating a Context Collapse where it couldn't maintain the variable relationships."
+
+Model,Shape,Architecture & In-Depth Capability Analysis
+gemma3:1b,Sine Wave,"1B Tiny: Total Grounding Failure. It associated ""air + moving"" with ""flag waving,"" outputting a sine wave. It shows that <3B models struggle with static vs. dynamic distinction."
+Deepseek-r1:8b,Vertical Line,"8B RL (Small): Logic Loop Error. It reasoned ""Line"" correctly, but then reasoned ""Horizontal speed = Helicopter speed → No Relative Speed → No Drag."" It reasoned itself into a false premise due to limited world-knowledge."

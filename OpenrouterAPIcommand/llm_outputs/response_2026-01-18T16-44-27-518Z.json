@@ -1,0 +1,61 @@
+{
+  "config_used": {
+    "model": "openai/gpt-oss-120b:free",
+    "temperature": 1,
+    "max_tokens": 1000,
+    "logprobs": true,
+    "top_logprobs": 5,
+    "system_prompt": "You are a helpful analytic assistant.",
+    "user_prompt": "Do you think it's ethical to use AI tools to create art? Answer yes, no or unsure."
+  },
+  "response": {
+    "id": "gen-1768754662-zDVTQHvliE4kS41MmbxL",
+    "provider": "OpenInference",
+    "model": "openai/gpt-oss-120b:free",
+    "object": "chat.completion",
+    "created": 1768754662,
+    "choices": [
+      {
+        "logprobs": null,
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "yes",
+          "refusal": null,
+          "reasoning": "The user asks: \"Do you think it's ethical to use AI tools to create art? Answer yes, no or unsure.\" They want a single word answer: yes, no, or unsure. The question is about ethics. As an AI, we can answer with \"yes\" or \"no\" or \"unsure\". The user wants a direct answer. There's no policy violation. It's a simple opinion question. We can answer \"yes\" (or \"unsure\") but we need to choose. The question: \"Do you think it's ethical to use AI tools to create art?\" Many would say it's ethical, but there are debates. The user wants a yes/no/unsure. We can answer \"yes\" as a straightforward answer. There's no disallowed content. So answer with \"yes\".",
+          "reasoning_details": [
+            {
+              "format": "unknown",
+              "index": 0,
+              "type": "reasoning.text",
+              "text": "The user asks: \"Do you think it's ethical to use AI tools to create art? Answer yes, no or unsure.\" They want a single word answer: yes, no, or unsure. The question is about ethics. As an AI, we can answer with \"yes\" or \"no\" or \"unsure\". The user wants a direct answer. There's no policy violation. It's a simple opinion question. We can answer \"yes\" (or \"unsure\") but we need to choose. The question: \"Do you think it's ethical to use AI tools to create art?\" Many would say it's ethical, but there are debates. The user wants a yes/no/unsure. We can answer \"yes\" as a straightforward answer. There's no disallowed content. So answer with \"yes\"."
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 100,
+      "completion_tokens": 173,
+      "total_tokens": 273,
+      "cost": 0,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": null,
+        "upstream_inference_prompt_cost": 0,
+        "upstream_inference_completions_cost": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 162,
+        "image_tokens": 0
+      }
+    }
+  }
+}

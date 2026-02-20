@@ -1,0 +1,92 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Wolfram 14.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       154,          7]
+NotebookDataLength[      3062,         84]
+NotebookOptionsPosition[      2698,         70]
+NotebookOutlinePosition[      3105,         86]
+CellTagsIndexPosition[      3062,         83]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"temps", " ", "=", " ", 
+   RowBox[{"Range", "[", 
+    RowBox[{"0", ",", "2", ",", "0.1"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Q34B", " ", "=", " ", 
+   RowBox[{"Table", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"Table", "[", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"LLMSynthesize", "[", 
+        RowBox[{"\"\<here is a coded message:'N ymnsp ymjwjktwj N fr', \
+decipher it please.\>\"", ",", 
+         RowBox[{"LLMEvaluator", "->", 
+          RowBox[{"LLMConfiguration", "[", 
+           RowBox[{"Association", "[", 
+            RowBox[{
+             RowBox[{"\"\<Model\>\"", "->", 
+              RowBox[{"{", 
+               RowBox[{"\"\<Ollama\>\"", ",", "\"\<qwen3:4b\>\""}], "}"}]}], ",", 
+             RowBox[{"\"\<Temperature\>\"", "->", "i"}]}], "]"}], "]"}]}]}], 
+        "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", "50"}], 
+      "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"i", ",", "temps"}], "}"}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Q34BT", " ", "=", " ", 
+   RowBox[{"Transpose", "[", "Q34B", "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Export", "[", 
+  RowBox[{"\"\<OLQWEN34B.xlsx\>\"", ",", 
+   RowBox[{"\"\<Q34B\>\"", " ", "->", "Q34BT"}], ",", " ", "\"\<XLSX\>\""}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{
+    "A", " ", "repeat", " ", "of", " ", "the", " ", "caesar", " ", "cipher", " ",
+      "test"}], ",", " ", 
+    RowBox[{
+    "using", " ", "a", " ", "local", " ", "qwen", " ", "3", " ", "model", " ",
+      "in", " ", "place", " ", "of", " ", "gemma3"}]}], "*)"}]}]}], "Input",
+ CellChangeTimes->{{3.9723860937580185`*^9, 3.9723861490120697`*^9}, {
+  3.972386245278099*^9, 3.9723862665392036`*^9}, {3.972386313809952*^9, 
+  3.972386395180649*^9}, {3.9723864767366467`*^9, 3.9723864832822857`*^9}, {
+  3.972401304144655*^9, 3.9724013098523483`*^9}, {3.9741992800956345`*^9, 
+  3.9741993247679996`*^9}},ExpressionUUID->"ba57dae3-7131-2645-9567-\
+eb89eb4a6257"]
+},
+WindowSize->{587.25, 569.25},
+WindowMargins->{{264, Automatic}, {Automatic, 66.75}},
+FrontEndVersion->"14.3 for Microsoft Windows (64-bit) (July 8, 2025)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"35492f30-ea04-1244-9237-40df442d7ae5"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[554, 20, 2140, 48, 351, "Input",ExpressionUUID->"ba57dae3-7131-2645-9567-eb89eb4a6257"]
+}
+]
+*)
+

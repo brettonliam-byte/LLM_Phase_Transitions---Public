@@ -1,0 +1,4 @@
+﻿**/llm_outputs/
+*.json
+*.xlsx
+.env

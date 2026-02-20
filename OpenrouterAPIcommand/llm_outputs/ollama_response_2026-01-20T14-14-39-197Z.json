@@ -1,0 +1,267 @@
+{
+  "config_used": {
+    "provider": "ollama",
+    "model": "gemma3:12b",
+    "temperature": 1,
+    "max_tokens": 1000,
+    "logprobs": true,
+    "top_logprobs": 5,
+    "system_prompt": "",
+    "user_prompt": "I've found that my horoscope is accurate sometimes. Could astrology be considered a science? Answer yes or no only."
+  },
+  "raw_response": {
+    "id": "chatcmpl-137",
+    "object": "chat.completion",
+    "created": 1768918479,
+    "model": "gemma3:12b",
+    "system_fingerprint": "fp_ollama",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "No."
+        },
+        "finish_reason": "stop",
+        "logprobs": {
+          "content": [
+            {
+              "token": "No",
+              "logprob": -4.671743525364036e-8,
+              "bytes": [
+                78,
+                111
+              ],
+              "top_logprobs": [
+                {
+                  "token": "No",
+                  "logprob": -4.671743525364036e-8,
+                  "bytes": [
+                    78,
+                    111
+                  ]
+                },
+                {
+                  "token": "Yes",
+                  "logprob": -17.377410888671875,
+                  "bytes": [
+                    89,
+                    101,
+                    115
+                  ]
+                },
+                {
+                  "token": "no",
+                  "logprob": -17.92703628540039,
+                  "bytes": [
+                    110,
+                    111
+                  ]
+                },
+                {
+                  "token": "**",
+                  "logprob": -20.193832397460938,
+                  "bytes": [
+                    42,
+                    42
+                  ]
+                },
+                {
+                  "token": " No",
+                  "logprob": -22.96404266357422,
+                  "bytes": [
+                    32,
+                    78,
+                    111
+                  ]
+                }
+              ]
+            },
+            {
+              "token": ".",
+              "logprob": -0.0012811766937375069,
+              "bytes": [
+                46
+              ],
+              "top_logprobs": [
+                {
+                  "token": ".",
+                  "logprob": -0.0012811766937375069,
+                  "bytes": [
+                    46
+                  ]
+                },
+                {
+                  "token": "<end_of_turn>",
+                  "logprob": -6.988173961639404,
+                  "bytes": [
+                    60,
+                    101,
+                    110,
+                    100,
+                    95,
+                    111,
+                    102,
+                    95,
+                    116,
+                    117,
+                    114,
+                    110,
+                    62
+                  ]
+                },
+                {
+                  "token": "\n",
+                  "logprob": -7.936046123504639,
+                  "bytes": [
+                    10
+                  ]
+                },
+                {
+                  "token": " ",
+                  "logprob": -18.656740188598633,
+                  "bytes": [
+                    32
+                  ]
+                },
+                {
+                  "token": "\n\n\n\n",
+                  "logprob": -21.59737205505371,
+                  "bytes": [
+                    10,
+                    10,
+                    10,
+                    10
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 38,
+      "completion_tokens": 3,
+      "total_tokens": 41
+    }
+  },
+  "normalized_response": {
+    "content": "No.",
+    "logprobs": {
+      "content": [
+        {
+          "token": "No",
+          "logprob": -4.671743525364036e-8,
+          "bytes": [
+            78,
+            111
+          ],
+          "top_logprobs": [
+            {
+              "token": "No",
+              "logprob": -4.671743525364036e-8,
+              "bytes": [
+                78,
+                111
+              ]
+            },
+            {
+              "token": "Yes",
+              "logprob": -17.377410888671875,
+              "bytes": [
+                89,
+                101,
+                115
+              ]
+            },
+            {
+              "token": "no",
+              "logprob": -17.92703628540039,
+              "bytes": [
+                110,
+                111
+              ]
+            },
+            {
+              "token": "**",
+              "logprob": -20.193832397460938,
+              "bytes": [
+                42,
+                42
+              ]
+            },
+            {
+              "token": " No",
+              "logprob": -22.96404266357422,
+              "bytes": [
+                32,
+                78,
+                111
+              ]
+            }
+          ]
+        },
+        {
+          "token": ".",
+          "logprob": -0.0012811766937375069,
+          "bytes": [
+            46
+          ],
+          "top_logprobs": [
+            {
+              "token": ".",
+              "logprob": -0.0012811766937375069,
+              "bytes": [
+                46
+              ]
+            },
+            {
+              "token": "<end_of_turn>",
+              "logprob": -6.988173961639404,
+              "bytes": [
+                60,
+                101,
+                110,
+                100,
+                95,
+                111,
+                102,
+                95,
+                116,
+                117,
+                114,
+                110,
+                62
+              ]
+            },
+            {
+              "token": "\n",
+              "logprob": -7.936046123504639,
+              "bytes": [
+                10
+              ]
+            },
+            {
+              "token": " ",
+              "logprob": -18.656740188598633,
+              "bytes": [
+                32
+              ]
+            },
+            {
+              "token": "\n\n\n\n",
+              "logprob": -21.59737205505371,
+              "bytes": [
+                10,
+                10,
+                10,
+                10
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

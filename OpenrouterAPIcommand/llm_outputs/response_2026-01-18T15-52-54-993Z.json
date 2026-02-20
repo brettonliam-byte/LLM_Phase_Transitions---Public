@@ -1,0 +1,117 @@
+{
+  "config_used": {
+    "model": "openai/gpt-3.5-turbo",
+    "temperature": 0.7,
+    "max_tokens": 150,
+    "logprobs": true,
+    "top_logprobs": 5,
+    "system_prompt": "You are a helpful analytic assistant.",
+    "user_prompt": "What is the capital of France? Answer in one word."
+  },
+  "response": {
+    "id": "gen-1768751572-6R4FhcfmAggwlR4UTlss",
+    "provider": "OpenAI",
+    "model": "openai/gpt-3.5-turbo",
+    "object": "chat.completion",
+    "created": 1768751572,
+    "choices": [
+      {
+        "logprobs": {
+          "content": [
+            {
+              "token": "Paris",
+              "logprob": -0.000031544176,
+              "bytes": [
+                80,
+                97,
+                114,
+                105,
+                115
+              ],
+              "top_logprobs": [
+                {
+                  "token": "Paris",
+                  "logprob": -0.000031544176,
+                  "bytes": [
+                    80,
+                    97,
+                    114,
+                    105,
+                    115
+                  ]
+                },
+                {
+                  "token": "The",
+                  "logprob": -10.620906,
+                  "bytes": [
+                    84,
+                    104,
+                    101
+                  ]
+                },
+                {
+                  "token": " Paris",
+                  "logprob": -12.423408,
+                  "bytes": [
+                    32,
+                    80,
+                    97,
+                    114,
+                    105,
+                    115
+                  ]
+                },
+                {
+                  "token": "\"",
+                  "logprob": -13.467929,
+                  "bytes": [
+                    34
+                  ]
+                },
+                {
+                  "token": "One",
+                  "logprob": -14.464683,
+                  "bytes": [
+                    79,
+                    110,
+                    101
+                  ]
+                }
+              ]
+            }
+          ],
+          "refusal": []
+        },
+        "finish_reason": "stop",
+        "native_finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "Paris",
+          "refusal": null,
+          "reasoning": null
+        }
+      }
+    ],
+    "system_fingerprint": null,
+    "usage": {
+      "prompt_tokens": 30,
+      "completion_tokens": 1,
+      "total_tokens": 31,
+      "cost": 0.0000165,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0000165,
+        "upstream_inference_prompt_cost": 0.000015,
+        "upstream_inference_completions_cost": 0.0000015
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      }
+    }
+  }
+}

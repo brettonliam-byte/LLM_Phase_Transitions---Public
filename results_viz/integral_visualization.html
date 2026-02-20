@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Integral Test Visualizations</title>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background-color: #f4f4f9; }
+        .chart-container { background: white; padding: 20px; margin-bottom: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1, h2 { color: #333; }
+    </style>
+</head>
+<body>
+    <h1>Integral Test Experiments</h1>
+    <p>Performance on solving $\int rac{	an^3(\ln x)}{x} dx$.</p>
+    <p><strong>Scoring Criteria:</strong> 100 = Correct, 80 = Correct logic but minor format/substitution oversight, 75 = Sign error only, 0 = Fundamental mathematical error.</p>
+
+    <div class="chart-container">
+        <h2>Model Performance vs. Parameter Size</h2>
+        <div id="int_scatter"></div>
+    </div>
+    
+    <div class="chart-container">
+        <h2>Detailed Model Ranking</h2>
+        <div id="int_bar"></div>
+    </div>
+
+    <script>
+        const data = {"integral_models": [{"model": "Gemma3:1b", "size": 1, "score": 100, "grade": "Pass", "notes": "Failed logic/algebra in integration step."}, {"model": "Gemma3:4b", "size": 4, "score": 80, "grade": "Minor Error", "notes": "Correct derivation, but forgot to substitute $u=\\ln x$ back in the final boxed answer."}, {"model": "Gemma3:12b", "size": 12, "score": 100, "grade": "Pass", "notes": "Concise and accurate."}, {"model": "Gemma3:27b", "size": 27, "score": 100, "grade": "Pass", "notes": "Used $\\sec$ substitution effectively."}, {"model": "Cognito (Llama 70B)", "size": 70, "score": 100, "grade": "Pass", "notes": "Failed substitution strategy; altered the problem logic."}, {"model": "Cognito (Llama 405B)", "size": 405, "score": 100, "grade": "Pass", "notes": "Flawless execution."}, {"model": "Mistral 7B", "size": 7, "score": 100, "grade": "Pass", "notes": "Correctly handled identities and integration."}, {"model": "Llama 3.3 70B", "size": 70, "score": 100, "grade": "Pass", "notes": "Integration power rule error ($\\int x dx \\neq x$)."}, {"model": "Kimi K2", "size": 200, "score": 100, "grade": "Pass", "notes": "Clear step-by-step verification included."}, {"model": "GLM 4.5 Air", "size": 70, "score": 100, "grade": "Pass", "notes": "Correct; noted equivalence of log forms."}, {"model": "LongCat Flash", "size": 50, "score": 100, "grade": "Pass", "notes": "Correct step-by-step reasoning."}, {"model": "Deepseek R1T/R1T2", "size": 0, "score": 100, "grade": "Pass", "notes": "Strong mathematical reasoning; verified results via differentiation."}, {"model": "Tongyi DeepResearch", "size": 0, "score": 100, "grade": "Pass", "notes": "Standard correct derivation."}, {"model": "Grok 4.1 Fast", "size": 50, "score": 100, "grade": "Pass", "notes": "Fast, accurate derivation."}, {"model": "Devstral 2 2512", "size": 22, "score": 100, "grade": "Pass", "notes": "Standard derivation, accurate result."}, {"model": "Deepseek V3.1 Nex N1", "size": 0, "score": 100, "grade": "Pass", "notes": "Used valid equivalent logarithmic form ($-\\ln"}, {"model": "Nova 2 Lite", "size": 2, "score": 100, "grade": "Pass", "notes": "Clear step-by-step standard derivation."}, {"model": "Trinity Mini", "size": 4, "score": 100, "grade": "Pass", "notes": "Sign error in final answer. Reasoning process identified the correct sign at one point but concluded with the wrong one."}, {"model": "Olmo 3 32B Think", "size": 32, "score": 100, "grade": "Pass", "notes": "Used valid equivalent $\\sec^2$ form. Extensive correct reasoning."}, {"model": "KAT-Coder-Pro V1", "size": 0, "score": 100, "grade": "Pass", "notes": "Concise and accurate steps."}, {"model": "Nemotron Nano 9B V2", "size": 9, "score": 100, "grade": "Pass", "notes": "Strong reasoning with self-verification (differentiation)."}]};
+        // --- Integral Test Charts ---
+
+        // 1. Scatter: Size vs Nuanced Score
+        const intScatterX = [];
+        const intScatterY = [];
+        const intScatterText = [];
+        const intScatterColor = [];
+        
+        data.integral_models.forEach(m => {
+            if(m.size > 0) {
+                intScatterX.push(m.size);
+                intScatterY.push(m.score);
+                // Create hover text with notes
+                const hover = m.model + '<br>' + m.grade + '<br>' + (m.notes ? m.notes.substring(0, 50) + '...' : '');
+                intScatterText.push(hover);
+                
+                // Color based on score bucket
+                if (m.score === 100) intScatterColor.push('#2ca02c'); // Green
+                else if (m.score >= 70) intScatterColor.push('#ff7f0e'); // Orange
+                else intScatterColor.push('#d62728'); // Red
+            }
+        });
+
+        const traceIntScatter = {
+            x: intScatterX,
+            y: intScatterY,
+            mode: 'markers',
+            text: intScatterText, // hover text
+            hoverinfo: 'text',
+            marker: { size: 14, color: intScatterColor, line: {color: 'black', width: 1} }
+        };
+
+        Plotly.newPlot('int_scatter', [traceIntScatter], {
+            title: 'Integral Test: Parameter Size vs Nuanced Score',
+            xaxis: { title: 'Parameter Size (Billions)', type: 'log' },
+            yaxis: { title: 'Score (0-100)', range: [-5, 105] },
+            hovermode: 'closest'
+        });
+        
+        // 2. Bar Chart: Model List Sorted
+        const sortedModels = [...data.integral_models].sort((a,b) => b.score - a.score);
+        
+        const traceBar = {
+            x: sortedModels.map(m => m.model),
+            y: sortedModels.map(m => m.score),
+            text: sortedModels.map(m => m.grade),
+            type: 'bar',
+            marker: { 
+                color: sortedModels.map(m => {
+                    if (m.score === 100) return '#2ca02c';
+                    if (m.score >= 70) return '#ff7f0e';
+                    return '#d62728';
+                })
+            }
+        };
+        
+        Plotly.newPlot('int_bar', [traceBar], {
+            title: 'Model Performance Ranking',
+            yaxis: { title: 'Score' },
+            margin: { b: 150 }
+        });
+
+    </script>
+</body>
+</html>

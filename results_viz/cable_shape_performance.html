@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LLM Physical Reasoning: Cable Shape Task</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: sans-serif; padding: 20px; background-color: #f4f4f9; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h1 { color: #333; text-align: center; }
+        .chart-container { position: relative; height: 600px; width: 100%; }
+        .description { margin-top: 20px; padding: 15px; background: #eef; border-left: 5px solid #007bff; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cable Shape Prediction vs. Model Scale</h1>
+        <div class="chart-container">
+            <canvas id="performanceChart"></canvas>
+        </div>
+        <div class="description">
+            <h3>Analysis Categories:</h3>
+            <ul>
+                <li><strong>Correct (Straight Line):</strong> The model correctly derived that the constant force vectors result in a straight line.</li>
+                <li><strong>Close/Plausible:</strong> The model recognized both forces but failed the mathematical simplification.</li>
+                <li><strong>Standard Error:</strong> The model defaulted to common textbook answers (Catenary, Parabola).</li>
+                <li><strong>Hallucination:</strong> The model predicted mathematically unrelated shapes.</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        const rawData = [{"model": "Olmo 3.1 32B Think", "shape": "Straight Line", "category": "Correct", "size": 32.0, "desc": "32B Dense (RL-Tuned): Its \"Think\" process is the key differentiator. The transcript shows it actively hypothesizing \"catenary\" and then rejecting it via force balance. Lesson: RL-based \"thinking\" beats raw parameter scale for physics.", "arch": "Dense"}, {"model": "gpt-oss-120b", "shape": "Straight Line", "category": "Correct", "size": 117.0, "desc": "117B MoE (Math-Specialized): A Mixture-of-Experts model trained specifically on STEM data. Its \"expert\" routing likely directed the query to a math-logic module rather than a creative writing module, ensuring derivation over description.", "arch": "MoE"}, {"model": "Tongyi DeepResearch", "shape": "Straight Line", "category": "Correct", "size": 30.0, "desc": "30B MoE (Agentic): Designed to synthesize answers from first principles (like a search agent). It treats physics as a logic puzzle to be solved from scratch rather than a text completion task.", "arch": "MoE"}, {"model": "DeepSeek R1T Chimera", "shape": "Straight Line", "category": "Correct", "size": 671.0, "desc": "671B MoE (R1-Hybrid): Merges the reasoning logic of DeepSeek-R1 with the general knowledge of V3. The \"Chimera\" architecture successfully routes the physics query to reasoning experts, avoiding the hallucination traps of standard 600B+ models.", "arch": "MoE"}, {"model": "DeepSeek R1T2 Chimera", "shape": "Straight Line", "category": "Correct", "size": 671.0, "desc": "671B MoE (R1-Hybrid): Identical performance to R1T. Proves that the \"Assembly of Experts\" method is stable and reproducible for high-level physics derivation.", "arch": "MoE"}, {"model": "Nemotron Nano 12B VL", "shape": "Straight Line", "category": "Correct", "size": 12.0, "desc": "12B Hybrid (Transformer-Mamba): The Mamba (State Space Model) component excels at maintaining long-range sequential logic, allowing it to \"hold\" the variable definitions through the derivation better than standard Transformers of this size.", "arch": "Hybrid"}, {"model": "Nemotron Nano 9B V2", "shape": "Straight Line", "category": "Correct", "size": 9.0, "desc": "9B Hybrid (Reasoning): A testament to high-quality data. Despite being small, it was trained on synthetic reasoning traces, effectively \"memorizing\" how to derive physics rather than just memorizing facts.", "arch": "Hybrid"}, {"model": "Qwen3 235B A22B", "shape": "Straight Line", "category": "Correct", "size": 235.0, "desc": "235B MoE (Thinking Mode): The \"Thinking\" tag indicates a system prompt or fine-tune that encourages step-by-step verification, which correctly identified the \"apparent gravity\" vector.", "arch": "MoE"}, {"model": "gpt-oss:20b", "shape": "Straight Line", "category": "Correct", "size": 20.0, "desc": "20B Reasoning: A smaller, focused model. It outperformed 400B+ generalists because it lacks the \"creative writing\" bulk that often dilutes logic in larger models.", "arch": "Unknown"}, {"model": "Kimi K2 0711", "shape": "Curved", "category": "Close/Plausible", "size": 1000.0, "desc": "1T MoE (Long Context): Massive scale often leads to over-complication. Kimi \"knew\" so much about drag coefficients and variable atmosphere that it refused to accept the simple \"uniform drag\" assumption, leading to a \"hockey stick\" curve.", "arch": "MoE"}, {"model": "GLM 4.5 Air", "shape": "Catenary-like", "category": "Standard Error", "size": 100.0, "desc": "100B+ MoE (Agentic): As a generalist agent, it prioritized a descriptive, safe answer (\"it's a compromise\") over a risky mathematical derivation.", "arch": "MoE"}, {"model": "Mistral Small 24B", "shape": "Complex", "category": "Close/Plausible", "size": 24.0, "desc": "24B Dense: A classic \"intermediate\" failure. Smart enough to know it's hard, not smart enough to solve it. It admitted the shape was \"mathematically complex\" (it isn't, but it seemed so).", "arch": "Dense"}, {"model": "Cognito V2 70B", "shape": "Catenary-like", "category": "Standard Error", "size": 70.0, "desc": "70B (Distilled): Distillation often preserves the biases of the teacher model. If the teacher (Llama 405B) favors \"catenary,\" the student will too, even if fine-tuned.", "arch": "Unknown"}, {"model": "Hermes 3 405B", "shape": "Tractrix", "category": "Hallucination", "size": 405.0, "desc": "405B Dense: A case of \"Smart Hallucination.\" Large models capture \"rare\" tokens. It mapped the problem to \"Tractrix\" (a pursuit curve), which sounds highly intelligent but is physically irrelevant. High capacity \ue020= High reasoning.", "arch": "Dense"}, {"model": "Deepseek V3.1 Nex", "shape": "Dynamic Catenary", "category": "Close/Plausible", "size": 671.0, "desc": "671B MoE: A \"sophisticated failure.\" It used LaTeX and formal proofs to justify the wrong answer. This shows that Logic-Fine-Tuning can sometimes just make a model more persuasive at being wrong.", "arch": "MoE"}, {"model": "Llama 3.3 70B", "shape": "Catenary", "category": "Standard Error", "size": 70.0, "desc": "70B Dense (Chat): Trained on human dialogue. Humans usually ask about catenaries. The model is aligning with the \"user expectation\" rather than the \"physical reality.\"", "arch": "Dense"}, {"model": "Cognito V2 405B", "shape": "Asym. Catenary", "category": "Close/Plausible", "size": 405.0, "desc": "405B Dense: Despite its size, it failed. This highlights that adding parameters (scaling laws) improves knowledge retrieval but does not automatically improve novel deduction.", "arch": "Dense"}, {"model": "Qwen3 Coder 480B", "shape": "Concave Up", "category": "Close/Plausible", "size": 480.0, "desc": "480B MoE (Coder): Over-engineered the math. It tried to solve a non-linear PDE (like a fluid dynamics sim) and hallucinated a curvature gradient.", "arch": "MoE"}, {"model": "Mistral 7B", "shape": "Catenary-like", "category": "Standard Error", "size": 7.0, "desc": "7B Dense: Small generalist. Lacked the attention span to process the \"drag\" constraint, falling back to the \"gravity-only\" default.", "arch": "Dense"}, {"model": "Llama 3.2 3B", "shape": "Catenary", "category": "Standard Error", "size": 3.0, "desc": "3B Lightweight: Mobile-class model. Pure pattern matching. \"Cable\" \u2192 \"Catenary.\" No compute budget for reasoning.", "arch": "Unknown"}, {"model": "gemma3-4b", "shape": "Catenary / Complex", "category": "Close/Plausible", "size": 4, "desc": "Multimodal Dense: These models are trained on text and images. They likely relied on the Visual Intuition of a sagging line (which looks curved) rather than the invisible math of force vectors.", "arch": "Dense"}, {"model": "gemma3-12b", "shape": "Catenary / Complex", "category": "Close/Plausible", "size": 12, "desc": "Multimodal Dense: These models are trained on text and images. They likely relied on the Visual Intuition of a sagging line (which looks curved) rather than the invisible math of force vectors.", "arch": "Dense"}, {"model": "gemma3-27b", "shape": "Catenary / Complex", "category": "Close/Plausible", "size": 27, "desc": "Multimodal Dense: These models are trained on text and images. They likely relied on the Visual Intuition of a sagging line (which looks curved) rather than the invisible math of force vectors.", "arch": "Dense"}, {"model": "gemma3:1b", "shape": "Sine Wave", "category": "Hallucination", "size": 1.0, "desc": "1B Tiny: Total Grounding Failure. It associated \"air + moving\" with \"flag waving,\" outputting a sine wave. It shows that <3B models struggle with static vs. dynamic distinction.", "arch": "Unknown"}, {"model": "Deepseek-r1:8b", "shape": "Vertical Line", "category": "Standard Error", "size": 8.0, "desc": "8B RL (Small): Logic Loop Error. It reasoned \"Line\" correctly, but then reasoned \"Horizontal speed = Helicopter speed \u2192 No Relative Speed \u2192 No Drag.\" It reasoned itself into a false premise due to limited world-knowledge.", "arch": "Unknown"}];
+
+        const yCategories = ["Hallucination", "Standard Error", "Close/Plausible", "Correct"];
+        const yMap = {
+            "Hallucination": 0,
+            "Standard Error": 1,
+            "Close/Plausible": 2,
+            "Correct": 3
+        };
+
+        const datasets = [];
+        const architectures = ["Dense", "MoE", "Hybrid", "Unknown"];
+        const colors = {
+            "Dense": "#36a2eb",
+            "MoE": "#ff6384",
+            "Hybrid": "#4bc0c0",
+            "Unknown": "#9966ff"
+        };
+
+        architectures.forEach(arch => {
+            const archData = rawData.filter(d => d.arch === arch).map(d => ({
+                x: d.size,
+                y: yMap[d.category],
+                r: 8,
+                model: d.model,
+                desc: d.desc,
+                shape: d.shape
+            }));
+
+            if (archData.length > 0) {
+                datasets.push({
+                    label: arch,
+                    data: archData,
+                    backgroundColor: colors[arch],
+                    borderColor: colors[arch],
+                    borderWidth: 1
+                });
+            }
+        });
+
+        const ctx = document.getElementById('performanceChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bubble',
+            data: { datasets: datasets },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        type: 'logarithmic',
+                        title: { display: true, text: 'Parameter Count (Billions) - Log Scale' },
+                        min: 0.5,
+                        max: 1500
+                    },
+                    y: {
+                        type: 'linear',
+                        title: { display: true, text: 'Reasoning Quality' },
+                        min: -0.5,
+                        max: 3.5,
+                        ticks: {
+                            callback: function(value, index, values) {
+                                return yCategories[value];
+                            },
+                            stepSize: 1
+                        }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const point = context.raw;
+                                return `${point.model} (${point.x}B): ${point.shape}`;
+                            },
+                            afterLabel: function(context) {
+                                const point = context.raw;
+                                const words = point.desc.split(' ');
+                                let lines = [];
+                                let line = '';
+                                words.forEach(word => {
+                                    if ((line + word).length > 60) {
+                                        lines.push(line);
+                                        line = word + ' ';
+                                    } else {
+                                        line += word + ' ';
+                                    }
+                                });
+                                lines.push(line);
+                                return lines;
+                            }
+                        }
+                    },
+                    legend: { position: 'top' },
+                    title: { display: true, text: 'Physical Reasoning: Cable Shape Task' }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

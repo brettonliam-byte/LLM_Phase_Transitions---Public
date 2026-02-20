@@ -1,0 +1,110 @@
+# Comparative Analysis: LLM Integral Solutions
+
+This document evaluates the performance of eight Large Language Models (LLMs) tasked with solving the indefinite integral:
+
+$$
+\int \frac{\tan^3(\ln(x))}{x} \, dx
+$$
+
+## 1. Executive Summary
+
+* **Total Models Evaluated:** 8
+* **Fully Correct Responses:** 7
+* **Incorrect Responses:** 1 (Trinity Mini)
+* **New Addition:** Nemotron Nano 12B 2 VL (Correct)
+* **Most Efficient:** Devstral 2 2512
+* **Most Rigorous Verification:** Nemotron Nano 12B 2 VL
+
+The majority of models correctly identified the $u$-substitution $u = \ln(x)$ and successfully navigated the trigonometric identity $\tan^2(u) = \sec^2(u) - 1$. The primary differentiator was not accuracy, but the method of derivation and the specific form of the final antiderivative.
+
+---
+
+## 2. Model-by-Model Analysis & Specifications
+
+### 1. Devstral 2 2512
+* **Developer:** Mistral AI
+* **Specs:** 123B Parameters (Dense Transformer)
+* **Design:** Specialized for agentic coding and multi-file editing; 256k context window.
+* **Performance:** **Correct**
+    * **Answer Form:** $\frac{\tan^2(\ln(x))}{2} + \ln|\cos(\ln(x))| + C$
+    * **Analysis:** Despite being a "coding" model, its large dense parameter count (123B) allows for robust general mathematical reasoning. It provided a clean, standard calculus solution without "over-reasoning," likely because its training data (code repositories) favors direct, functional outputs.
+
+### 2. Deepseek V3.1 Nex N1
+* **Developer:** DeepSeek
+* **Specs:** 671B Total / 37B Active Parameters (Hybrid MoE)
+* **Design:** Hybrid reasoning model; supports specific "Thinking" and "Non-thinking" modes.
+* **Performance:** **Correct**
+    * **Answer Form:** $\frac{1}{2}\tan^2(\ln(x)) - \ln|\sec(\ln(x))| + C$
+    * **Analysis:** The model's reasoning trace was highly structured ("Step 1", "Step 2"), characteristic of models trained on Chain-of-Thought (CoT) datasets. It correctly used the secant identity, demonstrating flexible mathematical representation typical of high-parameter MoE models.
+
+### 3. Nova 2 Lite
+* **Developer:** Amazon (AWS)
+* **Specs:** Lightweight Reasoning Model (Exact size undisclosed, likely <20B)
+* **Design:** "Extended thinking" capabilities; cost-effective alternative to frontier models.
+* **Performance:** **Correct**
+    * **Answer Form:** $\frac{1}{2} \tan^{2}(\ln x) + \ln|\cos(\ln x)| + C$
+    * **Analysis:** As a "Lite" model, it successfully distilled the correct logic. Its success here validates the "knowledge distillation" approach, where smaller models learn to mimic the reasoning patterns of larger "teacher" models without the massive computational overhead.
+
+### 4. Trinity Mini
+* **Developer:** Arcee AI
+* **Specs:** 26B Total / **3B Active** Parameters (Sparse MoE)
+* **Design:** Efficient reasoning on consumer hardware; activates only 3B parameters per token.
+* **Performance:** **Incorrect**
+    * **Answer Form:** $\frac{1}{2}\tan^{2}(\ln(x)) - \ln\left|\cos(\ln(x))\right| + C$ **(Sign Error)**
+    * **Analysis:** This failure is directly explained by its architecture. While it has 26B parameters on disk, it only uses **3B active parameters** during inference. 3B is often below the threshold for reliable retention of sign changes during multi-step algebraic manipulation. The model "hallucinated" a sign flip, a common error in highly quantized or sparse models where "attention heads" lose track of state variables over long sequences.
+
+### 5. Olmo 3 32B Think
+* **Developer:** Ai2 (Allen Institute for AI)
+* **Specs:** 32B Parameters (Dense)
+* **Design:** "Thinking" model trained with Reinforcement Learning with Verifiable Rewards (RLVR).
+* **Performance:** **Correct (Alternative Form)**
+    * **Answer Form:** $\frac{1}{2} \sec^2(\ln x) + \ln |\cos(\ln x)| + C$
+    * **Analysis:** The model generated the longest reasoning trace, explicitly doubting itself and numerically verifying the definite integral. This "over-thinking" led it to a technically correct but less standard form ($\sec^2$), effectively absorbing the constant $+1$ into $C$. This behavior is typical of models reinforcement-learned to be hyper-cautious.
+
+### 6. KAT-Coder-Pro V1
+* **Developer:** KwaiKAT / Kwaipilot
+* **Specs:** Agentic Coding Model (Likely ~30B class based on competitors)
+* **Design:** Optimized for SWE-Bench and tool use; high instruction following.
+* **Performance:** **Correct**
+    * **Answer Form:** $\frac{\tan^2(\ln(x))}{2} + \ln|\cos(\ln(x))| + C$
+    * **Analysis:** The "Coder" training is visible in the output structure. The response was formatted like technical documentation. Coding models often excel at math because both domains require strict adherence to syntax and logical sequences.
+
+### 7. Nemotron Nano 9B V2
+* **Developer:** NVIDIA
+* **Specs:** 9B Parameters (Hybrid Mamba-2 + MLP + Attention)
+* **Design:** Hybrid architecture (RNN/Transformer); high throughput, low memory.
+* **Performance:** **Correct**
+    * **Answer Form:** $\frac{1}{2} \tan^2(\ln x) + \ln|\cos(\ln x)| + C$
+    * **Analysis:** The **Mamba-2** architecture (State Space Model) is designed to maintain context state efficiently. This likely helped the small 9B model "hold" the variable definitions and sign changes in memory without the drift seen in the Trinity Mini (MoE). It verified its result via differentiation.
+
+### 8. Nemotron Nano 12B 2 VL
+* **Developer:** NVIDIA
+* **Specs:** 12B Parameters (Hybrid Transformer-Mamba Architecture)
+* **Design:** Multimodal Vision-Language model; "Hybrid Mamba-Transformer" designed for document intelligence and reasoning.
+* **Performance:** **Correct**
+    * **Answer Form:** $\frac{1}{2} \tan^2(\ln x) + \ln|\cos(\ln x)| + C$
+    * **Analysis:**
+        * **Conflict Resolution:** This model displayed the most advanced critical thinking. It mentally simulated a check against an "integral calculator," noticed a coefficient discrepancy ($\frac{1}{2}\ln$ vs $1\ln$), and then **trusted its own derivation** after a differentiation check.
+        * **Architecture Benefit:** Like the 9B version, the Hybrid Mamba architecture provides strong state retention. The "VL" (Vision-Language) training likely reinforces structural understanding (parsing charts/documents), which transfers well to parsing mathematical expressions.
+
+---
+
+## 3. Technical Comparison Table
+
+| Model | Architecture | Params | Correct? | Error Analysis |
+| :--- | :--- | :--- | :--- | :--- |
+| **Devstral 2** | Dense Transformer | 123B | Yes | Robust dense model performance. |
+| **Deepseek V3.1** | Hybrid MoE | 37B (Active) | Yes | Flexible reasoning (secant form). |
+| **Nova 2 Lite** | Distilled | <20B | Yes | Efficient distillation success. |
+| **Trinity Mini** | **Sparse MoE** | **3B (Active)** | **No** | **Routing Failure:** Insufficient active params for sign retention. |
+| **Olmo 3 32B** | Dense (RLVR) | 32B | Yes | "Thinking" caused over-verification. |
+| **Nemotron 9B** | **Mamba-2 Hybrid** | 9B | Yes | **SSM Success:** High efficiency state tracking. |
+| **Nemotron 12B VL**| **Mamba-2 Hybrid** | 12B | Yes | **Best Verification:** Resolved internal conflict vs external tools. |
+
+## 4. Conclusion
+
+The addition of **Nemotron Nano 12B 2 VL** reinforces the finding that **Hybrid Mamba architectures** are exceptionally potent for mathematical reasoning at small scales.
+
+1.  **Small Model Supremacy:** Both Nemotron models (9B and 12B) outperformed the Trinity Mini (MoE). The Mamba architecture's ability to maintain "state" (context) seems superior to Sparse MoE routing for sequential mathematical steps at this size class.
+2.  **Confidence vs. Hallucination:** The 12B VL model's ability to reject a hallucinated "calculator result" in favor of its own first-principles derivation is a hallmark of high-quality reasoning training, likely derived from the "Synthetic Math" datasets NVIDIA emphasizes in their technical reports.
+3.  **Recommendation:** For pure mathematical derivation on consumer hardware, the **Nemotron Nano** series (Hybrid Mamba) appears to be the most reliable "small" choice.

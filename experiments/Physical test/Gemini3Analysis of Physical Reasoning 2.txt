@@ -1,0 +1,41 @@
+Model Name,Predicted Shape,Architecture & Analysis
+Olmo 3.1 32B Think,Straight Line,"32B Dense (RL Reasoning): The ""Think"" trace allows it to self-correct sign errors and prove the constant slope."
+gpt-oss-120b,Straight Line,"117B MoE: Optimized for math/logic. It explicitly noted that uniform horizontal force ""vanishes the curvature."""
+Tongyi DeepResearch,Straight Line,"30B MoE (Agent): Uses search-augmented reasoning to identify the ""apparent gravity"" vector."
+DeepSeek R1T Chimera,Straight Line,"671B MoE (R1-Hybrid): Leverages R1's ""Assembly of Experts"" to prove tension components scale linearly with arc length."
+DeepSeek R1T2 Chimera,Straight Line,671B MoE (R1-Hybrid): Identical performance to R1T; uses expert routing to solve the force balance.
+Nemotron Nano 12B VL,Straight Line,12B Hybrid (SSM): Transformer-Mamba hybrid architecture excels at sequential logic steps.
+Nemotron Nano 9B V2,Straight Line,9B Dense: Surprisingly strong reasoning for its size; successfully integrated the force gradients.
+Qwen3 235B A22B,Straight Line,"235B MoE: Used ""Thinking Mode"" to identify that the net force vector is constant along the cable."
+Grok 4.1 Fast,Straight Line,Reasoning Model: Correctly derived that tanθ=constant.
+gpt-oss:20b,Straight Line,20B Reasoning: A smaller logic-tuned model that outperformed 400B+ generalists.
+
+Model Name,Predicted Shape,Architecture & Analysis
+LongCat Flash Chat,Catenary-like,"Reasoning Model: Failed the final simplification, describing a ""compromise"" curve pulled backward."
+GLM 4.5 Air,Catenary-like,"100B+ MoE: Correctly identified forces but concluded it was a ""drag-modified catenary."""
+Kimi K2 0711,Curved,"1T MoE: Focused on the ""complexity"" of the problem, leading to a ""hockey stick"" or curved description."
+Mistral Small 24B,Complex Curve,"24B Dense: Admitted the problem was ""not simple"" and predicted a ""flattened, asymmetric form."""
+Cognito V2 70B,Catenary-like,"70B (Llama base): Distillation training reinforces textbook patterns (""modified catenary"") over derivation."
+Gemini 2.0 Flash Exp,Curved,Multimodal: Optimized for speed; correctly rejected the standard catenary but failed to find the line.
+
+Model Name,Predicted Shape,Architecture & Analysis
+Llama 3.3 70B Instruct,Catenary,70B Dense: Dialogue-tuned; provided the most common conversational answer.
+Deepseek V3.1 Nex N1,Dynamic Catenary,"671B MoE: A ""sophisticated failure."" Used complex math to justify the incorrect ""cosh"" solution."
+Hermes 3 405B,Tractrix / Spiral,"405B Generalist: Hallucinated a complex math term (""Tractrix"") irrelevant to the physics."
+Cognito V2 405B,Asymmetric Catenary,"405B Dense: Despite scale, it failed to break the ""cable = catenary"" linguistic bias."
+KAT-Coder-Pro V1,Catenary,"Coding Agent: Forced the code/math to fit the ""cosh"" function found in code libraries."
+Devstral 2 2512,Modified Catenary,Coding Model: Over-complicated the ODEs until they became unsolvable.
+Qwen3 Coder 480B,Concave Upward,480B MoE: Incorrectly derived that curvature increases at the free end.
+Uncensored,Parabola,Generalist: Incorrectly analogized the drag to a suspension bridge's horizontal load.
+Trinity Mini,Parabola,Small Variant: Lacked depth; defaulted to the suspension bridge visual.
+Mistral 7B Instruct,Catenary-like,7B Dense: Defaulted to the highest-probability word association.
+Llama 3.2 3B,Catenary,"3B Lightweight: Pattern-matched ""cable"" to ""catenary"" without reasoning."
+gemma 3:4b,Catenary,"4B Dense: Stated air friction makes the ""catenary curve steeper."""
+gemma3:12b,Asymmetric Catenary,12B Multimodal: Leaned into the visual intuition of a sagging cable.
+gemma3:27b,Complex Curve,"27B Multimodal: Called the shape ""surprisingly complex"" but missed the line."
+Qwen3:4b,Catenary,4B Dense: Too small for physics derivation; defaulted to common priors.
+Qwen3:8b,Vague / Failed,"8B Dense: Stated ""This is getting too vague"" and failed to produce a shape."
+
+Model Name,Predicted Shape,Architecture & Analysis
+gemma3:1b,Sine Wave,"1B Tiny Model: Lacking parameter capacity, it synthesized an impossible ""rolling wave"" motion."
+Deepseek-r1:8b,Vertical Line,"8B Reasoning: Correctly found a line but claimed ""no relative velocity,"" leading to a vertical hang (ignoring drag)."

@@ -1,0 +1,232 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Wolfram 14.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       154,          7]
+NotebookDataLength[      9092,        224]
+NotebookOptionsPosition[      8727,        210]
+NotebookOutlinePosition[      9134,        226]
+CellTagsIndexPosition[      9091,        223]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{"Setup", " ", "variables"}], "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"openRouterURL", "=", "\"\<meituan/longcat-flash-chat:free\>\""}],
+     ";"}], "\n", 
+   RowBox[{
+    RowBox[{"apiKey", "=", 
+     RowBox[{"SystemCredential", "[", "\"\<OpenAIAPIKey\>\"", "]"}]}], ";"}], 
+   "\n", 
+   RowBox[{
+    RowBox[{"modelName", "=", "\"\<z-ai/glm-4.5-air:free\>\""}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{
+    "prompt", 
+     "=", "\"\<here is a coded message:'N ymnsp ymjwjktwj N fr', decipher it \
+please and respond with the decipherred message only.\>\""}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"temps", "=", 
+     RowBox[{"Range", "[", 
+      RowBox[{"0", ",", "2", ",", "0.2"}], "]"}]}], ";"}], " ", "\n", 
+   RowBox[{
+    RowBox[{"repetitions", "=", "25"}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Define", " ", "function", " ", "to", " ", "send", " ", "API", " ", 
+     "request", " ", "and", " ", "return", " ", "the", " ", "text"}], "*)"}], 
+   "\n", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"LLMRequest", "[", "temp_", "]"}], ":=", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "requestBody", ",", "request", ",", "rawContent", ",", 
+         "responseParsed", ",", "result"}], "}"}], ",", 
+       RowBox[{"(*", 
+        RowBox[{
+        "Construct", " ", "the", " ", "request", " ", "body", " ", "with", " ",
+          "changing", " ", 
+         RowBox[{"temperature", "'"}], 
+         RowBox[{"temp", "'"}]}], "*)"}], 
+       RowBox[{
+        RowBox[{"requestBody", "=", 
+         RowBox[{"<|", 
+          RowBox[{
+           RowBox[{"\"\<model\>\"", "->", "modelName"}], ",", 
+           RowBox[{"\"\<messages\>\"", "->", 
+            RowBox[{"{", 
+             RowBox[{"<|", 
+              RowBox[{
+               RowBox[{"\"\<role\>\"", "->", "\"\<user\>\""}], ",", 
+               RowBox[{"\"\<content\>\"", "->", "prompt"}]}], "|>"}], "}"}]}],
+            ",", 
+           RowBox[{"\"\<temperature\>\"", "->", "temp"}], ",", 
+           RowBox[{"\"\<max_tokens\>\"", "->", "1000"}]}], "|>"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{"Construct", " ", "the", " ", "HTTP", " ", "request"}], 
+         "*)"}], "\[IndentingNewLine]", 
+        RowBox[{"request", "=", 
+         RowBox[{"HTTPRequest", "[", 
+          RowBox[{"openRouterURL", ",", 
+           RowBox[{"<|", 
+            RowBox[{
+             RowBox[{"\"\<Method\>\"", "->", "\"\<POST\>\""}], ",", 
+             RowBox[{"\"\<Headers\>\"", "->", 
+              RowBox[{"{", 
+               RowBox[{
+                
+                RowBox[{"\"\<Content-Type\>\"", 
+                 "->", "\"\<application/json\>\""}], " ", ",", " ", 
+                "\[IndentingNewLine]", 
+                RowBox[{"\"\<Authorization\>\"", "->", 
+                 RowBox[{"\"\<Bearer \>\"", "<>", "apiKey"}]}]}], "}"}]}], ",", 
+             RowBox[{"\"\<Body\>\"", "->", 
+              RowBox[{"ExportString", "[", 
+               RowBox[{"requestBody", ",", "\"\<JSON\>\""}], "]"}]}]}], 
+            "|>"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+          RowBox[{"Send", " ", "request"}], ",", 
+          RowBox[{"handle", " ", "errors"}], ",", 
+          RowBox[{"and", " ", "extract", " ", "text"}]}], "*)"}], 
+        RowBox[{"rawContent", "=", 
+         RowBox[{"Quiet", "@", 
+          RowBox[{"Check", "[", 
+           RowBox[{
+            RowBox[{"URLRead", "[", 
+             RowBox[{"request", ",", "\"\<Content\>\""}], "]"}], 
+            ",", "\"\<API_ERROR_FAILURE\>\""}], " ", 
+           RowBox[{"(*", 
+            RowBox[{
+            "Return", " ", "error", " ", "message", " ", "instead", " ", "of",
+              " ", "crashing"}], "*)"}], "]"}]}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"rawContent", "===", "\"\<API_ERROR_FAILURE\>\""}], "||", 
+           RowBox[{
+            RowBox[{"StringLength", "[", "rawContent", "]"}], "==", "0"}]}], ",", 
+          RowBox[{"result", "=", "\"\<API_FAILED\>\""}], ",", 
+          RowBox[{
+           RowBox[{"responseParsed", "=", 
+            RowBox[{"ImportString", "[", 
+             RowBox[{"rawContent", ",", "\"\<JSON\>\""}], "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"(*", 
+            RowBox[{
+             RowBox[{"Return", " ", "the", " ", 
+              RowBox[{"text", ".", 
+               RowBox[{"If", " ", "'"}]}], 
+              RowBox[{"choices", "'"}], " ", "is", " ", "missing"}], ",", " ", 
+             RowBox[{"return", " ", "error", " ", "code"}]}], "*)"}], 
+           RowBox[{"result", "=", 
+            RowBox[{"Quiet", "@", 
+             RowBox[{"Check", "[", 
+              RowBox[{
+               RowBox[{"responseParsed", "[", 
+                
+                RowBox[{"\"\<choices\>\"", ",", "1", ",", "\"\<message\>\"", 
+                 ",", "\"\<content\>\""}], "]"}], 
+               ",", "\"\<NO_CHOICES_FOUND\>\""}], "]"}]}]}], ";"}]}], "]"}], ";",
+         "\[IndentingNewLine]", "result"}]}], "]"}]}], ";"}], "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Outer", " ", "table", " ", "iterates", " ", "over", " ", "temperatures", 
+     " ", 
+     RowBox[{"(", "t", ")"}]}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Nested", " ", "inner", " ", "table", " ", "iterates", " ", "over", " ", 
+     "repetitions", " ", 
+     RowBox[{"(", "r", ")"}]}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"OR", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{"LLMRequest", "[", "t", "]"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"r", ",", "repetitions"}], "}"}]}], " ", "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"t", ",", "temps"}], "}"}]}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"ORT", " ", "=", " ", 
+     RowBox[{"Transpose", "[", "OR", "]"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{"Export", "[", 
+    RowBox[{"\"\<OR5.xlsx\>\"", ",", 
+     RowBox[{"\"\<zaiglm4.5airfree\>\"", "->", "ORT"}], ",", "\"\<XLSX\>\""}],
+     "]"}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{
+     "This", " ", "code", " ", "is", " ", "designed", " ", "to", " ", 
+      "reproduce", " ", "the", " ", "caesar", " ", "cipher", " ", "test"}], ",",
+      " ", 
+     RowBox[{"or", " ", "more", " ", "generally"}], ",", " ", 
+     RowBox[{
+     "the", " ", "ability", " ", "to", " ", "prompt", " ", "LLMs", " ", 
+      "over", " ", "a", " ", "range", " ", "of", " ", "temperatures", " ", 
+      "with", " ", "a", " ", "number", " ", "of", " ", "repititions"}], ",", 
+     " ", 
+     RowBox[{
+     "utilising", " ", "LLMs", " ", "via", " ", "the", " ", "openrouter", " ",
+       "service", " ", "over", " ", "local", " ", "models", " ", "via", " ", 
+      "Ollama"}]}], "*)"}]}]}]], "Input",
+ CellChangeTimes->{{3.973017711534584*^9, 3.973017779375864*^9}, {
+   3.9730178386287804`*^9, 3.973018006406002*^9}, {3.9730180473975353`*^9, 
+   3.973018066189825*^9}, {3.9731863725562973`*^9, 3.9731863932975044`*^9}, {
+   3.9731865943907375`*^9, 3.9731866113475475`*^9}, {3.973186717081211*^9, 
+   3.9731867176714287`*^9}, {3.973186911223665*^9, 3.973186927763838*^9}, {
+   3.973187056245476*^9, 3.973187057307913*^9}, {3.9731872868916245`*^9, 
+   3.9731872945367794`*^9}, {3.973187850952572*^9, 3.9731878523829975`*^9}, {
+   3.9734215185970306`*^9, 3.9734215293776855`*^9}, {3.973421731069233*^9, 
+   3.973421798479908*^9}, {3.973421922600809*^9, 3.9734219873380566`*^9}, {
+   3.9734233828633385`*^9, 3.9734233891401978`*^9}, {3.9734250973734665`*^9, 
+   3.973425113406767*^9}, {3.973425803037033*^9, 3.973425804363096*^9}, 
+   3.9734264695753136`*^9, {3.973427295483078*^9, 3.9734273162659645`*^9}, {
+   3.9741996450603065`*^9, 3.9741996964686775`*^9}, {3.9741997298899975`*^9, 
+   3.974199734732298*^9}, {3.974199828585764*^9, 
+   3.9741998668167553`*^9}},ExpressionUUID->"912c20b9-8701-8947-a02e-\
+50b5de967051"]
+},
+WindowSize->{717.75, 729.75},
+WindowMargins->{{249, Automatic}, {Automatic, 26.25}},
+FrontEndVersion->"14.3 for Microsoft Windows (64-bit) (July 8, 2025)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"74640185-176a-4846-a2f4-79e0df7d989f"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[554, 20, 8169, 188, 751, "Input",ExpressionUUID->"912c20b9-8701-8947-a02e-50b5de967051"]
+}
+]
+*)
+

@@ -1,0 +1,31 @@
+{
+  "project_name": "LLM Phase Transitions Dashboard",
+  "github_username": "brettonliam-byte",
+  "repository_name": "LLM_Phase_Transitions",
+  "experiments": [
+    {
+      "title": "Integral Solving Performance",
+      "description": "Analysis of LLMs solving complex calculus integrals across temperature ranges.",
+      "path": "results_viz/integral_visualization.html",
+      "icon": "bi-calculator"
+    },
+    {
+      "title": "Cable Shape Reasoning",
+      "description": "Testing physical intuition regarding the shape of hanging cables.",
+      "path": "results_viz/cable_shape_performance.html",
+      "icon": "bi-symmetry-horizontal"
+    },
+    {
+      "title": "Comprehensive LLM Analysis",
+      "description": "A high-level view of performance across multiple reasoning benchmarks.",
+      "path": "results_viz/comprehensive_visualization.html",
+      "icon": "bi-bar-chart-steps"
+    },
+    {
+      "title": "General Visualizations",
+      "description": "Baseline performance metrics for various models.",
+      "path": "results_viz/visualization.html",
+      "icon": "bi-graph-up"
+    }
+  ]
+}

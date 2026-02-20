@@ -1,0 +1,27 @@
+Model Name,Predicted Shape,Grade,Architecture & Performance Link
+Olmo 3.1 32B Think,Straight Line,A+,"32B parameter dense model optimized via Reinforcement Learning (RL) for multi-step reasoning. Its ""Thinking"" transcript shows a self-correcting process that eventually proves the constant slope."
+gpt-oss-120b,Straight Line,A+,"117B parameter MoE built for math and logic. It explicitly derived that ""curvature vanishes"" when horizontal force is uniform, correctly distinguishing this from a standard catenary."
+Kimi K2 0711,Straight Line,A+,1T parameter MoE focused on agentic intelligence. It successfully bypassed common linguistic patterns to calculate the correct linear force balance.
+Nemotron Nano 12B 2 VL,Straight Line,A,12B parameter hybrid Transformer-Mamba model. The hybrid architecture excels at sequential logic; it correctly concluded a straight line inclined at arctan(λg/D).
+Nemotron Nano 9B V2,Straight Line,A,"9B parameter dense model. Like its 12B counterpart, it used first-principles reasoning to identify the constant tension ratio."
+Qwen3 235B A22B,Straight Line,A,"235B parameter MoE (22B active). It used its ""Thinking Mode"" to derive the answer from scratch, avoiding the ""catenary trap""."
+Deepseek R1T Chimera,Straight Line,A-,Merged Reasoning Model combining DeepSeek-R1's logic with V3's scale. It reached the correct answer but with slightly less mathematical rigor than Olmo.
+GLM 4.5 Air,Straight Line,A-,Bilingual Reasoning Model. It correctly identified that a steady-state force vector results in a non-curved cable.
+gpt-oss:20b,Straight Line,A-,20B Reasoning model. Proved that uniform drag distribution along the arc length results in a fixed angle.
+gemma3:4b,Straight Line (Confused),C,"4B Dense model. It mentioned a straight line but struggled with the boundary conditions at the free end, showing the limitations of smaller parameter counts in handling physics constraints."
+Tongyi DeepResearch 30B,Asymmetric Curve,D,"30B MoE Search-specialist. It likely synthesized a ""common"" physics answer from its search-centric data rather than performing an internal calculation."
+Gemini 2.0 Flash Exp,Neither Catenary nor Straight,D,"Multimodal High-Speed Model. While it correctly identified that standard curves don't fit, it failed to find the straight-line simplification, likely due to its optimization for speed over deep physical reasoning."
+Hermes 3 405B Instruct,Spiral / Pursuit Curve,F,"405B parameter dense model. Despite its massive size, it ""hallucinated"" a complex ""tractrix"" solution. This is a ""pattern matching"" failure where the model maps the problem to a sophisticated-sounding but irrelevant concept."
+Deepseek V3.1 Nex N1,Dynamic Catenary,F,"671B parameter MoE. It used very confident, professional-sounding logic to justify an incorrect ""cosh"" (catenary) solution. This is a ""sophisticated failure"" common in large-scale models without a dedicated reasoning loop."
+Trinity Mini,Parabola,F,"Small Mini variant. It defaulted to the simplest pattern match for ""hanging cable""—the suspension bridge parabola—due to limited parameter capacity."
+Devstral 2 2512,Modified Catenary,F,"Mistral-derivative Coding model. It attempted a complex ODE but failed to simplify it, defaulting to the word ""catenary"" because it is the most frequent term in its training data for cables."
+KAT-Coder-Pro V1,Catenary,F,"Agentic Code Model. It forced a ""catenary"" solution because ""cosh"" is the most frequent math symbol for cables in its code-heavy training set."
+Llama 3.3 70B Instruct,Catenary Curve,F,70B parameter dense chat model. It provided the most common answer found in human-annotated dialogue datasets rather than computing the physics.
+Cognito V2 Preview 405B,Asymmetrical Catenary,F,"405B parameter hybrid reasoning model. Despite its scale, it failed to break the linguistic bias of ""cable = catenary."""
+Llama 3.2 3B Instruct,Catenary,F,3B parameter lightweight model. Primarily a chat-focused model for on-device use; lacks the depth for physical first-principles derivation.
+Mistral 7B Instruct,Catenary-like,F,"7B parameter generalist model. Small size led it to rely on the highest-probability next-token association for ""hanging uniform cable."""
+Qwen3 Coder 480B A35B,Concave Upward,F,480B parameter MoE Coder focus. It over-engineered the math and reached an incorrect conclusion that curvature would be greatest at the free end.
+Uncensored,Parabolic Curve,F,Generalist Model. Claimed that drag reduces horizontal tension in a way that creates a vertex.
+Mistral Small 3.1 24B,Complex Curve,F,"24B Intermediate model. It admitted the problem was ""beyond simple analytical solutions,"" missing the simplification found by the reasoning models."
+Gemma 3 12b/27b,Asymmetric Catenary,F,"Multimodal Dense models. They relied on the visual intuition of a ""sagging"" cable rather than mathematical force balance."
+gemma3:1b,Sine Wave,F-,"1B parameter tiny model. The most severe hallucination; it claimed air friction creates a ""rolling motion"" and a ""sine wave pattern,"" likely because its tiny parameter count cannot maintain physical grounding."

@@ -1,0 +1,158 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Wolfram 14.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       154,          7]
+NotebookDataLength[      6918,        150]
+NotebookOptionsPosition[      6113,        128]
+NotebookOutlinePosition[      6514,        144]
+CellTagsIndexPosition[      6471,        141]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{"Table", "[", 
+  RowBox[{
+   RowBox[{"LLMSynthesize", "[", 
+    RowBox[{"\"\<you are a villager living in rural England in 1066. Can you \
+give me the name of a tool? Respond with the name only\>\"", ",", " ", 
+     RowBox[{"LLMEvaluator", "->", 
+      RowBox[{"LLMConfiguration", "[", 
+       RowBox[{"Association", "[", 
+        RowBox[{
+         RowBox[{"\"\<Model\>\"", "->", 
+          RowBox[{"{", 
+           RowBox[{"\"\<Ollama\>\"", ",", "\"\<gemma3:12b\>\""}], "}"}]}], ",",
+          " ", 
+         RowBox[{"\"\<Temperature\>\"", "->", "2"}]}], "]"}], "]"}]}]}], 
+    "]"}], ",", "50"}], "]"}]], "Input",
+ CellChangeTimes->{{3.9699611057209587`*^9, 3.96996115485553*^9}},
+ CellLabel->"In[1]:=",ExpressionUUID->"08313ba5-256f-6d40-9602-82ff263372a0"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"\<\"Scythe\"\>", ",", "\<\"Scythe\"\>", ",", "\<\"Scythe\"\>", 
+   ",", "\<\"Scythe\"\>", ",", "\<\"Hack\"\>", ",", "\<\"Scythe\"\>", 
+   ",", "\<\"Scythe\"\>", ",", "\<\"Scythe\"\>", ",", "\<\"Axe\"\>", 
+   ",", "\<\"Scythe\"\>", ",", "\<\"Fell\"\>", ",", "\<\"Scythe\"\>", 
+   ",", "\<\"Scythe\"\>", ",", "\<\"Scythe\"\>", ",", "\<\"Scythe\"\>", 
+   ",", "\<\"Scythe\"\>", ",", "\<\"Scythe\"\>", ",", "\<\"Scythe\"\>", 
+   ",", "\<\"Sickle\"\>", ",", "\<\"Scythe\"\>", ",", "\<\"Sickle\"\>", 
+   ",", "\<\"Scythe\"\>", ",", "\<\"Scythe\"\>", ",", "\<\"Scythe\"\>", 
+   ",", "\<\"Scythe\"\>", ",", "\<\"Fell\"\>", ",", "\<\"Scythe\"\>", 
+   ",", "\<\"Scythe\"\>", ",", "\<\"Scythe\"\>", ",", "\<\"Scythe\"\>", 
+   ",", "\<\"Scythe\"\>", ",", "\<\"Scythe\"\>", ",", "\<\"Scythe\"\>", 
+   ",", "\<\"Scythe\"\>", ",", "\<\"Scythe\"\>", ",", "\<\"Scythe\"\>", 
+   ",", "\<\"Scythe\"\>", ",", "\<\"Fell\"\>", ",", "\<\"Scythe\"\>", 
+   ",", "\<\"Scythe\"\>", ",", "\<\"Fouch\"\>", ",", "\<\"Scythe\"\>", 
+   ",", "\<\"Scythe\"\>", ",", "\<\"Scythe\"\>", ",", "\<\"Scythe\"\>", 
+   ",", "\<\"Scythe\"\>", ",", "\<\"Scythe\"\>", ",", "\<\"Scythe\"\>", 
+   ",", "\<\"Scythe\"\>", ",", "\<\"Scythe\"\>"}], "}"}]], "Output",
+ CellChangeTimes->{3.969961211669716*^9},
+ CellLabel->"Out[1]=",ExpressionUUID->"5b913498-50d6-3d4f-828f-4d1c4499e02c"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"OL2", "=", " ", 
+  RowBox[{"Table", "[", 
+   RowBox[{
+    RowBox[{"LLMSynthesize", "[", 
+     RowBox[{"\"\<You are wealthy noble living in London, England in 1066. \
+Can you give me the name of a tool? Respond with the name only\>\"", ",", " ", 
+      RowBox[{"LLMEvaluator", "->", 
+       RowBox[{"LLMConfiguration", "[", 
+        RowBox[{"Association", "[", 
+         RowBox[{
+          RowBox[{"\"\<Model\>\"", "->", 
+           RowBox[{"{", 
+            RowBox[{"\"\<Ollama\>\"", ",", "\"\<gemma3:12b\>\""}], "}"}]}], ",",
+           " ", 
+          RowBox[{"\"\<Temperature\>\"", "->", "2"}]}], "]"}], "]"}]}]}], 
+     "]"}], ",", "50"}], "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"Export", "[", 
+  RowBox[{"\"\<OL2file.xlsx\>\"", ",", "OL2", ",", " ", "\"\<XLSX\>\""}], 
+  "]"}]}], "Input",
+ CellChangeTimes->{{3.9699612759488506`*^9, 3.969961340595936*^9}, {
+  3.969961393605217*^9, 3.9699613937648907`*^9}, {3.9699614395386505`*^9, 
+  3.9699614559126263`*^9}, {3.969961584928753*^9, 3.9699615933099537`*^9}, {
+  3.9699616991826515`*^9, 3.9699617075221863`*^9}, {3.9699625929788857`*^9, 
+  3.969962595020384*^9}, {3.9699627522913895`*^9, 3.9699627532010345`*^9}, {
+  3.969962821521456*^9, 3.9699628227157993`*^9}, {3.9699644783960857`*^9, 
+  3.9699645638816032`*^9}, {3.9699651095298233`*^9, 3.969965111333294*^9}, {
+  3.969965182965908*^9, 3.969965184174137*^9}, {3.9699653448753853`*^9, 
+  3.9699653462572136`*^9}, {3.9699655049238663`*^9, 3.969965505277979*^9}, {
+  3.969965640134163*^9, 3.9699656426617146`*^9}, {3.9699657292305145`*^9, 
+  3.969965730216549*^9}, {3.9699658109386234`*^9, 3.969965813098158*^9}, {
+  3.9699659427951584`*^9, 3.9699659442602882`*^9}},
+ CellLabel->"In[45]:=",ExpressionUUID->"fed51d3e-d617-6a4c-95f5-c223dd45f3d2"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"\<\"Adze\"\>", ",", "\<\"Seax\"\>", ",", "\<\"Scythe\"\>", 
+   ",", "\<\"Scythe\"\>", ",", "\<\"Froe\"\>", ",", "\<\"Froe\"\>", 
+   ",", "\<\"Froe\"\>", ",", "\<\"Fell\"\>", ",", "\<\"Rake\"\>", 
+   ",", "\<\"Scythe\"\>", ",", "\<\"Axe\"\>", ",", "\<\"Adze\"\>", 
+   ",", "\<\"Scythe\"\>", ",", "\<\"Plowshare\"\>", ",", "\<\"Scythe\"\>", 
+   ",", "\<\"Adze\"\>", ",", "\<\"Adze\"\>", ",", "\<\"Spade\"\>", 
+   ",", "\<\"Rake\"\>", ",", "\<\"Scythe\"\>", ",", "\<\"Aratron\"\>", 
+   ",", "\<\"Fletching knife\"\>", ",", "\<\"Anvil\"\>", 
+   ",", "\<\"Scythe\"\>", ",", "\<\"Scythe\"\>", ",", "\<\"Froestone\"\>", 
+   ",", "\<\"Hearthstone\"\>", ",", "\<\"Axe\"\>", ",", "\<\"Scythe\"\>", 
+   ",", "\<\"Axe\"\>", ",", "\<\"Scythe\"\>", ",", "\<\"Axe\"\>", 
+   ",", "\<\"Fouch\"\>", ",", "\<\"Coke\"\>", ",", "\<\"Scythe\"\>", 
+   ",", "\<\"Seax\"\>", ",", "\<\"Haftspole\"\>", ",", "\<\"Fouch\"\>", 
+   ",", "\<\"Sickle\"\>", ",", "\<\"Hoe\"\>", ",", "\<\"Spade\"\>", 
+   ",", "\<\"Axe\"\>", ",", "\<\"Froe\"\>", ",", "\<\"Froe\"\>", 
+   ",", "\<\"Barrow \\n\"\>", ",", "\<\"Seax\"\>", ",", "\<\"Seax\"\>", 
+   ",", "\<\"Falkner\"\>", ",", "\<\"Billhook\"\>", ",", "\<\"Bellows\"\>"}], 
+  "}"}]], "Output",
+ CellChangeTimes->{3.9699660742419815`*^9},
+ CellLabel->"Out[45]=",ExpressionUUID->"2dfb6b76-6546-c441-b686-116050d8bd3e"],
+
+Cell[BoxData["\<\"OL2file.xlsx\"\>"], "Output",
+ CellChangeTimes->{3.9699660742489433`*^9},
+ CellLabel->"Out[46]=",ExpressionUUID->"5f8ec3d9-8107-154a-a5de-68d2a07470e8"]
+}, Open  ]]
+},
+WindowSize->{717.75, 729.75},
+WindowMargins->{{Automatic, 0}, {Automatic, 0}},
+FrontEndVersion->"14.3 for Microsoft Windows (64-bit) (July 8, 2025)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"74714f7d-6aab-974b-8796-939f57886741"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[576, 22, 783, 17, 142, "Input",ExpressionUUID->"08313ba5-256f-6d40-9602-82ff263372a0"],
+Cell[1362, 41, 1375, 20, 108, "Output",ExpressionUUID->"5b913498-50d6-3d4f-828f-4d1c4499e02c"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[2774, 66, 1779, 32, 161, "Input",ExpressionUUID->"fed51d3e-d617-6a4c-95f5-c223dd45f3d2"],
+Cell[4556, 100, 1368, 21, 108, "Output",ExpressionUUID->"2dfb6b76-6546-c441-b686-116050d8bd3e"],
+Cell[5927, 123, 170, 2, 32, "Output",ExpressionUUID->"5f8ec3d9-8107-154a-a5de-68d2a07470e8"]
+}, Open  ]]
+}
+]
+*)
+

@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LLM Experiment Visualizations</title>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background-color: #f4f4f9; }
+        .chart-container { background: white; padding: 20px; margin-bottom: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1, h2 { color: #333; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <h1>LLM Phase Transition Experiments</h1>
+    
+    <div class="chart-container">
+        <h2>Physical Reasoning: Helicopter Cable Problem</h2>
+        <p>Model performance grading based on deriving the correct "Straight Line" solution vs misconceptions (Catenary, Spiral, etc.).</p>
+        <div id="phys_bar"></div>
+        <div id="phys_scatter"></div>
+    </div>
+
+    <script>
+        const data = {"physical": [{"model": "Olmo 3.1 32B Think", "shape": "Straight Line", "grade": "A+", "score": 100, "size": 32, "arch": "Dense", "purpose": "Reasoning", "desc": "32B parameter dense model optimized via Reinforcement Learning (RL) for multi-step reasoning. Its \"Thinking\" transcript shows a self-correcting process that eventually proves the constant slope."}, {"model": "gpt-oss-120b", "shape": "Straight Line", "grade": "A+", "score": 100, "size": 120, "arch": "MoE", "purpose": "General", "desc": "117B parameter MoE built for math and logic. It explicitly derived that \"curvature vanishes\" when horizontal force is uniform, correctly distinguishing this from a standard catenary."}, {"model": "Kimi K2 0711", "shape": "Straight Line", "grade": "A+", "score": 100, "size": 0, "arch": "MoE", "purpose": "General", "desc": "1T parameter MoE focused on agentic intelligence. It successfully bypassed common linguistic patterns to calculate the correct linear force balance."}, {"model": "Nemotron Nano 12B 2 VL", "shape": "Straight Line", "grade": "A", "score": 95, "size": 12, "arch": "Dense", "purpose": "General", "desc": "12B parameter hybrid Transformer-Mamba model. The hybrid architecture excels at sequential logic; it correctly concluded a straight line inclined at arctan(\u03bbg/D)."}, {"model": "Nemotron Nano 9B V2", "shape": "Straight Line", "grade": "A", "score": 95, "size": 9, "arch": "Dense", "purpose": "General", "desc": "9B parameter dense model. Like its 12B counterpart, it used first-principles reasoning to identify the constant tension ratio."}, {"model": "Qwen3 235B A22B", "shape": "Straight Line", "grade": "A", "score": 95, "size": 235, "arch": "MoE", "purpose": "General", "desc": "235B parameter MoE (22B active). It used its \"Thinking Mode\" to derive the answer from scratch, avoiding the \"catenary trap\"."}, {"model": "Deepseek R1T Chimera", "shape": "Straight Line", "grade": "A-", "score": 90, "size": 0, "arch": "Dense", "purpose": "Reasoning", "desc": "Merged Reasoning Model combining DeepSeek-R1's logic with V3's scale. It reached the correct answer but with slightly less mathematical rigor than Olmo."}, {"model": "GLM 4.5 Air", "shape": "Straight Line", "grade": "A-", "score": 90, "size": 0, "arch": "Dense", "purpose": "Reasoning", "desc": "Bilingual Reasoning Model. It correctly identified that a steady-state force vector results in a non-curved cable."}, {"model": "gpt-oss:20b", "shape": "Straight Line", "grade": "A-", "score": 90, "size": 20, "arch": "Dense", "purpose": "Reasoning", "desc": "20B Reasoning model. Proved that uniform drag distribution along the arc length results in a fixed angle."}, {"model": "gemma3:4b", "shape": "Straight Line (Confused)", "grade": "C", "score": 75, "size": 4, "arch": "Dense", "purpose": "General", "desc": "4B Dense model. It mentioned a straight line but struggled with the boundary conditions at the free end, showing the limitations of smaller parameter counts in handling physics constraints."}, {"model": "Tongyi DeepResearch 30B", "shape": "Asymmetric Curve", "grade": "D", "score": 60, "size": 30, "arch": "MoE", "purpose": "General", "desc": "30B MoE Search-specialist. It likely synthesized a \"common\" physics answer from its search-centric data rather than performing an internal calculation."}, {"model": "Gemini 2.0 Flash Exp", "shape": "Neither Catenary nor Straight", "grade": "D", "score": 60, "size": 0, "arch": "Dense", "purpose": "General", "desc": "Multimodal High-Speed Model. While it correctly identified that standard curves don't fit, it failed to find the straight-line simplification, likely due to its optimization for speed over deep physical reasoning."}, {"model": "Hermes 3 405B Instruct", "shape": "Spiral / Pursuit Curve", "grade": "F", "score": 40, "size": 405, "arch": "Dense", "purpose": "Instruct", "desc": "405B parameter dense model. Despite its massive size, it \"hallucinated\" a complex \"tractrix\" solution. This is a \"pattern matching\" failure where the model maps the problem to a sophisticated-sounding but irrelevant concept."}, {"model": "Deepseek V3.1 Nex N1", "shape": "Dynamic Catenary", "grade": "F", "score": 40, "size": 671, "arch": "MoE", "purpose": "General", "desc": "671B parameter MoE. It used very confident, professional-sounding logic to justify an incorrect \"cosh\" (catenary) solution. This is a \"sophisticated failure\" common in large-scale models without a dedicated reasoning loop."}, {"model": "Trinity Mini", "shape": "Parabola", "grade": "F", "score": 40, "size": 1, "arch": "Dense", "purpose": "General", "desc": "Small Mini variant. It defaulted to the simplest pattern match for \"hanging cable\"\u2014the suspension bridge parabola\u2014due to limited parameter capacity."}, {"model": "Devstral 2 2512", "shape": "Modified Catenary", "grade": "F", "score": 40, "size": 0, "arch": "Dense", "purpose": "Coding", "desc": "Mistral-derivative Coding model. It attempted a complex ODE but failed to simplify it, defaulting to the word \"catenary\" because it is the most frequent term in its training data for cables."}, {"model": "KAT-Coder-Pro V1", "shape": "Catenary", "grade": "F", "score": 40, "size": 0, "arch": "Dense", "purpose": "Coding", "desc": "Agentic Code Model. It forced a \"catenary\" solution because \"cosh\" is the most frequent math symbol for cables in its code-heavy training set."}, {"model": "Llama 3.3 70B Instruct", "shape": "Catenary Curve", "grade": "F", "score": 40, "size": 70, "arch": "Dense", "purpose": "Instruct", "desc": "70B parameter dense chat model. It provided the most common answer found in human-annotated dialogue datasets rather than computing the physics."}, {"model": "Cognito V2 Preview 405B", "shape": "Asymmetrical Catenary", "grade": "F", "score": 40, "size": 405, "arch": "Dense", "purpose": "General", "desc": "405B parameter hybrid reasoning model. Despite its scale, it failed to break the linguistic bias of \"cable = catenary.\""}, {"model": "Llama 3.2 3B Instruct", "shape": "Catenary", "grade": "F", "score": 40, "size": 3, "arch": "Dense", "purpose": "Instruct", "desc": "3B parameter lightweight model. Primarily a chat-focused model for on-device use; lacks the depth for physical first-principles derivation."}, {"model": "Mistral 7B Instruct", "shape": "Catenary-like", "grade": "F", "score": 40, "size": 7, "arch": "Dense", "purpose": "Instruct", "desc": "7B parameter generalist model. Small size led it to rely on the highest-probability next-token association for \"hanging uniform cable.\""}, {"model": "Qwen3 Coder 480B A35B", "shape": "Concave Upward", "grade": "F", "score": 40, "size": 480, "arch": "MoE", "purpose": "Coding", "desc": "480B parameter MoE Coder focus. It over-engineered the math and reached an incorrect conclusion that curvature would be greatest at the free end."}, {"model": "Uncensored", "shape": "Parabolic Curve", "grade": "F", "score": 40, "size": 0, "arch": "Dense", "purpose": "General", "desc": "Generalist Model. Claimed that drag reduces horizontal tension in a way that creates a vertex."}, {"model": "Mistral Small 3.1 24B", "shape": "Complex Curve", "grade": "F", "score": 40, "size": 24, "arch": "Dense", "purpose": "General", "desc": "24B Intermediate model. It admitted the problem was \"beyond simple analytical solutions,\" missing the simplification found by the reasoning models."}, {"model": "Gemma 3 12b/27b", "shape": "Asymmetric Catenary", "grade": "F", "score": 40, "size": 12, "arch": "Dense", "purpose": "General", "desc": "Multimodal Dense models. They relied on the visual intuition of a \"sagging\" cable rather than mathematical force balance."}, {"model": "gemma3:1b", "shape": "Sine Wave", "grade": "F-", "score": 20, "size": 1, "arch": "Dense", "purpose": "General", "desc": "1B parameter tiny model. The most severe hallucination; it claimed air friction creates a \"rolling motion\" and a \"sine wave pattern,\" likely because its tiny parameter count cannot maintain physical grounding."}]};
+
+        // --- Physical Reasoning Charts ---
+        
+        // 1. Bar Chart: Grades
+        const physSorted = [...data.physical].sort((a, b) => b.score - a.score);
+        const tracePhysBar = {
+            x: physSorted.map(d => d.model),
+            y: physSorted.map(d => d.score),
+            text: physSorted.map(d => d.grade + ' (' + d.shape + ')'),
+            type: 'bar',
+            marker: { color: physSorted.map(d => d.score > 80 ? '#2ca02c' : (d.score > 60 ? '#ff7f0e' : '#d62728')) }
+        };
+        Plotly.newPlot('phys_bar', [tracePhysBar], {
+            title: 'Physical Reasoning Grades by Model',
+            yaxis: { title: 'Score (A+=100, F=40)', range: [0, 105] },
+            margin: { b: 150 }
+        });
+
+        // 2. Scatter: Size vs Score
+        const physScatterData = {
+            x: data.physical.map(d => d.size),
+            y: data.physical.map(d => d.score),
+            mode: 'markers+text',
+            text: data.physical.map(d => d.model),
+            textposition: 'top center',
+            marker: { 
+                size: 12,
+                color: data.physical.map(d => d.arch === 'MoE' ? '#1f77b4' : '#ff7f0e'),
+                symbol: data.physical.map(d => d.purpose === 'Reasoning' ? 'star' : 'circle')
+            },
+            name: 'Models'
+        };
+        
+        Plotly.newPlot('phys_scatter', [physScatterData], {
+            title: 'Physical Reasoning: Parameter Size vs Score',
+            xaxis: { title: 'Parameter Size (Billions)', type: 'log' },
+            yaxis: { title: 'Score', range: [0, 105] },
+            hovermode: 'closest'
+        });
+
+    </script>
+</body>
+</html>
+    

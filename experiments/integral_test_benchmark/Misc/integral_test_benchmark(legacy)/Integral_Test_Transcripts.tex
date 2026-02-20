@@ -1,0 +1,256 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{fancyvrb}
+\usepackage{xcolor}
+
+\geometry{a4paper, margin=1in}
+
+\title{Integral Test Transcripts}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Problem Statement}
+LLMs are asked to solve the following integral:
+$$ \int \frac{\tan^3(\ln(x))}{x} \, dx $$
+
+\textbf{Correct Solution:}
+$$ \frac{1}{2}\tan^2(\ln|x|) + \ln|\cos(\ln|x|)| + C $$
+
+\section{Transcripts}
+
+\subsection*{Gemma3:1b}
+\begin{quote}
+Let $I = \int \tan^3(\ln(x)) dx$.
+We can use substitution to solve this integral. Let $u = \ln(x)$. Then $du = \frac{1}{x} dx$. Thus, $dx = x du$.
+Substituting into the integral, we get:
+$I = \int \tan^3(u) (x du) = \int \tan^2(u) \tan(u) du = \int \sec^2(u) \tan^2(u) du$.
+Let $v = \tan(u)$. Then $dv = \sec^2(u) du$.
+Substituting into the integral, we get:
+$I = \int \sec^2(u) v^2 du = \int v^2 dv = v^2 + C = \tan^2(u) + C$.
+Now substitute back $u = \ln(x)$:
+$I = \tan^2(\ln(x)) + C$.
+
+Thus,
+$\int \tan^3(\ln(x)) dx = \tan^2(\ln(x)) + C$.
+
+Final Answer: The final answer is $\tan^2(\ln(x)) + C$
+\end{quote}
+
+\subsection*{Gemma3:4b}
+\begin{quote}
+Let the integral be $I = \int \frac{\tan^3(\ln(x))}{x} dx$.
+Let $u = \ln(x)$, then $\frac{du}{dx} = \frac{1}{x}$, so $du = \frac{1}{x} dx$. Substituting these into the integral, we have
+$I = \int \tan^3(u) du$.
+Now we can rewrite this as
+$I = \int \tan^3(u) du = \int \tan^2(u)\tan(u) du$.
+We know that $\tan^2(u) = \sec^2(u) - 1$, so
+$I = \int (\sec^2(u) - 1)\tan(u) du = \int \sec^2(u)\tan(u) du - \int \tan(u) du$.
+For the first integral, let $v = \tan(u)$, then $dv = \sec^2(u) du$. Therefore, $\int \sec^2(u) \tan(u) du = \int v dv = \frac{v^2}{2} + C_1 = \frac{\tan^2(u)}{2} + C_1$.
+For the second integral, we have $\int \tan(u) du = \int \frac{\sin(u)}{\cos(u)} du$. Let $w = \cos(u)$, then $dw = -\sin(u) du$. Thus, $\int \tan(u) du = -\ln|\cos(u)| + C_2$.
+So,
+$I = \frac{\tan^2(u)}{2} - (-\ln|\cos(u)|) + C = \frac{\tan^2(u)}{2} + \ln|\cos(u)| + C$.
+
+Final Answer: The final answer is $\frac{\tan^2(u)}{2} + \ln|\cos(u)| + C$
+\end{quote}
+
+\subsection*{Gemma3:12b}
+\begin{quote}
+Let the integral be $I = \int \frac{\tan^3(\ln(x))}{x} dx$.
+Let $u = \ln(x)$, so $du = \frac{1}{x} dx$. Then $I = \int \tan^3(u) du$.
+We can rewrite $\tan^3(u)$ as $\tan^2(u) \tan(u) = (\sec^2(u) - 1) \tan(u)$, so
+$I = \int (\sec^2(u) - 1) \tan(u) du = \int \sec^2(u) \tan(u) du - \int \tan(u) du$.
+For the first integral, let $v = \tan(u)$, so $dv = \sec^2(u) du$. Then $\int \sec^2(u) \tan(u) du = \frac{\tan^2(u)}{2} + C_1$.
+For the second integral, we have $\int \tan(u) du = -\ln|\cos(u)| + C_2$.
+Thus $I = \frac{\tan^2(u)}{2} + \ln|\cos(u)| + C$.
+Substituting back $u = \ln(x)$, we get $I = \frac{\tan^2(\ln(x))}{2} + \ln|\cos(\ln(x))| + C$.
+
+Final Answer: The final answer is $\frac{\tan^2(\ln(x))}{2} + \ln|\cos(\ln(x))| + C$
+\end{quote}
+
+\subsection*{Gemma3:27b}
+\begin{quote}
+Let the given integral be $I = \int \frac{\tan^3(\ln(x))}{x} dx$. Let $u = \ln(x)$. Then $du = \frac{1}{x} dx$.
+Substituting this into the integral, we have $I = \int \tan^3(u) du = \int \tan^2(u) \tan(u) du = \int (\sec^2(u) - 1) \tan(u) du$ $= \int \sec^2(u) \tan(u) du - \int \tan(u) du$.
+Let $v = \sec(u)$. Then $dv = \sec(u) \tan(u) du$.
+Then $\int \sec^2(u) \tan(u) du = \int \sec(u) (\sec(u) \tan(u)) du = \int v dv = \frac{v^2}{2} + C_1 = \frac{\sec^2(u)}{2} + C_1$.
+Also, $\int \tan(u) du = -\ln|\cos(u)| + C_2$.
+So, $I = \frac{\sec^2(u)}{2} + \ln|\cos(u)| + C$.
+Substituting $u = \ln(x)$ back in, we get $I = \frac{\sec^2(\ln(x))}{2} + \ln|\cos(\ln(x))| + C$.
+
+Final Answer: The final answer is $\frac{1}{2}\sec^2(\ln(x)) + \ln|\cos(\ln(x))| + C$
+\end{quote}
+
+\subsection*{Cognito V2 Preview Llama 70B}
+\begin{quote}
+Let's solve this integral using substitution and simplifying strategies.
+
+1) First, let's try to simplify the integrand. Note that:
+   $\tan^3(\ln(x)) = \frac{\tan^3(\ln(x))}{\tan^2(\ln(x))+1} \cdot [1 + \tan^2(\ln(x))]$
+   $= \frac{d}{dx}[\ln(x)] \cdot \tan^2(\ln(x)) + \tan(\ln(x))$
+
+2) Therefore:
+   $\int\frac{\tan^3(\ln(x))}{x}dx = \int\frac{1}{x}[\ln(x)]'\tan^2(\ln(x))dx + \int\frac{\tan(\ln(x))}{x}dx$
+
+3) For the first part, let's use substitution: Let $u = \ln(x)$. This transforms the integral into $\int\tan^2(u)du + \int\tan(u)du$.
+
+5) For the first part: $\int\tan^2(u)du = \tan(u) - u + C$.
+
+6) The second part: $\int\tan(u)du = -\ln|\cos(u)| + C$.
+
+7) Combining these results:
+   $\tan(\ln(x)) - \ln(x) + \ln|\cos(\ln(x))| + C$.
+
+Therefore, the final answer is:
+$$ \int\tan^3(\ln(x))\frac{dx}{x}dx = \tan(\ln(x)) - \ln(x) + \ln|\cos(\ln(x))| + C $$
+\end{quote}
+
+\subsection*{Cognito V2 Preview Llama 405B}
+\begin{quote}
+Let's solve this integral step by step:
+
+1) Let $u = \ln(x)$, then $du = \frac{1}{x}dx$. Thus, $\int\frac{\tan^3(\ln(x))}{x}dx = \int\tan^3(u)du$.
+
+2) We can write $\tan^3(u) = (\sec^2(u) - 1)\tan(u)$.
+
+3) Therefore: $\int\tan^3(u)du = \int\tan(u)\sec^2(u)du - \int\tan(u)du$.
+
+4) For the first integral, let $v_1 = \tan(u)$. Then $dv_1 = \sec^2(u)du$, giving $\frac{1}{2}\tan^2(u)$.
+
+5) For the second integral: $\int\tan(u)du = -\ln|\cos(u)| + C$.
+
+6) Combining the results: $\frac{1}{2}\tan^2(u) + \ln|\cos(u)| + C$.
+
+7) Substituting back $u = \ln(x)$: $\frac{1}{2}\tan^2(\ln(x)) + \ln|\cos(\ln(x))| + C$.
+
+Therefore,
+$$ \int\tan^3(\ln(x))/x \, dx = \frac{1}{2}\tan^2(\ln(x)) + \ln|\cos(\ln(x))| + C $$
+\end{quote}
+
+\subsection*{Mistral 7B Instruct}
+\begin{quote}
+To solve the integral $\int \frac{\tan^3(\ln x)}{x} \, dx$, we can use a substitution method.
+
+1. \textbf{Substitution}: Let $u = \ln x$. Then $du = \frac{1}{x} dx$.
+2. \textbf{Rewrite the Integral}: $\int \tan^3(u) \, du$.
+3. \textbf{Simplify}: $\tan^3(u) = (\sec^2(u) - 1) \tan(u) = \sec^2(u) \tan(u) - \tan(u)$.
+4. \textbf{Integrate Term by Term}:
+   - $\int \sec^2(u) \tan(u) \, du = \frac{\sec^2(u)}{2} + C_1$.
+   - $-\int \tan(u) \, du = -\ln|\sec(u)| + C_2$.
+5. \textbf{Combine}: $\frac{\sec^2(u)}{2} - \ln|\sec(u)| + C$.
+6. \textbf{Substitute Back}:
+   $\frac{\sec^2(\ln x)}{2} - \ln|\sec(\ln x)| + C$.
+
+\textbf{Final Answer}:
+$$ \frac{\sec^2(\ln x)}{2} - \ln|\sec(\ln x)| + C $$
+\end{quote}
+
+\subsection*{Llama 3.3 70B Instruct}
+\begin{quote}
+To solve the integral $\tan^3(\ln(x))/x \, dx$, we can use the substitution method and trigonometric identities.
+
+Step 1: Substitute $u = \ln(x)$. Then $du = (1/x) dx$. Substituting gives $\int \tan^3(u) du$.
+
+Step 2: Apply Trigonometric Identity. $\tan^3(u) = \tan(u)(\sec^2(u) - 1)$.
+
+Step 3: Integrate. $\int \tan(u)\sec^2(u) du - \int \tan(u) du$.
+First part: $\sec(u) + C1$ (Wait, $\int \tan(u)\sec^2(u) du$ is $\frac{1}{2}\tan^2 u$ or $\frac{1}{2}\sec^2 u$, the model claims $\sec(u)$).
+Second part: $-\ln|\cos(u)| + C2$.
+
+Step 4: Substitute Back.
+$\sec(\ln(x)) + \ln|\cos(\ln(x))| + C$.
+
+\textbf{Final Solution}: The final answer is: $\sec(\ln(x)) + \ln|\cos(\ln(x))| + C$
+\end{quote}
+
+\subsection*{Kimi K2 0711}
+\begin{quote}
+Let's consider the substitution $u = \ln x \Rightarrow du = \frac{1}{x} dx$. The integral transforms into $\int \tan^3(u) \, du$.
+
+To integrate $\tan^3(u)$, use $\tan^2(u) = \sec^2(u) - 1$:
+$\tan^3(u) = \tan(u)(\sec^2(u) - 1)$.
+
+Thus, the integral becomes $\int \tan(u)\sec^2(u) \, du - \int \tan(u) \, du$.
+The first integral is $\frac{\tan^2(u)}{2}$. The second is $-\ln|\cos(u)|$.
+
+Combining results: $\frac{\tan^2(u)}{2} + \ln|\cos(u)| + C$.
+
+Substituting back:
+$$ \frac{1}{2} \tan^2(\ln x) + \ln|\cos(\ln x)| + C $$
+\end{quote}
+
+\subsection*{GLM 4.5 Air}
+\begin{quote}
+Step 1: Substitution $u = \ln(x)$, $du = \frac{1}{x} dx$. Integral becomes $\int \tan^3(u) \, du$.
+
+Step 2: Rewrite $\tan^3(u) = \tan(u)(\sec^2(u) - 1)$.
+
+Step 3: Solve first integral $\int \tan(u)\sec^2(u) \, du = \frac{\tan^2(u)}{2}$.
+
+Step 4: Solve second integral $\int \tan(u) \, du = -\ln|\cos(u)|$.
+
+Step 5: Combine $\frac{\tan^2(u)}{2} + \ln|\cos(u)| + C$.
+
+\textbf{Final Answer}
+$$ \int \frac{\tan^3(\ln(x))}{x} dx = \frac{\tan^2(\ln(x))}{2} - \ln|\sec(\ln(x))| + C $$
+\end{quote}
+
+\subsection*{LongCat Flash Chat}
+\begin{quote}
+Step 1: Substitution $u = \ln x$, $du = \frac{dx}{x}$. Integral becomes $\int \tan^3(u) \, du$.
+
+Step 2: Integrate $\int \tan^3 u \, du = \int \tan u (\sec^2 u - 1) \, du$.
+$\int \tan u \sec^2 u \, du = \frac{\tan^2 u}{2}$.
+$\int \tan u \, du = -\ln|\cos u|$.
+
+Result: $\frac{1}{2} \tan^2 u + \ln|\cos u| + C$.
+
+\textbf{Final Answer:}
+$$ \frac{1}{2} \tan^2(\ln x) + \ln|\cos(\ln x)| + C $$
+\end{quote}
+
+\subsection*{Deepseek R1T Chimera}
+\begin{quote}
+Substitution $u = \ln(x)$, $du = dx/x$. Integral becomes $\int \tan^3(u) du$.
+Rewrite $\tan^3(u) = \tan(u)(\sec^2(u) - 1)$.
+Integral is $\int \tan(u)\sec^2(u) du - \int \tan(u) du$.
+First part: $\frac{1}{2}\tan^2(u)$.
+Second part: $-\ln|\cos(u)|$.
+Result: $\frac{1}{2}\tan^2(u) + \ln|\cos(u)| + C$.
+
+Substituted back: $\frac{1}{2}\tan^2(\ln(x)) + \ln|\cos(\ln(x))| + C$.
+
+\textbf{Answer}:
+$$ \frac{1}{2} \tan^2(\ln(x)) + \ln|\cos(\ln(x))| + C $$
+\end{quote}
+
+\subsection*{Tongyi DeepResearch 30B A3B}
+\begin{quote}
+Substitution $u = \ln x \Rightarrow du = \frac{1}{x} dx$.
+Integral: $\int \tan^3(u) \, du = \int \tan(u)(\sec^2(u) - 1) \, du$.
+$\int \tan(u)\sec^2(u) \, du = \frac{1}{2}\tan^2(u)$.
+$\int \tan(u) \, du = -\ln|\cos(u)|$.
+Total: $\frac{1}{2}\tan^2(u) + \ln|\cos(u)| + C$.
+
+\textbf{Final Answer:}
+$$ \frac{1}{2} \tan^2(\ln x) + \ln|\cos(\ln x)| + C $$
+\end{quote}
+
+\subsection*{Grok 4.1 Fast}
+\begin{quote}
+$$ \frac{1}{2} \tan^2(\ln x) + \ln|\cos(\ln x)| + C $$
+Explanation:
+Substitution $u = \ln x$. Integral $\int \tan^3(u) du$.
+Rewrite $\tan^3(u) = \tan(u)(\sec^2(u) - 1)$.
+Integrate to get $\frac{1}{2} \tan^2(u) + \ln|\cos(u)|$.
+Substitute back.
+\end{quote}
+
+\end{document}

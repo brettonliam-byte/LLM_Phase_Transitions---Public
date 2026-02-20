@@ -1,0 +1,181 @@
+{
+  "config_used": {
+    "provider": "ollama",
+    "model": "gemma3:12b",
+    "temperature": 1,
+    "max_tokens": 1000,
+    "logprobs": true,
+    "top_logprobs": 5,
+    "system_prompt": "You are a helpful analytic assistant.",
+    "user_prompt": "What is the capital of France? Answer in one word."
+  },
+  "raw_response": {
+    "id": "chatcmpl-186",
+    "object": "chat.completion",
+    "created": 1768759295,
+    "model": "gemma3:12b",
+    "system_fingerprint": "fp_ollama",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "Paris"
+        },
+        "finish_reason": "stop",
+        "logprobs": {
+          "content": [
+            {
+              "token": "Paris",
+              "logprob": -9.79039072035448e-12,
+              "bytes": [
+                80,
+                97,
+                114,
+                105,
+                115
+              ],
+              "top_logprobs": [
+                {
+                  "token": "Paris",
+                  "logprob": -9.79039072035448e-12,
+                  "bytes": [
+                    80,
+                    97,
+                    114,
+                    105,
+                    115
+                  ]
+                },
+                {
+                  "token": "**",
+                  "logprob": -25.64586639404297,
+                  "bytes": [
+                    42,
+                    42
+                  ]
+                },
+                {
+                  "token": "巴黎",
+                  "logprob": -26.718109130859375,
+                  "bytes": [
+                    229,
+                    183,
+                    180,
+                    233,
+                    187,
+                    142
+                  ]
+                },
+                {
+                  "token": " Paris",
+                  "logprob": -31.903793334960938,
+                  "bytes": [
+                    32,
+                    80,
+                    97,
+                    114,
+                    105,
+                    115
+                  ]
+                },
+                {
+                  "token": "パリ",
+                  "logprob": -34.165679931640625,
+                  "bytes": [
+                    227,
+                    131,
+                    145,
+                    227,
+                    131,
+                    170
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 33,
+      "completion_tokens": 2,
+      "total_tokens": 35
+    }
+  },
+  "normalized_response": {
+    "content": "Paris",
+    "logprobs": {
+      "content": [
+        {
+          "token": "Paris",
+          "logprob": -9.79039072035448e-12,
+          "bytes": [
+            80,
+            97,
+            114,
+            105,
+            115
+          ],
+          "top_logprobs": [
+            {
+              "token": "Paris",
+              "logprob": -9.79039072035448e-12,
+              "bytes": [
+                80,
+                97,
+                114,
+                105,
+                115
+              ]
+            },
+            {
+              "token": "**",
+              "logprob": -25.64586639404297,
+              "bytes": [
+                42,
+                42
+              ]
+            },
+            {
+              "token": "巴黎",
+              "logprob": -26.718109130859375,
+              "bytes": [
+                229,
+                183,
+                180,
+                233,
+                187,
+                142
+              ]
+            },
+            {
+              "token": " Paris",
+              "logprob": -31.903793334960938,
+              "bytes": [
+                32,
+                80,
+                97,
+                114,
+                105,
+                115
+              ]
+            },
+            {
+              "token": "パリ",
+              "logprob": -34.165679931640625,
+              "bytes": [
+                227,
+                131,
+                145,
+                227,
+                131,
+                170
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
