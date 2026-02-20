@@ -1,7 +1,10 @@
+.env
 public_key.txt
 status.md
 gemini.md
 node_modules
+*.xlsx
+**/llm_outputs/
 
 experiments/integral_test_benchmark/integral_test_benchmark(legacy)/
 
