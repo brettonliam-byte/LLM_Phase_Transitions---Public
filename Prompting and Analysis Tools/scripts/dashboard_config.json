@@ -1,7 +1,7 @@
 {
   "project_name": "LLM Phase Transitions Dashboard",
   "github_username": "brettonliam-byte",
-  "repository_name": "LLM_Phase_Transitions",
+  "repository_name": "LLM_Phase_Transitions---Public",
   "experiments": [
     {
       "title": "Integral Experiment",
