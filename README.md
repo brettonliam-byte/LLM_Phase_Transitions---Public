@@ -5,7 +5,7 @@ This project investigates **phase transitions** in Large Language Model (LLM) be
 ## Project Overview
 We use a multi-modal experimental framework (Python, Node.js, and Mathematica) to systematically probe LLMs. By sweeping across model sizes (from 1B to 1T+ parameters) and temperatures (0.0 to 2.0), we identify the "critical points" where models transition from deterministic failure to emergent success, and eventually to creative hallucination.
 
-### [View Interactive Dashboard](https://brettonliam-byte.github.io/LLM_Phase_Transitions%20-%20Public/index.html)
+### [View Interactive Dashboard](https://brettonliam-byte.github.io/LLM_Phase_Transitions---Public/)
 
 ## Core Research Areas
 
