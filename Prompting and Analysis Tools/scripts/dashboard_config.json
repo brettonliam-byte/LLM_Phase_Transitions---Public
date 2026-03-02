@@ -4,46 +4,22 @@
   "repository_name": "LLM_Phase_Transitions",
   "experiments": [
     {
-      "title": "Integral Solving Performance",
-      "description": "Analysis of LLMs solving complex calculus integrals across temperature ranges.",
+      "title": "Integral Experiment",
+      "description": "LLM Performance in a calculus excercise with temperature variation.",
       "path": "experiments/Results%20Visualisations/integral_visualization.html",
       "icon": "bi-calculator"
     },
     {
-      "title": "Cable Shape Reasoning",
-      "description": "Testing physical intuition regarding the shape of hanging cables.",
-      "path": "experiments/Results%20Visualisations/cable_shape_performance.html",
-      "icon": "bi-symmetry-horizontal"
-    },
-    {
-      "title": "Comprehensive LLM Analysis",
-      "description": "A high-level view of performance across multiple reasoning benchmarks.",
-      "path": "experiments/Results%20Visualisations/comprehensive_visualization.html",
+      "title": "Physics Experiment",
+      "description": "LLM performance in a physics task.",
+      "path": "experiments/Results%20Visualisations/Physics Experiment.html",
       "icon": "bi-bar-chart-steps"
     },
     {
-      "title": "General Visualizations",
-      "description": "Baseline performance metrics for various models.",
+      "title": "Deciphering Experiment",
+      "description": "LLM performace in simple diciphering exercises",
       "path": "experiments/Results%20Visualisations/visualization.html",
       "icon": "bi-graph-up"
-    },
-    {
-      "title": "CoT Experiment Data",
-      "description": "Raw data for Chain of Thought experimentation across models.",
-      "path": "experiments/Results%20Visualisations/cot_data.json",
-      "icon": "bi-file-earmark-code"
-    },
-    {
-      "title": "Comprehensive Experiment Data",
-      "description": "Consolidated data for all phase transition benchmarks.",
-      "path": "experiments/Results%20Visualisations/experiment_data.json",
-      "icon": "bi-database"
-    },
-    {
-      "title": "Qwen Experiment Data",
-      "description": "Performance data specifically for Qwen model family.",
-      "path": "experiments/Results%20Visualisations/qwen_data.json",
-      "icon": "bi-filetype-json"
     }
   ]
 }

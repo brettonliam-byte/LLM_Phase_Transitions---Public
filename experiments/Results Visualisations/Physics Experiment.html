@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Physics Experiment</title>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background-color: #f4f4f9; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .chart-container { background: white; padding: 20px; margin-bottom: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1, h2 { color: #333; }
+        .text-section { background: #fff; padding: 20px; margin-bottom: 30px; border-radius: 8px; border-left: 5px solid #0d6efd; }
+        .bubble-chart-wrapper { position: relative; height: 600px; width: 100%; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Physics Experiment</h1>
+        
+        <div class="chart-container">
+            <h2>Physical Reasoning: Helicopter Cable Problem</h2>
+            <p>Various models are posed a problem from the 2014 qualifying exam for the United States physics team, in which the examinees are asked which shape a uniform flexible cable will adopt if suspended from a helicopter with a constant horizontal speed, where are resistance is non-negligible.</p>
+            <p>The objective is to assess the capability of LLMs to solve difficult problems, particularly those which require an intuitive understanding of physical interactions over a standard formulaic approach.</p>
+            <p>Such problems require models to apply a logical chain of thought rather than recall and apply a formula.</p>
+            <div id="phys_bar"></div>
+        </div>
+
+        <div class="text-section">
+            <h3>Grading System</h3>
+            <p>The responses of each model were graded based on their correctness; while many models failed the task, some models exhibited a greater understanding than others. Of the successful models, the highest grade was assigned to those that arrived at the correct answer with the most concise derivations. </p>
+        </div>
+
+        <div class="chart-container">
+            <h2>Cable Shape Prediction vs. Model Scale (Total Parameters)</h2>
+            <div class="bubble-chart-wrapper">
+                <canvas id="performanceChart"></canvas>
+            </div>
+            <div style="margin-top: 20px; padding: 15px; background: #eef; border-left: 5px solid #007bff;">
+                <h3>Analysis Categories:</h3>
+                <ul>
+                    <li><strong>Correct (Straight Line):</strong> The model correctly derived that the constant force vectors result in a straight line.</li>
+                    <li><strong>Close/Plausible:</strong> The model recognized both forces but failed the mathematical simplification.</li>
+                    <li><strong>Standard Error:</strong> The model defaulted to common textbook answers (Catenary, Parabola).</li>
+                    <li><strong>Hallucination:</strong> The model predicted mathematically unrelated shapes.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="text-section">
+            <h3>Model Performance with Architecture and Parameter Count</h3>
+            <p>The model responses have been placed in four 'levels' of correctness based on their earlier grades; while many models failed the task, some exhibited a better understanding than others. The broader architecture (Dense, Hybrid, MoE) and total parameter count of each model is indicated by its colour and x-coordinate, respectively. <div></div> The below figure displays the model performance with the active parameter count of each model </p>
+        </div>
+
+        <div class="chart-container">
+            <h2>Cable Shape Prediction vs. Active Parameter Scale</h2>
+            <p>This chart represents the reasoning quality relative to the number of parameters actually performing computation during inference (Active Parameters). Error bars indicate models with dynamic active parameter ranges.</p>
+            <div class="bubble-chart-wrapper">
+                <canvas id="activePerformanceChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Full Data with Refined Active Parameter Ranges and Estimated Tags
+        const fullPhysicalData = [
+            {"model": "Olmo 3.1 32B Think", "shape": "Straight Line", "grade": "A+", "score": 100, "size": 32, "active_range": [32, 32], "arch": "Dense", "desc": "32B Dense reasoning model."},
+            {"model": "gpt-oss-120b", "shape": "Straight Line", "grade": "A+", "score": 100, "size": 117, "active_range": [5.1, 5.1], "arch": "MoE", "desc": "117B MoE (5.1B active). Optimized for math/logic."},
+            {"model": "Kimi K2 0711", "shape": "Straight Line", "grade": "A+", "score": 100, "size": 1000, "active_range": [32, 32], "arch": "MoE", "desc": "1T MoE (32B active). Agentic frontier model."},
+            {"model": "Nemotron Nano 12B 2 VL", "shape": "Straight Line", "grade": "A", "score": 95, "size": 12, "active_range": [12, 12], "arch": "Hybrid", "desc": "12B Hybrid Transformer-Mamba."},
+            {"model": "Nemotron Nano 9B V2", "shape": "Straight Line", "grade": "A", "score": 95, "size": 9, "active_range": [9, 9], "arch": "Hybrid", "desc": "9B Dense reasoning-heavy model."},
+            {"model": "Qwen3 235B A22B", "shape": "Straight Line", "grade": "A", "score": 95, "size": 235, "active_range": [22, 22], "arch": "MoE", "desc": "235B MoE (22B active). Thinking variant."},
+            {"model": "LongCat Flash Chat", "shape": "Catenary-like", "grade": "C", "score": 75, "size": 560, "active_range": [18.6, 31.3], "arch": "MoE", "desc": "560B MoE (avg 27B active). High-throughput agentic model."},
+            {"model": "Deepseek R1T Chimera", "shape": "Straight Line", "grade": "A-", "score": 90, "size": 671, "active_range": [37, 37], "arch": "MoE", "desc": "671B MoE (37B active). Combines R1 reasoning with V3 scale."},
+            {"model": "GLM 4.5 Air", "shape": "Straight Line", "grade": "A-", "score": 90, "size": 100, "active_range": [20, 20], "arch": "MoE", "desc": "100B MoE (estimated 20B active)."},
+            {"model": "gpt-oss:20b", "shape": "Straight Line", "grade": "A-", "score": 90, "size": 21, "active_range": [3.6, 3.6], "arch": "MoE", "desc": "21B MoE (3.6B active)."},
+            {"model": "gemma3:4b", "shape": "Straight Line (Confused)", "grade": "C", "score": 75, "size": 4, "active_range": [4, 4], "arch": "Dense", "desc": "4B Dense model."},
+            {"model": "Tongyi DeepResearch 30B", "shape": "Asymmetric Curve", "grade": "D", "score": 60, "size": 30, "active_range": [3, 3], "arch": "MoE", "desc": "30B MoE search-specialist (3B active)."},
+            {"model": "Gemini 2.0 Flash Exp", "shape": "Neither Catenary nor Straight", "grade": "D", "score": 60, "size": 300, "active_range": [25, 25], "arch": "MoE", "desc": "Multimodal Speed-Optimized Model (estimated 300B total/25B active)."},
+            {"model": "Hermes 3 405B Instruct", "shape": "Spiral / Pursuit Curve", "grade": "F", "score": 40, "size": 405, "active_range": [405, 405], "arch": "Dense", "desc": "405B Dense frontier model."},
+            {"model": "Deepseek V3.1 Nex N1", "shape": "Dynamic Catenary", "grade": "F", "score": 40, "size": 671, "active_range": [37, 37], "arch": "MoE", "desc": "671B MoE (37B active)."},
+            {"model": "Trinity Mini", "shape": "Parabola", "grade": "F", "score": 40, "size": 26, "active_range": [3, 3], "arch": "MoE", "desc": "26B MoE (3B active). Small variant."},
+            {"model": "Devstral 2 2512", "shape": "Modified Catenary", "grade": "F", "score": 40, "size": 22, "active_range": [22, 22], "arch": "Dense", "desc": "Mistral-derivative Coding model."},
+            {"model": "KAT-Coder-Pro V1", "shape": "Catenary", "grade": "F", "score": 40, "size": 32, "active_range": [32, 32], "arch": "Dense", "desc": "Agentic Code Model (estimated 32B Dense)."},
+            {"model": "Llama 3.3 70B Instruct", "shape": "Catenary Curve", "grade": "F", "score": 40, "size": 70, "active_range": [70, 70], "arch": "Dense", "desc": "70B Dense chat model."},
+            {"model": "Cognito V2 Preview 405B", "shape": "Asymmetrical Catenary", "grade": "F", "score": 40, "size": 405, "active_range": [405, 405], "arch": "Dense", "desc": "405B parameter reasoning hybrid."},
+            {"model": "Llama 3.2 3B Instruct", "shape": "Catenary", "grade": "F", "score": 40, "size": 3, "active_range": [3, 3], "arch": "Dense", "desc": "3B Lightweight Dense model."},
+            {"model": "Mistral 7B Instruct", "shape": "Catenary-like", "grade": "F", "score": 40, "size": 7, "active_range": [7, 7], "arch": "Dense", "desc": "7B Dense generalist."},
+            {"model": "Qwen3 Coder 480B A35B", "shape": "Concave Upward", "grade": "F", "score": 40, "size": 480, "active_range": [35, 35], "arch": "MoE", "desc": "480B MoE (35B active). Coder-optimized."},
+            {"model": "Uncensored", "shape": "Parabolic Curve", "grade": "F", "score": 40, "size": 24, "active_range": [24, 24], "arch": "Dense", "desc": "Generalist Model (estimated 24B Dense)."},
+            {"model": "Mistral Small 3.1 24B", "shape": "Complex Curve", "grade": "F", "score": 40, "size": 24, "active_range": [24, 24], "arch": "Dense", "desc": "24B Intermediate Dense model."},
+            {"model": "Gemma 3 12b", "shape": "Asymmetric Catenary", "grade": "F", "score": 40, "size": 12, "active_range": [12, 12], "arch": "Dense", "desc": "12B Multimodal Dense."},
+            {"model": "Gemma 3 27b", "shape": "Asymmetric Catenary", "grade": "F", "score": 40, "size": 27, "active_range": [27, 27], "arch": "Dense", "desc": "27B Multimodal Dense."},
+            {"model": "gemma3:1b", "shape": "Sine Wave", "grade": "F-", "score": 20, "size": 1, "active_range": [1, 1], "arch": "Unknown", "desc": "1B Tiny model."}
+        ];
+
+        // --- Plotly Bar Chart ---
+        const physSorted = [...fullPhysicalData].sort((a, b) => b.score - a.score);
+        const tracePhysBar = {
+            x: physSorted.map(d => d.model),
+            y: physSorted.map(d => d.score),
+            text: physSorted.map(d => d.grade + ' (' + d.shape + ')'),
+            type: 'bar',
+            marker: { color: physSorted.map(d => d.score > 80 ? '#2ca02c' : (d.score > 60 ? '#ff7f0e' : '#d62728')) }
+        };
+        Plotly.newPlot('phys_bar', [tracePhysBar], {
+            title: 'Physical Reasoning Grades by Model',
+            yaxis: { title: 'Score (A+=100, F=40)', range: [0, 105] },
+            margin: { b: 150 }
+        });
+
+        // --- Chart Configurations ---
+        const yCategories = ["Hallucination", "Standard Error", "Close/Plausible", "Correct"];
+        const yMap = { "Hallucination": 0, "Standard Error": 1, "Close/Plausible": 2, "Correct": 3 };
+        const architectures = ["Dense", "MoE", "Hybrid", "Unknown"];
+        const colors = { "Dense": "#36a2eb", "MoE": "#ff6384", "Hybrid": "#4bc0c0", "Unknown": "#9966ff" };
+
+        const categoryMap = (score) => {
+            if (score >= 90) return "Correct";
+            if (score >= 60) return "Close/Plausible";
+            if (score >= 40) return "Standard Error";
+            return "Hallucination";
+        };
+
+        // --- Chart 1: Total Parameters ---
+        const bubbleDataTotal = fullPhysicalData.map(d => ({
+            ...d,
+            category: categoryMap(d.score)
+        }));
+
+        const bubbleDatasetsTotal = architectures.map(arch => ({
+            label: arch,
+            data: bubbleDataTotal.filter(d => d.arch === arch).map(d => ({
+                x: d.size || 0.1,
+                y: yMap[d.category],
+                r: 10,
+                model: d.model,
+                desc: d.desc,
+                shape: d.shape
+            })),
+            backgroundColor: colors[arch],
+            borderColor: "#000000",
+            borderWidth: 1.5,
+            hoverBorderWidth: 2
+        })).filter(ds => ds.data.length > 0);
+
+        new Chart(document.getElementById('performanceChart').getContext('2d'), {
+            type: 'bubble',
+            data: { datasets: bubbleDatasetsTotal },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { type: 'logarithmic', title: { display: true, text: 'Total Parameter Count (Billions)' }, min: 0.5, max: 2000 },
+                    y: { type: 'linear', title: { display: true, text: 'Reasoning Quality' }, min: -0.5, max: 3.5, ticks: { callback: v => yCategories[v], stepSize: 1 } }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: ctx => `${ctx.raw.model} (${ctx.raw.x}B total): ${ctx.raw.shape}`,
+                            afterLabel: ctx => ctx.raw.desc
+                        }
+                    }
+                }
+            }
+        });
+
+        // --- Chart 2: Active Parameters with Capped Error Bars ---
+        const errorBarPlugin = {
+            id: 'errorBarPlugin',
+            afterDatasetsDraw(chart) {
+                const {ctx, scales: {x, y}} = chart;
+                ctx.save();
+                chart.data.datasets.forEach((dataset) => {
+                    dataset.data.forEach((datapoint) => {
+                        if (datapoint.isRange) {
+                            const centerX = x.getPixelForValue(datapoint.x);
+                            const centerY = y.getPixelForValue(datapoint.y);
+                            const leftX = x.getPixelForValue(datapoint.xMin);
+                            const rightX = x.getPixelForValue(datapoint.xMax);
+                            const radius = datapoint.r;
+                            const capWidth = 10;
+
+                            ctx.strokeStyle = '#000000';
+                            ctx.lineWidth = 1.5;
+
+                            // Left side bar
+                            if (leftX < centerX - radius) {
+                                ctx.beginPath();
+                                ctx.moveTo(leftX, centerY);
+                                ctx.lineTo(centerX - radius, centerY);
+                                // Left cap
+                                ctx.moveTo(leftX, centerY - capWidth/2);
+                                ctx.lineTo(leftX, centerY + capWidth/2);
+                                ctx.stroke();
+                            }
+
+                            // Right side bar
+                            if (rightX > centerX + radius) {
+                                ctx.beginPath();
+                                ctx.moveTo(centerX + radius, centerY);
+                                ctx.lineTo(rightX, centerY);
+                                // Right cap
+                                ctx.moveTo(rightX, centerY - capWidth/2);
+                                ctx.lineTo(rightX, centerY + capWidth/2);
+                                ctx.stroke();
+                            }
+                        }
+                    });
+                });
+                ctx.restore();
+            }
+        };
+
+        const activeDatasets = architectures.map(arch => {
+            const data = [];
+            fullPhysicalData.filter(d => d.arch === arch).forEach(d => {
+                const category = categoryMap(d.score);
+                const yVal = yMap[category];
+                const xMin = d.active_range[0] || d.size || 0.1;
+                const xMax = d.active_range[1] || d.size || 0.1;
+                
+                data.push({
+                    x: (xMin + xMax) / 2,
+                    y: yVal,
+                    r: 10,
+                    xMin: xMin,
+                    xMax: xMax,
+                    isRange: xMin !== xMax,
+                    model: d.model,
+                    desc: d.desc,
+                    shape: d.shape
+                });
+            });
+            return {
+                label: arch,
+                data: data,
+                backgroundColor: colors[arch],
+                borderColor: "#000000",
+                borderWidth: 1.5
+            };
+        }).filter(ds => ds.data.length > 0);
+
+        new Chart(document.getElementById('activePerformanceChart').getContext('2d'), {
+            type: 'bubble',
+            data: { datasets: activeDatasets },
+            plugins: [errorBarPlugin],
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { type: 'logarithmic', title: { display: true, text: 'Active Parameter Count (Billions)' }, min: 0.5, max: 600 },
+                    y: { type: 'linear', title: { display: true, text: 'Reasoning Quality' }, min: -0.5, max: 3.5, ticks: { callback: v => yCategories[v], stepSize: 1 } }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: ctx => {
+                                const p = ctx.raw;
+                                const rangeText = p.isRange ? `${p.xMin}-${p.xMax}B` : `${p.x}B`;
+                                return `${p.model} (${rangeText} active): ${p.shape}`;
+                            },
+                            afterLabel: ctx => ctx.raw.desc
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -2,7 +2,18 @@ import json
 import os
 
 def generate_dashboard():
-    config_path = 'dashboard_config.json'
+    # Get the directory where the script is located
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    
+    # Config path is in the same directory as the script
+    config_path = os.path.join(script_dir, 'dashboard_config.json')
+    
+    # Output path is the project root (two levels up from Prompting and Analysis Tools/scripts)
+    # Alternatively, just save it to the current root if the intention is to run from root, 
+    # but let's make it robust by finding the root relative to the script.
+    project_root = os.path.abspath(os.path.join(script_dir, "..", ".."))
+    output_path = os.path.join(project_root, 'index.html')
+
     if not os.path.exists(config_path):
         print(f"Error: {config_path} not found.")
         return
@@ -86,10 +97,10 @@ def generate_dashboard():
 </html>
 """
 
-    with open('index.html', 'w', encoding='utf-8') as f:
+    with open(output_path, 'w', encoding='utf-8') as f:
         f.write(html_template)
     
-    print("Successfully generated index.html dashboard.")
+    print(f"Successfully generated dashboard at {output_path}")
 
 if __name__ == "__main__":
     generate_dashboard()
