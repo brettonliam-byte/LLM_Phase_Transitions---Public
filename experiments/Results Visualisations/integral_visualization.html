@@ -5,75 +5,116 @@
     <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
     <style>
         body { font-family: sans-serif; margin: 20px; background-color: #f4f4f9; }
-        .container { max-width: 1200px; margin: 0 auto; }
+        .container { max-width: 1000px; margin: 0 auto; }
         .chart-container { background: white; padding: 20px; margin-bottom: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        h1, h2 { color: #333; }
+        h1 { text-align: center; color: #333; }
+        h2 { color: #555; border-bottom: 2px solid #ddd; padding-bottom: 10px; }
+        p { color: #444; line-height: 1.6; }
         .prompt-box { background: #eef; padding: 15px; border-left: 5px solid #007bff; margin-bottom: 20px; border-radius: 4px; }
+        .text-section { background: #fff; padding: 20px; margin-bottom: 30px; border-radius: 8px; border-left: 5px solid #0d6efd; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .btn-group { margin-bottom: 15px; display: flex; flex-wrap: wrap; gap: 5px; }
+        .btn { padding: 6px 12px; border: 1px solid #007bff; background: white; color: #007bff; border-radius: 4px; cursor: pointer; font-size: 14px; transition: 0.2s; }
+        .btn:hover { background: #eef; }
+        .btn.active { background: #007bff; color: white; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Integral Test Experiments (Supreme)</h1>
+        <h1>Integral Experiment</h1>
         
+        <div class="text-section">
+            <h3>Preamble</h3>
+            <p>This experiment evaluates the performance of various LLMs on an integral calculus problem across a wide range of temperatures. The aim of the experiment is to determine the quality of mathematical reasoning across a range of temperatures, parameter counts and architectures, as well as identifying potential phase transitions in capability.</p>
+        </div>
+
         <div class="prompt-box">
             <strong>Experiment Prompt:</strong><br>
             <code>Solve the following integral: ∫((tan(ln(x)))^3)/x dx.</code>
         </div>
 
-        <p>This analysis is derived from the expanded <code>integral_experiment_supreme.xlsx</code> dataset, now covering 33 models across a temperature range of 0.0 to 2.0. Model names have been mapped to their canonical forms for consistency across benchmarks.</p>
+        <div class="text-section">
+            <h3>Model Selection</h3>
+            <p>The experiment spans 33 models, ranging from small-scale (1 billion parameters) to frontier-class (671B+ billion parameters) with Dense, Mixture-of-Experts (MoE) and hybrid models. The chosen models were tested on this problem across a temperature range of 0.0 to 2.0.</p>
+        </div>
 
         <div class="chart-container">
             <h2>Overall Solve Rate per Model</h2>
             <div id="solve_rate_bar"></div>
         </div>
 
-        <div class="chart-container">
-            <h2>Temperature Analysis: Solve Rate vs. Temperature</h2>
-            <div id="temp_line_chart"></div>
+        <div class="text-section">
+            <h3>Solve Rate by Model</h3>
+            <p>The above figure displays the solve rate of each model. Top-tier models like Qwen 3 and Olmo 3.1 demonstrate near-perfect solve rates, while smaller or older models struggle significantly. This suggests that the complexity of the integral acts as a strong discriminator for mathematical capability.</p>
         </div>
 
         <div class="chart-container">
-            <h2>Model Scale Impact: Size vs. Solve Rate</h2>
+            <h2>Temperature Analysis: Solve Rate vs. Temperature</h2>
+            <div class="btn-group" id="filter-buttons"></div>
+            <div id="temp_line_chart"></div>
+        </div>
+
+        <div class="text-section">
+            <h3>Temperature Affect on Performance</h3>
+            <p>Most high-performing models maintain stability across the 0.0-1.2 temperature range. However, as temperature increases beyond 1.4, a decrease in performance can be observed for several models, indicating a breakdown in logical consistency as randomness increases. This type of problem which requires a long derivation increases the likelihood of mistakes which become increasingly common at high temperatures.</p>
+        </div>
+
+        <div class="chart-container">
+            <h2>Model Scale Impact: Total Size vs. Solve Rate</h2>
             <div id="size_scatter"></div>
+        </div>
+
+        <div class="text-section">
+            <h3>Parameter Count Affect on Performance</h3>
+            <p>While total parameter count is a common metric for model "size," modern Mixture-of-Experts (MoE) architectures only activate a fraction of their parameters during any single inference step. While the above figure shows solve rate against total parameter count, the below figure adjusts the scale to reflect these "Active Parameters" to make a direct comparison between dense and MoE models.</p>
+        </div>
+
+        <div class="chart-container">
+            <h2>Model Scale Impact: Active Size vs. Solve Rate</h2>
+            <div id="active_size_scatter"></div>
+        </div>
+
+        <div class="text-section">
+            <h3>Conclusion</h3>
+            <p>The results demonstrate a general correlation between model scale and mathematical reasoning success, with a phase transition occurring around the 3-4B parameter mark. The temperature has an effect on the performance with many models suffering from a decline in performance beyond a temperature of 1.4.</p>
         </div>
     </div>
 
     <script>
         const data = {
           "models": [
-            {"model": "gpt-oss:20b", "size": 21, "overall_solve_rate": 95.45, "temperature_data": [{"temp": 0.0, "rate": 90.0}, {"temp": 0.2, "rate": 95.0}, {"temp": 0.4, "rate": 90.0}, {"temp": 0.6, "rate": 100.0}, {"temp": 0.8, "rate": 90.0}, {"temp": 1.0, "rate": 100.0}, {"temp": 1.2, "rate": 95.0}, {"temp": 1.4, "rate": 90.0}, {"temp": 1.6, "rate": 100.0}, {"temp": 1.8, "rate": 100.0}, {"temp": 2.0, "rate": 100.0}]},
-            {"model": "gemma3:1b", "size": 1, "overall_solve_rate": 10.0, "temperature_data": [{"temp": 0.0, "rate": 15.0}, {"temp": 0.2, "rate": 5.0}, {"temp": 0.4, "rate": 10.0}, {"temp": 0.6, "rate": 10.0}, {"temp": 0.8, "rate": 15.0}, {"temp": 1.0, "rate": 15.0}, {"temp": 1.2, "rate": 0.0}, {"temp": 1.4, "rate": 15.0}, {"temp": 1.6, "rate": 5.0}, {"temp": 1.8, "rate": 5.0}, {"temp": 2.0, "rate": 15.0}]},
-            {"model": "gemma3:4b", "size": 4, "overall_solve_rate": 29.55, "temperature_data": [{"temp": 0.0, "rate": 20.0}, {"temp": 0.2, "rate": 45.0}, {"temp": 0.4, "rate": 5.0}, {"temp": 0.6, "rate": 30.0}, {"temp": 0.8, "rate": 35.0}, {"temp": 1.0, "rate": 30.0}, {"temp": 1.2, "rate": 15.0}, {"temp": 1.4, "rate": 55.0}, {"temp": 1.6, "rate": 20.0}, {"temp": 1.8, "rate": 45.0}, {"temp": 2.0, "rate": 25.0}]},
-            {"model": "Gemma 3 12b", "size": 12, "overall_solve_rate": 12.73, "temperature_data": [{"temp": 0.0, "rate": 5.0}, {"temp": 0.2, "rate": 0.0}, {"temp": 0.4, "rate": 25.0}, {"temp": 0.6, "rate": 15.0}, {"temp": 0.8, "rate": 20.0}, {"temp": 1.0, "rate": 10.0}, {"temp": 1.2, "rate": 10.0}, {"temp": 1.4, "rate": 25.0}, {"temp": 1.6, "rate": 10.0}, {"temp": 1.8, "rate": 15.0}, {"temp": 2.0, "rate": 5.0}]},
-            {"model": "Gemma 3 27b", "size": 27, "overall_solve_rate": 45.91, "temperature_data": [{"temp": 0.0, "rate": 50.0}, {"temp": 0.2, "rate": 45.0}, {"temp": 0.4, "rate": 65.0}, {"temp": 0.6, "rate": 30.0}, {"temp": 0.8, "rate": 55.0}, {"temp": 1.0, "rate": 35.0}, {"temp": 1.2, "rate": 65.0}, {"temp": 1.4, "rate": 45.0}, {"temp": 1.6, "rate": 40.0}, {"temp": 1.8, "rate": 40.0}, {"temp": 2.0, "rate": 35.0}]},
-            {"model": "Qwen3:4b", "size": 4, "overall_solve_rate": 99.55, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 100.0}, {"temp": 0.4, "rate": 100.0}, {"temp": 0.6, "rate": 100.0}, {"temp": 0.8, "rate": 100.0}, {"temp": 1.0, "rate": 100.0}, {"temp": 1.2, "rate": 95.0}, {"temp": 1.4, "rate": 100.0}, {"temp": 1.6, "rate": 100.0}, {"temp": 1.8, "rate": 100.0}, {"temp": 2.0, "rate": 100.0}]},
-            {"model": "Qwen3:8b", "size": 8, "overall_solve_rate": 100.0, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 100.0}, {"temp": 0.4, "rate": 100.0}, {"temp": 0.6, "rate": 100.0}, {"temp": 0.8, "rate": 100.0}, {"temp": 1.0, "rate": 100.0}, {"temp": 1.2, "rate": 100.0}, {"temp": 1.4, "rate": 100.0}, {"temp": 1.6, "rate": 100.0}, {"temp": 1.8, "rate": 100.0}, {"temp": 2.0, "rate": 100.0}]},
-            {"model": "Deepseek R1T Chimera", "size": 671, "overall_solve_rate": 89.55, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 90.0}, {"temp": 0.4, "rate": 80.0}, {"temp": 0.6, "rate": 80.0}, {"temp": 0.8, "rate": 90.0}, {"temp": 1.0, "rate": 90.0}, {"temp": 1.2, "rate": 95.0}, {"temp": 1.4, "rate": 80.0}, {"temp": 1.6, "rate": 95.0}, {"temp": 1.8, "rate": 100.0}, {"temp": 2.0, "rate": 85.0}]},
-            {"model": "Olmo 3.1 32B Think", "size": 32, "overall_solve_rate": 98.45, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 100.0}, {"temp": 0.4, "rate": 100.0}, {"temp": 0.6, "rate": 100.0}, {"temp": 0.8, "rate": 100.0}, {"temp": 1.0, "rate": 100.0}, {"temp": 1.2, "rate": 100.0}, {"temp": 1.4, "rate": 100.0}, {"temp": 1.6, "rate": 100.0}, {"temp": 1.8, "rate": 82.35}]},
-            {"model": "gpt-oss-120b", "size": 117, "overall_solve_rate": 99.50, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 100.0}, {"temp": 0.4, "rate": 100.0}, {"temp": 0.6, "rate": 100.0}, {"temp": 0.8, "rate": 100.0}, {"temp": 1.0, "rate": 100.0}, {"temp": 1.2, "rate": 100.0}, {"temp": 1.4, "rate": 95.0}, {"temp": 1.6, "rate": 100.0}, {"temp": 1.8, "rate": 100.0}, {"temp": 2.0, "rate": 100.0}]},
-            {"model": "Tongyi DeepResearch 30B", "size": 30, "overall_solve_rate": 99.37, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 100.0}, {"temp": 0.4, "rate": 100.0}, {"temp": 0.6, "rate": 100.0}, {"temp": 0.8, "rate": 100.0}, {"temp": 1.0, "rate": 100.0}, {"temp": 1.2, "rate": 100.0}, {"temp": 1.4, "rate": 100.0}, {"temp": 1.6, "rate": 66.67}]},
-            {"model": "Nemotron Nano 9B V2", "size": 9, "overall_solve_rate": 100.0, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 100.0}, {"temp": 0.4, "rate": 100.0}, {"temp": 0.6, "rate": 100.0}, {"temp": 0.8, "rate": 100.0}, {"temp": 1.0, "rate": 100.0}, {"temp": 1.2, "rate": 100.0}]},
-            {"model": "Nemotron Nano 12B 2 VL", "size": 12, "overall_solve_rate": 98.11, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 100.0}, {"temp": 0.4, "rate": 100.0}, {"temp": 0.6, "rate": 100.0}, {"temp": 0.8, "rate": 100.0}, {"temp": 1.0, "rate": 100.0}, {"temp": 1.2, "rate": 100.0}, {"temp": 1.4, "rate": 89.47}, {"temp": 1.6, "rate": 0.0}]},
-            {"model": "Qwen3 VL 235B", "size": 235, "overall_solve_rate": 93.49, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 100.0}, {"temp": 0.4, "rate": 100.0}, {"temp": 0.6, "rate": 100.0}, {"temp": 0.8, "rate": 100.0}, {"temp": 1.0, "rate": 100.0}, {"temp": 1.2, "rate": 100.0}, {"temp": 1.4, "rate": 100.0}, {"temp": 1.6, "rate": 100.0}, {"temp": 1.8, "rate": 100.0}, {"temp": 2.0, "rate": 6.67}]},
-            {"model": "Qwen3 VL 30B", "size": 30, "overall_solve_rate": 100.0, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 100.0}, {"temp": 0.4, "rate": 100.0}, {"temp": 0.6, "rate": 100.0}, {"temp": 0.8, "rate": 100.0}, {"temp": 1.0, "rate": 100.0}, {"temp": 1.2, "rate": 100.0}, {"temp": 1.4, "rate": 100.0}, {"temp": 1.6, "rate": 100.0}, {"temp": 1.8, "rate": 100.0}, {"temp": 2.0, "rate": 100.0}]},
-            {"model": "Qwen3 Next 80B", "size": 80, "overall_solve_rate": 98.53, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 100.0}, {"temp": 0.4, "rate": 100.0}, {"temp": 0.6, "rate": 100.0}, {"temp": 0.8, "rate": 100.0}, {"temp": 1.0, "rate": 100.0}, {"temp": 1.2, "rate": 100.0}, {"temp": 1.4, "rate": 100.0}, {"temp": 1.6, "rate": 87.5}, {"temp": 1.8, "rate": 94.44}, {"temp": 2.0, "rate": 100.0}]},
-            {"model": "Grok 4.1 Fast", "size": 50, "overall_solve_rate": 89.64, "temperature_data": [{"temp": 0.0, "rate": 85.0}, {"temp": 0.2, "rate": 80.0}, {"temp": 0.4, "rate": 95.0}, {"temp": 0.6, "rate": 90.0}, {"temp": 0.8, "rate": 90.0}, {"temp": 1.0, "rate": 90.0}, {"temp": 1.2, "rate": 80.0}, {"temp": 1.4, "rate": 90.0}, {"temp": 1.6, "rate": 100.0}, {"temp": 1.8, "rate": 100.0}]},
-            {"model": "Grok 3 Mini", "size": 15, "overall_solve_rate": 99.37, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 100.0}, {"temp": 0.4, "rate": 100.0}, {"temp": 0.6, "rate": 100.0}, {"temp": 0.8, "rate": 100.0}, {"temp": 1.0, "rate": 100.0}, {"temp": 1.2, "rate": 100.0}, {"temp": 1.4, "rate": 94.44}]},
-            {"model": "Kimi K2 0711", "size": 1000, "overall_solve_rate": 69.85, "temperature_data": [{"temp": 0.0, "rate": 76.47}, {"temp": 0.2, "rate": 70.0}, {"temp": 0.4, "rate": 85.0}, {"temp": 0.6, "rate": 55.0}, {"temp": 0.8, "rate": 75.0}, {"temp": 1.0, "rate": 60.0}, {"temp": 1.2, "rate": 72.22}, {"temp": 1.4, "rate": 0.0}]},
-            {"model": "GLM 4.5 Air", "size": 100, "overall_solve_rate": 66.45, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 100.0}, {"temp": 0.4, "rate": 65.0}, {"temp": 0.6, "rate": 70.0}, {"temp": 0.8, "rate": 30.0}, {"temp": 1.0, "rate": 45.0}, {"temp": 1.2, "rate": 65.0}, {"temp": 1.4, "rate": 50.0}]},
-            {"model": "Ministral 8B", "size": 8, "overall_solve_rate": 1.36, "temperature_data": [{"temp": 0.0, "rate": 0.0}, {"temp": 0.2, "rate": 0.0}, {"temp": 0.4, "rate": 0.0}, {"temp": 0.6, "rate": 0.0}, {"temp": 0.8, "rate": 0.0}, {"temp": 1.0, "rate": 5.0}, {"temp": 1.2, "rate": 0.0}, {"temp": 1.4, "rate": 0.0}, {"temp": 1.6, "rate": 0.0}, {"temp": 1.8, "rate": 10.0}, {"temp": 2.0, "rate": 0.0}]},
-            {"model": "Ministral 3B", "size": 3, "overall_solve_rate": 45.91, "temperature_data": [{"temp": 0.0, "rate": 40.0}, {"temp": 0.2, "rate": 40.0}, {"temp": 0.4, "rate": 55.0}, {"temp": 0.6, "rate": 35.0}, {"temp": 0.8, "rate": 60.0}, {"temp": 1.0, "rate": 40.0}, {"temp": 1.2, "rate": 55.0}, {"temp": 1.4, "rate": 45.0}, {"temp": 1.6, "rate": 55.0}, {"temp": 1.8, "rate": 20.0}, {"temp": 2.0, "rate": 60.0}]},
-            {"model": "Gemini 2.0 Flash Exp", "size": 300, "overall_solve_rate": 52.73, "temperature_data": [{"temp": 0.0, "rate": 45.0}, {"temp": 0.2, "rate": 40.0}, {"temp": 0.4, "rate": 45.0}, {"temp": 0.6, "rate": 35.0}, {"temp": 0.8, "rate": 75.0}, {"temp": 1.0, "rate": 60.0}, {"temp": 1.2, "rate": 50.0}, {"temp": 1.4, "rate": 75.0}, {"temp": 1.6, "rate": 55.0}, {"temp": 1.8, "rate": 45.0}, {"temp": 2.0, "rate": 55.0}]},
-            {"model": "Mixtral 8x7B", "size": 47, "overall_solve_rate": 23.78, "temperature_data": [{"temp": 0.0, "rate": 5.0}, {"temp": 0.2, "rate": 15.0}, {"temp": 0.4, "rate": 35.0}, {"temp": 0.6, "rate": 35.0}, {"temp": 0.8, "rate": 20.0}, {"temp": 1.0, "rate": 20.0}, {"temp": 1.2, "rate": 25.0}, {"temp": 1.4, "rate": 30.0}, {"temp": 1.6, "rate": 35.0}, {"temp": 1.8, "rate": 0.0}]},
-            {"model": "Hermes 3 405B Instruct", "size": 405, "overall_solve_rate": 43.48, "temperature_data": [{"temp": 0.0, "rate": 40.0}, {"temp": 0.2, "rate": 55.0}, {"temp": 0.4, "rate": 16.67}]},
-            {"model": "LongCat Flash Chat", "size": 560, "overall_solve_rate": 94.41, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 95.0}, {"temp": 0.4, "rate": 95.0}, {"temp": 0.6, "rate": 95.0}, {"temp": 0.8, "rate": 85.0}, {"temp": 1.0, "rate": 90.0}, {"temp": 1.2, "rate": 100.0}, {"temp": 1.4, "rate": 100.0}]},
-            {"model": "Mistral Small 3.1 24B", "size": 24, "overall_solve_rate": 10.81, "temperature_data": [{"temp": 0.0, "rate": 5.0}, {"temp": 0.2, "rate": 5.0}, {"temp": 0.4, "rate": 15.0}, {"temp": 0.6, "rate": 5.0}, {"temp": 0.8, "rate": 5.0}, {"temp": 1.0, "rate": 30.0}, {"temp": 1.2, "rate": 15.0}, {"temp": 1.4, "rate": 0.0}]},
-            {"model": "Llama 3.2 1B Instruct", "size": 1, "overall_solve_rate": 0.0, "temperature_data": [{"temp": 0.0, "rate": 0.0}, {"temp": 0.2, "rate": 0.0}, {"temp": 0.4, "rate": 0.0}, {"temp": 0.6, "rate": 0.0}, {"temp": 0.8, "rate": 0.0}, {"temp": 1.0, "rate": 0.0}, {"temp": 1.2, "rate": 0.0}, {"temp": 1.4, "rate": 0.0}, {"temp": 1.6, "rate": 0.0}, {"temp": 1.8, "rate": 0.0}, {"temp": 2.0, "rate": 0.0}]},
-            {"model": "Llama 3.3 70B Instruct", "size": 70, "overall_solve_rate": 54.17, "temperature_data": [{"temp": 0.0, "rate": 75.0}, {"temp": 0.2, "rate": 45.0}, {"temp": 0.4, "rate": 55.0}, {"temp": 0.6, "rate": 60.0}, {"temp": 0.8, "rate": 45.0}, {"temp": 1.0, "rate": 65.0}, {"temp": 1.2, "rate": 70.0}, {"temp": 1.4, "rate": 30.0}, {"temp": 1.6, "rate": 25.0}]},
-            {"model": "Deepseek V3.1 Nex N1", "size": 671, "overall_solve_rate": 32.54, "temperature_data": [{"temp": 0.0, "rate": 20.0}, {"temp": 0.2, "rate": 10.0}, {"temp": 0.4, "rate": 10.0}, {"temp": 0.6, "rate": 15.0}, {"temp": 0.8, "rate": 20.0}, {"temp": 1.0, "rate": 40.0}, {"temp": 1.2, "rate": 45.0}, {"temp": 1.4, "rate": 75.0}, {"temp": 1.6, "rate": 88.89}]},
-            {"model": "Llama Guard", "size": 8, "overall_solve_rate": 0.0, "temperature_data": [{"temp": 0.0, "rate": 0.0}, {"temp": 0.2, "rate": 0.0}, {"temp": 0.4, "rate": 0.0}, {"temp": 0.6, "rate": 0.0}, {"temp": 0.8, "rate": 0.0}, {"temp": 1.0, "rate": 0.0}, {"temp": 1.2, "rate": 0.0}]},
-            {"model": "Llama 4 Scout", "size": 17, "overall_solve_rate": 93.64, "temperature_data": [{"temp": 0.0, "rate": 95.0}, {"temp": 0.2, "rate": 100.0}, {"temp": 0.4, "rate": 85.0}, {"temp": 0.6, "rate": 95.0}, {"temp": 0.8, "rate": 95.0}, {"temp": 1.0, "rate": 95.0}, {"temp": 1.2, "rate": 95.0}, {"temp": 1.4, "rate": 95.0}, {"temp": 1.6, "rate": 90.0}, {"temp": 1.8, "rate": 90.0}, {"temp": 2.0, "rate": 95.0}]},
-            {"model": "Trinity Mini", "size": 26, "overall_solve_rate": 100.0, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 100.0}, {"temp": 0.4, "rate": 100.0}, {"temp": 0.6, "rate": 100.0}, {"temp": 0.8, "rate": 100.0}, {"temp": 1.0, "rate": 100.0}, {"temp": 1.2, "rate": 100.0}, {"temp": 1.4, "rate": 100.0}, {"temp": 1.6, "rate": 100.0}, {"temp": 1.8, "rate": 100.0}, {"temp": 2.0, "rate": 100.0}]}
+            {"model": "gpt-oss:20b", "size": 21, "active_range": [3.6, 3.6], "arch": "MoE", "overall_solve_rate": 100.0, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 100.0}, {"temp": 0.4, "rate": 100.0}, {"temp": 0.6, "rate": 100.0}, {"temp": 0.8, "rate": 100.0}, {"temp": 1.0, "rate": 100.0}, {"temp": 1.2, "rate": 100.0}, {"temp": 1.4, "rate": 100.0}, {"temp": 1.6, "rate": 100.0}, {"temp": 1.8, "rate": 100.0}, {"temp": 2.0, "rate": 100.0}]},
+            {"model": "gemma3:1b", "size": 1, "active_range": [1, 1], "arch": "Dense", "overall_solve_rate": 9.09, "temperature_data": [{"temp": 0.0, "rate": 0.0}, {"temp": 0.2, "rate": 10.0}, {"temp": 0.4, "rate": 10.0}, {"temp": 0.6, "rate": 25.0}, {"temp": 0.8, "rate": 10.0}, {"temp": 1.0, "rate": 5.0}, {"temp": 1.2, "rate": 15.0}, {"temp": 1.4, "rate": 5.0}, {"temp": 1.6, "rate": 5.0}, {"temp": 1.8, "rate": 10.0}, {"temp": 2.0, "rate": 5.0}]},
+            {"model": "gemma3:4b", "size": 4, "active_range": [4, 4], "arch": "Dense", "overall_solve_rate": 90.45, "temperature_data": [{"temp": 0.0, "rate": 95.0}, {"temp": 0.2, "rate": 90.0}, {"temp": 0.4, "rate": 80.0}, {"temp": 0.6, "rate": 95.0}, {"temp": 0.8, "rate": 85.0}, {"temp": 1.0, "rate": 80.0}, {"temp": 1.2, "rate": 95.0}, {"temp": 1.4, "rate": 100.0}, {"temp": 1.6, "rate": 95.0}, {"temp": 1.8, "rate": 100.0}, {"temp": 2.0, "rate": 80.0}]},
+            {"model": "Gemma 3 12b", "size": 12, "active_range": [12, 12], "arch": "Dense", "overall_solve_rate": 99.55, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 100.0}, {"temp": 0.4, "rate": 100.0}, {"temp": 0.6, "rate": 100.0}, {"temp": 0.8, "rate": 100.0}, {"temp": 1.0, "rate": 100.0}, {"temp": 1.2, "rate": 100.0}, {"temp": 1.4, "rate": 95.0}, {"temp": 1.6, "rate": 100.0}, {"temp": 1.8, "rate": 100.0}, {"temp": 2.0, "rate": 100.0}]},
+            {"model": "Gemma 3 27b", "size": 27, "active_range": [27, 27], "arch": "Dense", "overall_solve_rate": 100.0, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 100.0}, {"temp": 0.4, "rate": 100.0}, {"temp": 0.6, "rate": 100.0}, {"temp": 0.8, "rate": 100.0}, {"temp": 1.0, "rate": 100.0}, {"temp": 1.2, "rate": 100.0}, {"temp": 1.4, "rate": 100.0}, {"temp": 1.6, "rate": 100.0}, {"temp": 1.8, "rate": 100.0}, {"temp": 2.0, "rate": 100.0}]},
+            {"model": "Qwen3:4b", "size": 4, "active_range": [4, 4], "arch": "Dense", "overall_solve_rate": 100.0, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 100.0}, {"temp": 0.4, "rate": 100.0}, {"temp": 0.6, "rate": 100.0}, {"temp": 0.8, "rate": 100.0}, {"temp": 1.0, "rate": 100.0}, {"temp": 1.2, "rate": 100.0}, {"temp": 1.4, "rate": 100.0}, {"temp": 1.6, "rate": 100.0}, {"temp": 1.8, "rate": 100.0}, {"temp": 2.0, "rate": 100.0}]},
+            {"model": "Qwen3:8b", "size": 8, "active_range": [8, 8], "arch": "Dense", "overall_solve_rate": 100.0, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 100.0}, {"temp": 0.4, "rate": 100.0}, {"temp": 0.6, "rate": 100.0}, {"temp": 0.8, "rate": 100.0}, {"temp": 1.0, "rate": 100.0}, {"temp": 1.2, "rate": 100.0}, {"temp": 1.4, "rate": 100.0}, {"temp": 1.6, "rate": 100.0}, {"temp": 1.8, "rate": 100.0}, {"temp": 2.0, "rate": 100.0}]},
+            {"model": "Deepseek R1T Chimera", "size": 671, "active_range": [37, 37], "arch": "MoE", "overall_solve_rate": 100.0, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 100.0}, {"temp": 0.4, "rate": 100.0}, {"temp": 0.6, "rate": 100.0}, {"temp": 0.8, "rate": 100.0}, {"temp": 1.0, "rate": 100.0}, {"temp": 1.2, "rate": 100.0}, {"temp": 1.4, "rate": 100.0}, {"temp": 1.6, "rate": 100.0}, {"temp": 1.8, "rate": 100.0}, {"temp": 2.0, "rate": 100.0}]},
+            {"model": "Olmo 3.1 32B Think", "size": 32, "active_range": [32, 32], "arch": "Dense", "overall_solve_rate": 98.96, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 100.0}, {"temp": 0.4, "rate": 100.0}, {"temp": 0.6, "rate": 100.0}, {"temp": 0.8, "rate": 100.0}, {"temp": 1.0, "rate": 100.0}, {"temp": 1.2, "rate": 100.0}, {"temp": 1.4, "rate": 100.0}, {"temp": 1.6, "rate": 100.0}, {"temp": 1.8, "rate": 88.24}, {"temp": 2.0, "rate": 0.0}]},
+            {"model": "gpt-oss-120b", "size": 117, "active_range": [5.1, 5.1], "arch": "MoE", "overall_solve_rate": 100.0, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 100.0}, {"temp": 0.4, "rate": 100.0}, {"temp": 0.6, "rate": 100.0}, {"temp": 0.8, "rate": 100.0}, {"temp": 1.0, "rate": 100.0}, {"temp": 1.2, "rate": 100.0}, {"temp": 1.4, "rate": 100.0}, {"temp": 1.6, "rate": 100.0}, {"temp": 1.8, "rate": 100.0}, {"temp": 2.0, "rate": 100.0}]},
+            {"model": "Tongyi DeepResearch 30B", "size": 30, "active_range": [3, 3], "arch": "MoE", "overall_solve_rate": 99.37, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 100.0}, {"temp": 0.4, "rate": 100.0}, {"temp": 0.6, "rate": 100.0}, {"temp": 0.8, "rate": 100.0}, {"temp": 1.0, "rate": 100.0}, {"temp": 1.2, "rate": 100.0}, {"temp": 1.4, "rate": 100.0}, {"temp": 1.6, "rate": 66.67}, {"temp": 1.8, "rate": 0.0}, {"temp": 2.0, "rate": 0.0}]},
+            {"model": "Nemotron Nano 9B V2", "size": 9, "active_range": [9, 9], "arch": "Hybrid", "overall_solve_rate": 100.0, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 100.0}, {"temp": 0.4, "rate": 100.0}, {"temp": 0.6, "rate": 100.0}, {"temp": 0.8, "rate": 100.0}, {"temp": 1.0, "rate": 100.0}, {"temp": 1.2, "rate": 100.0}]},
+            {"model": "Nemotron Nano 12B 2 VL", "size": 12, "active_range": [12, 12], "arch": "Hybrid", "overall_solve_rate": 98.74, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 100.0}, {"temp": 0.4, "rate": 100.0}, {"temp": 0.6, "rate": 100.0}, {"temp": 0.8, "rate": 100.0}, {"temp": 1.0, "rate": 100.0}, {"temp": 1.2, "rate": 100.0}, {"temp": 1.4, "rate": 94.74}, {"temp": 1.6, "rate": 0.0}, {"temp": 1.8, "rate": 0.0}, {"temp": 2.0, "rate": 0.0}]},
+            {"model": "Qwen3 VL 235B", "size": 235, "active_range": [22, 22], "arch": "MoE", "overall_solve_rate": 93.95, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 100.0}, {"temp": 0.4, "rate": 100.0}, {"temp": 0.6, "rate": 100.0}, {"temp": 0.8, "rate": 100.0}, {"temp": 1.0, "rate": 100.0}, {"temp": 1.2, "rate": 100.0}, {"temp": 1.4, "rate": 100.0}, {"temp": 1.6, "rate": 100.0}, {"temp": 1.8, "rate": 100.0}, {"temp": 2.0, "rate": 13.33}]},
+            {"model": "Qwen3 VL 30B", "size": 30, "active_range": [30, 30], "arch": "MoE", "overall_solve_rate": 100.0, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 100.0}, {"temp": 0.4, "rate": 100.0}, {"temp": 0.6, "rate": 100.0}, {"temp": 0.8, "rate": 100.0}, {"temp": 1.0, "rate": 100.0}, {"temp": 1.2, "rate": 100.0}, {"temp": 1.4, "rate": 100.0}, {"temp": 1.6, "rate": 100.0}, {"temp": 1.8, "rate": 100.0}, {"temp": 2.0, "rate": 100.0}]},
+            {"model": "Qwen3 Next 80B", "size": 80, "active_range": [80, 80], "arch": "MoE", "overall_solve_rate": 100.0, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 100.0}, {"temp": 0.4, "rate": 100.0}, {"temp": 0.6, "rate": 100.0}, {"temp": 0.8, "rate": 100.0}, {"temp": 1.0, "rate": 100.0}, {"temp": 1.2, "rate": 100.0}, {"temp": 1.4, "rate": 100.0}, {"temp": 1.6, "rate": 100.0}, {"temp": 1.8, "rate": 100.0}, {"temp": 2.0, "rate": 100.0}]},
+            {"model": "Grok 4.1 Fast", "size": 50, "active_range": [50, 50], "arch": "MoE", "overall_solve_rate": 100.0, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 100.0}, {"temp": 0.4, "rate": 100.0}, {"temp": 0.6, "rate": 100.0}, {"temp": 0.8, "rate": 100.0}, {"temp": 1.0, "rate": 100.0}, {"temp": 1.2, "rate": 100.0}, {"temp": 1.4, "rate": 100.0}, {"temp": 1.6, "rate": 100.0}, {"temp": 1.8, "rate": 100.0}, {"temp": 2.0, "rate": 0.0}]},
+            {"model": "Grok 3 Mini", "size": 15, "active_range": [15, 15], "arch": "MoE", "overall_solve_rate": 100.0, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 100.0}, {"temp": 0.4, "rate": 100.0}, {"temp": 0.6, "rate": 100.0}, {"temp": 0.8, "rate": 100.0}, {"temp": 1.0, "rate": 100.0}, {"temp": 1.2, "rate": 100.0}, {"temp": 1.4, "rate": 100.0}, {"temp": 1.6, "rate": 0.0}, {"temp": 1.8, "rate": 0.0}, {"temp": 2.0, "rate": 0.0}]},
+            {"model": "Kimi K2 0711", "size": 1000, "active_range": [32, 32], "arch": "MoE", "overall_solve_rate": 100.0, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 100.0}, {"temp": 0.4, "rate": 100.0}, {"temp": 0.6, "rate": 100.0}, {"temp": 0.8, "rate": 100.0}, {"temp": 1.0, "rate": 100.0}, {"temp": 1.2, "rate": 100.0}, {"temp": 1.4, "rate": 100.0}, {"temp": 1.6, "rate": 0.0}, {"temp": 1.8, "rate": 0.0}, {"temp": 2.0, "rate": 0.0}]},
+            {"model": "GLM 4.5 Air", "size": 100, "active_range": [20, 20], "arch": "MoE", "overall_solve_rate": 100.0, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 100.0}, {"temp": 0.4, "rate": 100.0}, {"temp": 0.6, "rate": 100.0}, {"temp": 0.8, "rate": 100.0}, {"temp": 1.0, "rate": 100.0}, {"temp": 1.2, "rate": 100.0}, {"temp": 1.4, "rate": 100.0}, {"temp": 1.6, "rate": 0.0}, {"temp": 1.8, "rate": 0.0}, {"temp": 2.0, "rate": 0.0}]},
+            {"model": "Ministral 8B", "size": 8, "active_range": [8, 8], "arch": "Dense", "overall_solve_rate": 100.0, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 100.0}, {"temp": 0.4, "rate": 100.0}, {"temp": 0.6, "rate": 100.0}, {"temp": 0.8, "rate": 100.0}, {"temp": 1.0, "rate": 100.0}, {"temp": 1.2, "rate": 100.0}, {"temp": 1.4, "rate": 100.0}, {"temp": 1.6, "rate": 100.0}, {"temp": 1.8, "rate": 100.0}, {"temp": 2.0, "rate": 100.0}]},
+            {"model": "Ministral 3B", "size": 3, "active_range": [3, 3], "arch": "Dense", "overall_solve_rate": 100.0, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 100.0}, {"temp": 0.4, "rate": 100.0}, {"temp": 0.6, "rate": 100.0}, {"temp": 0.8, "rate": 100.0}, {"temp": 1.0, "rate": 100.0}, {"temp": 1.2, "rate": 100.0}, {"temp": 1.4, "rate": 100.0}, {"temp": 1.6, "rate": 100.0}, {"temp": 1.8, "rate": 100.0}, {"temp": 2.0, "rate": 100.0}]},
+            {"model": "Gemini 2.0 Flash Exp", "size": 300, "active_range": [25, 25], "arch": "MoE", "overall_solve_rate": 100.0, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 100.0}, {"temp": 0.4, "rate": 100.0}, {"temp": 0.6, "rate": 100.0}, {"temp": 0.8, "rate": 100.0}, {"temp": 1.0, "rate": 100.0}, {"temp": 1.2, "rate": 100.0}, {"temp": 1.4, "rate": 100.0}, {"temp": 1.6, "rate": 100.0}, {"temp": 1.8, "rate": 100.0}, {"temp": 2.0, "rate": 100.0}]},
+            {"model": "Mixtral 8x7B", "size": 47, "active_range": [12.9, 12.9], "arch": "MoE", "overall_solve_rate": 42.16, "temperature_data": [{"temp": 0.0, "rate": 35.0}, {"temp": 0.2, "rate": 35.0}, {"temp": 0.4, "rate": 35.0}, {"temp": 0.6, "rate": 35.0}, {"temp": 0.8, "rate": 30.0}, {"temp": 1.0, "rate": 50.0}, {"temp": 1.2, "rate": 55.0}, {"temp": 1.4, "rate": 50.0}, {"temp": 1.6, "rate": 50.0}, {"temp": 1.8, "rate": 60.0}, {"temp": 2.0, "rate": 0.0}]},
+            {"model": "Hermes 3 405B Instruct", "size": 405, "active_range": [405, 405], "arch": "Dense", "overall_solve_rate": 39.13, "temperature_data": [{"temp": 0.0, "rate": 30.0}, {"temp": 0.2, "rate": 50.0}, {"temp": 0.4, "rate": 33.33}, {"temp": 0.6, "rate": 0.0}, {"temp": 0.8, "rate": 0.0}, {"temp": 1.0, "rate": 0.0}, {"temp": 1.2, "rate": 0.0}, {"temp": 1.4, "rate": 0.0}, {"temp": 1.6, "rate": 0.0}, {"temp": 1.8, "rate": 0.0}, {"temp": 2.0, "rate": 0.0}]},
+            {"model": "LongCat Flash Chat", "size": 560, "active_range": [18.6, 31.3], "arch": "MoE", "overall_solve_rate": 100.0, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 100.0}, {"temp": 0.4, "rate": 100.0}, {"temp": 0.6, "rate": 100.0}, {"temp": 0.8, "rate": 100.0}, {"temp": 1.0, "rate": 100.0}, {"temp": 1.2, "rate": 100.0}, {"temp": 1.4, "rate": 100.0}, {"temp": 1.6, "rate": 0.0}, {"temp": 1.8, "rate": 0.0}, {"temp": 2.0, "rate": 0.0}]},
+            {"model": "Mistral Small 3.1 24B", "size": 24, "active_range": [24, 24], "arch": "Dense", "overall_solve_rate": 78.38, "temperature_data": [{"temp": 0.0, "rate": 20.0}, {"temp": 0.2, "rate": 80.0}, {"temp": 0.4, "rate": 95.0}, {"temp": 0.6, "rate": 100.0}, {"temp": 0.8, "rate": 85.0}, {"temp": 1.0, "rate": 100.0}, {"temp": 1.2, "rate": 90.0}, {"temp": 1.4, "rate": 25.0}, {"temp": 1.6, "rate": 0.0}, {"temp": 1.8, "rate": 0.0}, {"temp": 2.0, "rate": 0.0}]},
+            {"model": "Llama 3.2 1B Instruct", "size": 1, "active_range": [1, 1], "arch": "Dense", "overall_solve_rate": 0.45, "temperature_data": [{"temp": 0.0, "rate": 0.0}, {"temp": 0.2, "rate": 0.0}, {"temp": 0.4, "rate": 0.0}, {"temp": 0.6, "rate": 0.0}, {"temp": 0.8, "rate": 0.0}, {"temp": 1.0, "rate": 0.0}, {"temp": 1.2, "rate": 0.0}, {"temp": 1.4, "rate": 5.0}, {"temp": 1.6, "rate": 0.0}, {"temp": 1.8, "rate": 0.0}, {"temp": 2.0, "rate": 0.0}]},
+            {"model": "Llama 3.3 70B Instruct", "size": 70, "active_range": [70, 70], "arch": "Dense", "overall_solve_rate": 79.17, "temperature_data": [{"temp": 0.0, "rate": 70.0}, {"temp": 0.2, "rate": 75.0}, {"temp": 0.4, "rate": 75.0}, {"temp": 0.6, "rate": 70.0}, {"temp": 0.8, "rate": 90.0}, {"temp": 1.0, "rate": 85.0}, {"temp": 1.2, "rate": 80.0}, {"temp": 1.4, "rate": 90.0}, {"temp": 1.6, "rate": 75.0}, {"temp": 1.8, "rate": 0.0}, {"temp": 2.0, "rate": 0.0}]},
+            {"model": "Deepseek V3.1 Nex N1", "size": 671, "active_range": [37, 37], "arch": "MoE", "overall_solve_rate": 100.0, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 100.0}, {"temp": 0.4, "rate": 100.0}, {"temp": 0.6, "rate": 100.0}, {"temp": 0.8, "rate": 100.0}, {"temp": 1.0, "rate": 100.0}, {"temp": 1.2, "rate": 100.0}, {"temp": 1.4, "rate": 100.0}, {"temp": 1.6, "rate": 100.0}, {"temp": 1.8, "rate": 0.0}, {"temp": 2.0, "rate": 0.0}]},
+            {"model": "Llama Guard", "size": 8, "active_range": [8, 8], "arch": "Dense", "overall_solve_rate": 0.0, "temperature_data": [{"temp": 0.0, "rate": 0.0}, {"temp": 0.2, "rate": 0.0}, {"temp": 0.4, "rate": 0.0}, {"temp": 0.6, "rate": 0.0}, {"temp": 0.8, "rate": 0.0}, {"temp": 1.0, "rate": 0.0}, {"temp": 1.2, "rate": 0.0}, {"temp": 1.4, "rate": 0.0}, {"temp": 1.6, "rate": 0.0}, {"temp": 1.8, "rate": 0.0}, {"temp": 2.0, "rate": 0.0}]},
+            {"model": "Llama 4 Scout", "size": 17, "active_range": [17, 17], "arch": "Dense", "overall_solve_rate": 100.0, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 100.0}, {"temp": 0.4, "rate": 100.0}, {"temp": 0.6, "rate": 100.0}, {"temp": 0.8, "rate": 100.0}, {"temp": 1.0, "rate": 100.0}, {"temp": 1.2, "rate": 100.0}, {"temp": 1.4, "rate": 100.0}, {"temp": 1.6, "rate": 100.0}, {"temp": 1.8, "rate": 100.0}, {"temp": 2.0, "rate": 100.0}]},
+            {"model": "Trinity Mini", "size": 26, "active_range": [3, 3], "arch": "MoE", "overall_solve_rate": 100.0, "temperature_data": [{"temp": 0.0, "rate": 100.0}, {"temp": 0.2, "rate": 100.0}, {"temp": 0.4, "rate": 100.0}, {"temp": 0.6, "rate": 100.0}, {"temp": 0.8, "rate": 100.0}, {"temp": 1.0, "rate": 100.0}, {"temp": 1.2, "rate": 100.0}, {"temp": 1.4, "rate": 100.0}, {"temp": 1.6, "rate": 100.0}, {"temp": 1.8, "rate": 100.0}, {"temp": 2.0, "rate": 100.0}]}
           ]
         };
 
@@ -86,25 +127,69 @@
             marker: { color: sorted.map(m => m.overall_solve_rate > 90 ? '#2ca02c' : (m.overall_solve_rate > 70 ? '#ff7f0e' : '#d62728')) }
         };
         Plotly.newPlot('solve_rate_bar', [barTrace], {
-            title: 'Overall Model Solve Rate (%)',
             yaxis: { title: 'Solve Rate %', range: [0, 105] },
             margin: { b: 150 }
         });
 
-        // 2. Line Chart: Temp vs Solve Rate
+        // 2. Line Chart: Temp vs Solve Rate (with filtering logic)
         const lineTraces = data.models.map(m => {
             return {
                 x: m.temperature_data.map(d => d.temp),
                 y: m.temperature_data.map(d => d.rate),
                 name: m.model,
-                mode: 'lines+markers'
+                mode: 'lines+markers',
+                visible: true
             };
         });
-        Plotly.newPlot('temp_line_chart', lineTraces, {
-            title: 'Solve Rate vs. Temperature',
+
+        const tempLayout = {
             xaxis: { title: 'Temperature' },
-            yaxis: { title: 'Solve Rate %', range: [-5, 105] }
-        });
+            yaxis: { title: 'Solve Rate %', range: [-5, 105] },
+            height: 700, // Larger Y-axis spacing
+            margin: { t: 30 }
+        };
+
+        Plotly.newPlot('temp_line_chart', lineTraces, tempLayout);
+
+        // Create Filter Buttons
+        const buttonContainer = document.getElementById('filter-buttons');
+        const chunkSize = 5;
+        
+        function updateChart(indices) {
+            const update = {
+                visible: lineTraces.map((_, i) => indices === 'all' || indices.includes(i))
+            };
+            Plotly.restyle('temp_line_chart', update);
+            
+            // Update active state
+            document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+        }
+
+        // Add "Show All" button
+        const allBtn = document.createElement('button');
+        allBtn.className = 'btn active';
+        allBtn.innerText = 'Show All';
+        allBtn.onclick = () => {
+            updateChart('all');
+            allBtn.classList.add('active');
+        };
+        buttonContainer.appendChild(allBtn);
+
+        // Add chunk buttons
+        for (let i = 0; i < lineTraces.length; i += chunkSize) {
+            const end = Math.min(i + chunkSize, lineTraces.length);
+            const indices = Array.from({length: end - i}, (_, k) => i + k);
+            const btn = document.createElement('button');
+            btn.className = 'btn';
+            btn.innerText = `Models ${i+1}-${end}`;
+            btn.onclick = () => {
+                updateChart(indices);
+                btn.classList.add('active');
+            };
+            buttonContainer.appendChild(btn);
+        }
+
+        const archColors = { "Dense": "#36a2eb", "MoE": "#ff6384", "Hybrid": "#4bc0c0", "Unknown": "#9966ff" };
 
         // 3. Scatter Plot: Size vs Solve Rate
         const scatterTrace = {
@@ -113,13 +198,72 @@
             mode: 'markers+text',
             text: data.models.map(m => m.model),
             textposition: 'top center',
-            marker: { size: 12, color: '#007bff' },
+            textfont: { size: 9, color: '#444' },
+            marker: { 
+                size: 10, 
+                color: data.models.map(m => archColors[m.arch]),
+                opacity: 0.7,
+                line: { color: data.models.map(m => archColors[m.arch]), width: 1 }
+            },
             type: 'scatter'
         };
         Plotly.newPlot('size_scatter', [scatterTrace], {
-            title: 'Model Size (B) vs. Solve Rate (%)',
-            xaxis: { title: 'Parameter Count (Billions)', type: 'log', range: [-0.3, 3.2] },
-            yaxis: { title: 'Solve Rate %', range: [0, 105] }
+            xaxis: { 
+                title: 'Total Parameter Count (Billions)', 
+                type: 'log', 
+                range: [-0.3, 3.2],
+                gridcolor: 'rgba(0,0,0,0.05)',
+                zerolinecolor: 'rgba(0,0,0,0.1)'
+            },
+            yaxis: { 
+                title: 'Solve Rate %', 
+                range: [-5, 110],
+                gridcolor: 'rgba(0,0,0,0.05)',
+                zerolinecolor: 'rgba(0,0,0,0.1)'
+            },
+            hovermode: 'closest'
+        });
+
+        // 4. Scatter Plot: Active Size vs Solve Rate
+        const activeTrace = {
+            x: data.models.map(m => (m.active_range[0] + m.active_range[1]) / 2),
+            y: data.models.map(m => m.overall_solve_rate),
+            error_x: {
+                type: 'data',
+                symmetric: false,
+                array: data.models.map(m => m.active_range[1] - (m.active_range[0] + m.active_range[1]) / 2),
+                arrayminus: data.models.map(m => (m.active_range[0] + m.active_range[1]) / 2 - m.active_range[0]),
+                color: 'rgba(0,0,0,0.2)',
+                thickness: 1,
+                width: 3
+            },
+            mode: 'markers+text',
+            text: data.models.map(m => m.model),
+            textposition: 'top center',
+            textfont: { size: 9, color: '#444' },
+            marker: { 
+                size: 10, 
+                color: data.models.map(m => archColors[m.arch]),
+                opacity: 0.7,
+                line: { color: data.models.map(m => archColors[m.arch]), width: 1 }
+            },
+            type: 'scatter'
+        };
+        Plotly.newPlot('active_size_scatter', [activeTrace], {
+            xaxis: { 
+                title: 'Active Parameter Count (Billions)', 
+                type: 'log', 
+                range: [-0.3, 3.2],
+                gridcolor: 'rgba(0,0,0,0.05)',
+                zerolinecolor: 'rgba(0,0,0,0.1)'
+            },
+            yaxis: { 
+                title: 'Solve Rate %', 
+                range: [-5, 110],
+                gridcolor: 'rgba(0,0,0,0.05)',
+                zerolinecolor: 'rgba(0,0,0,0.1)'
+            },
+            hovermode: 'closest'
         });
 
     </script>

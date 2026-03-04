@@ -8,8 +8,10 @@
         body { font-family: sans-serif; margin: 20px; background-color: #f4f4f9; }
         .container { max-width: 1200px; margin: 0 auto; }
         .chart-container { background: white; padding: 20px; margin-bottom: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        h1, h2 { color: #333; }
-        .text-section { background: #fff; padding: 20px; margin-bottom: 30px; border-radius: 8px; border-left: 5px solid #0d6efd; }
+        h1 { text-align: center; color: #333; }
+        h2 { color: #555; border-bottom: 2px solid #ddd; padding-bottom: 10px; }
+        p { color: #444; line-height: 1.6; }
+        .text-section { background: #fff; padding: 20px; margin-bottom: 30px; border-radius: 8px; border-left: 5px solid #0d6efd; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .bubble-chart-wrapper { position: relative; height: 600px; width: 100%; }
     </style>
 </head>
@@ -19,7 +21,7 @@
         
         <div class="chart-container">
             <h2>Physical Reasoning: Helicopter Cable Problem</h2>
-            <p>Various models are posed a problem from the 2014 qualifying exam for the United States physics team, in which the examinees are asked which shape a uniform flexible cable will adopt if suspended from a helicopter with a constant horizontal speed, where are resistance is non-negligible.</p>
+            <p>Various models are posed a variation of a problem from the 2014 qualifying exam for the United States physics team, in which the examinees are asked which shape a uniform flexible cable will adopt if suspended from a helicopter with a constant horizontal speed, where are resistance is non-negligible.</p>
             <p>The objective is to assess the capability of LLMs to solve difficult problems, particularly those which require an intuitive understanding of physical interactions over a standard formulaic approach.</p>
             <p>Such problems require models to apply a logical chain of thought rather than recall and apply a formula.</p>
             <div id="phys_bar"></div>
@@ -35,9 +37,9 @@
             <div class="bubble-chart-wrapper">
                 <canvas id="performanceChart"></canvas>
             </div>
-            <div style="margin-top: 20px; padding: 15px; background: #eef; border-left: 5px solid #007bff;">
-                <h3>Analysis Categories:</h3>
-                <ul>
+            <div style="margin-top: 20px; padding: 15px; background: #eef; border-left: 5px solid #007bff; border-radius: 4px;">
+                <h3 style="margin-top: 0; color: #333;">Analysis Categories:</h3>
+                <ul style="margin-bottom: 0; color: #444; line-height: 1.6;">
                     <li><strong>Correct (Straight Line):</strong> The model correctly derived that the constant force vectors result in a straight line.</li>
                     <li><strong>Close/Plausible:</strong> The model recognized both forces but failed the mathematical simplification.</li>
                     <li><strong>Standard Error:</strong> The model defaulted to common textbook answers (Catenary, Parabola).</li>
@@ -48,7 +50,7 @@
 
         <div class="text-section">
             <h3>Model Performance with Architecture and Parameter Count</h3>
-            <p>The model responses have been placed in four 'levels' of correctness based on their earlier grades; while many models failed the task, some exhibited a better understanding than others. The broader architecture (Dense, Hybrid, MoE) and total parameter count of each model is indicated by its colour and x-coordinate, respectively. <div></div> The below figure displays the model performance with the active parameter count of each model </p>
+            <p>The model responses have been placed in four 'levels' of correctness based on their earlier grades; while many models failed the task, some exhibited a better understanding than others. The broader architecture (Dense, Hybrid, MoE) and total parameter count of each model is indicated by its colour and x-coordinate, respectively. The below figure displays the model performance with the active parameter count of each model </p>
         </div>
 
         <div class="chart-container">
@@ -90,7 +92,7 @@
             {"model": "Mistral Small 3.1 24B", "shape": "Complex Curve", "grade": "F", "score": 40, "size": 24, "active_range": [24, 24], "arch": "Dense", "desc": "24B Intermediate Dense model."},
             {"model": "Gemma 3 12b", "shape": "Asymmetric Catenary", "grade": "F", "score": 40, "size": 12, "active_range": [12, 12], "arch": "Dense", "desc": "12B Multimodal Dense."},
             {"model": "Gemma 3 27b", "shape": "Asymmetric Catenary", "grade": "F", "score": 40, "size": 27, "active_range": [27, 27], "arch": "Dense", "desc": "27B Multimodal Dense."},
-            {"model": "gemma3:1b", "shape": "Sine Wave", "grade": "F-", "score": 20, "size": 1, "active_range": [1, 1], "arch": "Unknown", "desc": "1B Tiny model."}
+            {"model": "gemma3:1b", "shape": "Sine Wave", "grade": "F-", "score": 20, "size": 1, "active_range": [1, 1], "arch": "Dense", "desc": "1B Tiny model."}
         ];
 
         // --- Plotly Bar Chart ---
@@ -103,7 +105,6 @@
             marker: { color: physSorted.map(d => d.score > 80 ? '#2ca02c' : (d.score > 60 ? '#ff7f0e' : '#d62728')) }
         };
         Plotly.newPlot('phys_bar', [tracePhysBar], {
-            title: 'Physical Reasoning Grades by Model',
             yaxis: { title: 'Score (A+=100, F=40)', range: [0, 105] },
             margin: { b: 150 }
         });

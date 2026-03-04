@@ -8,7 +8,6 @@ const outputPath = path.join(__dirname, 'visualization.html');
 let experimentData = {};
 try {
     const rawData = fs.readFileSync(dataPath, 'utf8').replace(/^\uFEFF/, '').trim();
-    // Try to find valid JSON start
     const start = rawData.indexOf('{');
     if (start !== -1) {
         experimentData = JSON.parse(rawData.substring(start));
@@ -35,7 +34,6 @@ if (fs.existsSync(cotPath)) {
 
 // Manually patch in the 2 rare successes for G12B in OL3file (Caesar)
 if (experimentData['OL3file.xlsx'] && experimentData['OL3file.xlsx']['G12B']) {
-    // Indices 13 and 18
     if (experimentData['OL3file.xlsx']['G12B'][13]) {
          experimentData['OL3file.xlsx']['G12B'][13].correct = 1;
          experimentData['OL3file.xlsx']['G12B'][13].incorrect -= 1;
@@ -59,41 +57,72 @@ const htmlContent = `<!DOCTYPE html>
         .chart-container { background: white; padding: 20px; margin-bottom: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         h1 { text-align: center; color: #333; }
         h2 { color: #555; border-bottom: 2px solid #ddd; padding-bottom: 10px; }
-        p { color: #666; }
+        p { color: #444; line-height: 1.6; }
+        .text-section { background: #fff; padding: 20px; margin-bottom: 30px; border-radius: 8px; border-left: 5px solid #0d6efd; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>LLM Phase Transitions Analysis</h1>
+        <h1>Deciphering Experiment</h1>
         
+        <div class="text-section">
+            <h3>Preamble</h3>
+            <p>The gemma3 family of dense LLMs were posed a task to decipher a phrase encoded via a substitution cipher. The phrase 'I think therefore I am' becomes: '9 20 8 9 14 11 20 8 5 18 5 6 15 18 5 9 1 13'. The models were then tasked with deciphering the same message encoded via a Caesar cipher with a rotation of 5: 'I think therefore I am' becomes: 'N ymnsp ymjwjktwj N fr'. </p>
+        </div>
+
         <div class="chart-container">
             <h2>Substitution Cipher: Success Rate (Perfect Solves)</h2>
-            <p>Phase transition visible across model sizes. 27B dominates, 12B is capable, smaller models fail to format correctly.</p>
+            <p>A correct answer was at first deemed to be one which matched the format of the original phrase, i.e. the spaces between words had to be in the correct places (though capitalisations were ignored). </p>
             <canvas id="subPerfectChart"></canvas>
         </div>
 
-        <div class="chart-container">
-            <h2>Substitution Cipher: Effective Success (Perfect + Close)</h2>
-            <p>Shows the "latent capability" of the 4B model. It decodes the letters correctly (Close) but fails spacing. 1B remains incompetent.</p>
-            <canvas id="subEffectiveChart"></canvas>
+        <div class="text-section">
+            <h3>Scaling Laws in Substitution</h3>
+            <p>The perfect solve metric shows a performance threshold. Below 12B parameters, models almost never produce a perfectly formatted and decoded string. However, the jump from 12B to 27B represents a large leap in reliability while both smaller models fail to format correctly. The solve rate of the 12 billion parameter model fluctuated around a 40-50% success rate with increasing temperature while the 27 billion parameter version had a decline in solve rate with increasing temperature.</p>
         </div>
 
         <div class="chart-container">
-            <h2>Caesar Cipher: Gemma 3 Performance (Zero-Shot)</h2>
-            <p>Complete failure across the board, except for two rare "Chain of Thought" sparks from the 12B model.</p>
+            <h2>Substitution Cipher: Effective Success (Perfect + Close Solves)</h2>
+            <p>The marking criteria for a correct solve was relaxed to include all responses in which all the numbers had been correctly substituted to their original letters, disregarding omitted and/or omitted spaces.</p>
+            <canvas id="subEffectiveChart"></canvas>
+        </div>
+
+        <div class="text-section">
+            <h3>Substitution Cipher: Latent Capabilities of Smaller Models</h3>
+            <p>By relaxing the marking criteria, we see that the smaller models can correctly perform the decoding of the letters, but fail to correctly apply letter spacings. The two larger models achieve a near 100% success rate under this criteria, showing that the temperature effect on their responses was to alter the abilities of the models to insert spaces and not their ability to decipher the message. The 4 billion parameter model exhibits a decline in solve rate with increasing temperature akin to the 27 billion parameter counterpart under the stricter marking criteria.</p>
+        </div>
+
+        <div class="chart-container">
+            <h2>Caesar Cipher: Gemma3 Performance (Zero-Shot)</h2>
+            <p>The added layer of complexity to the cipher proved too difficult for any of the models to solve correctly, save for only two instances by the 12 billion parameter model.</p>
             <canvas id="caesarChart"></canvas>
+        </div>
+
+        <div class="text-section">
+            <h3>Caesar Cipher Difficulty and Prompt Engineering</h3>
+            <p>As part of the prompting process, the phrase: 'return the decoded message only' was appended to the initial prompt for every iteration to reduce the likelihood of data handling errors during the exporting process. During the prompting process, such phrases can limit models' ability to form a chain-of-thought (CoT) for problem solving, effectively 'thinking out loud'. To investigate the effects of this added phrase, the experiment was carried out a second time without the constraint.</p>
         </div>
 
         <div class="chart-container">
             <h2>Caesar Cipher: Zero-Shot vs Chain-of-Thought (CoT)</h2>
-            <p>Removing the "return only" constraint allows G12B and G27B to reason (CoT), improving performance compared to the Zero-Shot baseline (dotted lines).</p>
+            <p>Removing the prompt constraint allows G12B and G27B to reason (CoT), improving their performance compared to the previous experiment that employed the constraint.</p>
             <canvas id="cotChart"></canvas>
+        </div>
+
+        <div class="text-section">
+            <h3>Analysis: The Impact of Reasoned Thought</h3>
+            <p>Allowing the two larger models to apply a CoT to the problem increases their performance, while the performance has improved for both models, the solve rate is far lower than for the substitution cipher as expected for a more difficult problem. Both larger models display an oscillation in solve rate with increasing temperature.</p>
         </div>
 
         <div class="chart-container">
             <h2>Caesar Cipher: Qwen vs Gemma</h2>
-            <p>Qwen 4B significantly outperforms the entire Gemma 3 family on the Caesar task, showing high reliability up to Temp 1.5.</p>
+            <p>Qwen3 4B was tasked with solving the Caesar cipher using the same prompt constraint to return the solution only.</p>
             <canvas id="qwenChart"></canvas>
+        </div>
+
+        <div class="text-section">
+            <h3>Model Type Suitablility to Differing Tasks</h3>
+            <p>The qwen3 model despite its small size proved far more capable of solving the Caesar cipher correctly than the gemma3 models tested, the performance declines steeply from a near-perfect solve rate to a solve rate near zero as temperature increases from 0 to 1.</p>
         </div>
     </div>
 
@@ -173,10 +202,7 @@ const htmlContent = `<!DOCTYPE html>
         });
 
         // 4. CoT Comparison
-        // Only show G12B and G27B for clarity, or all. Let's show all.
-        // COTGemma data is structured like OL3file (G1B, G4B...)
         const cotSet = getDataset('COTGemma', p => (p.correct / p.total) * 100, { suffix: ' (CoT)' });
-        // Use dashed lines for Zero-Shot baseline
         const zeroShotSet = getDataset('OL3file.xlsx', p => (p.correct / p.total) * 100, { borderDash: [5, 5], suffix: ' (Zero-Shot)', pointRadius: 0, borderWidth: 1 });
         
         new Chart(document.getElementById('cotChart').getContext('2d'), {
@@ -203,4 +229,4 @@ const htmlContent = `<!DOCTYPE html>
 </html>`;
 
 fs.writeFileSync(outputPath, htmlContent);
-console.log("HTML generation complete.");
+console.log("HTML restoration complete.");
